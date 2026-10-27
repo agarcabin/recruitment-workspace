@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html data-page-node-id="OqREi4gaXgeomFf1whFJnU" lang="zh-CN">
+<head data-page-node-id="Ot15GhalBhOftxSSfsl3QR">
+
+<meta data-page-node-id="kIY16i9IZAz4oI5WY7MWU1" charset="UTF-8">
+<meta data-page-node-id="UEhzscQmAVc8GRnd1pr3wl" content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport">
+<title data-page-node-id="4hKEfwmJYBSuq8KrMcA3oP" data-pnid-children="sm9dvDmVn6Je9mtKhcBDyE">创新招聘组 · 招聘过程看板</title>
+<script data-page-node-id="dllZqfI1d7vLw4Ar3DSEXT" src="../assets/echarts.min.js"></script>
+<style data-page-node-id="k3DxR8jJXnBPOlFNWpBuZm" data-pnid-children="hgx5JmIjgp9RvjbIzrUadQ">
+:root{
+  --bg:#f5f6f8; --card:#ffffff; --line:#e6e8ec; --line2:#d8dbe0;
+  --txt:#1a1a1a; --txt2:#5f6672; --txt3:#9aa0a8;
+  --blue:#185fa5; --blue-bg:#e6f1fb;
+  --teal:#0f6e56; --teal2:#1d9e75; --teal-bg:#e1f5ee;
+  --orange:#d85a30; --amber:#ba7517;
+  --g-res:#eef5ec; --g-reach:#eef5fc; --g-comm:#f7f6f1; --g-iv:#fdf6e7; --g-ob:#e1f5ee;
+  --radius:12px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,"PingFang SC","Microsoft YaHei","Segoe UI",sans-serif;background:var(--bg);color:var(--txt);-webkit-font-smoothing:antialiased;line-height:1.5}
+.wrap{max-width:1080px;margin:0 auto;padding:16px 12px 44px}
+header{padding:2px 2px 10px}
+header h1{font-size:19px;font-weight:600}
+header .lead{font-size:12px;color:var(--txt2);margin-top:3px}
+header .sub{font-size:12px;color:var(--txt3);margin-top:2px}
+header .sub b{color:var(--txt2)}
+section{margin-bottom:14px}
+.sec-title{font-size:14px;font-weight:600;margin:4px 2px 8px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.sec-title .hint{font-size:11px;color:var(--txt3);font-weight:400}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:14px 14px;overflow:hidden}
+
+/* ---- 区域1 日期选择 ---- */
+.datebar{padding:12px 14px}
+.datebar .row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.dlbl{font-size:12px;color:var(--txt2);flex:none}
+.date-wrap{position:relative;display:inline-flex}
+.date-wrap input.empty{color:transparent}
+.date-wrap input.empty::-webkit-datetime-edit{color:transparent}
+.date-wrap .ph{position:absolute;left:8px;top:50%;transform:translateY(-50%);font-size:13px;color:var(--txt3);pointer-events:none;white-space:nowrap}
+.date-wrap input:not(.empty) ~ .ph{display:none}
+.date-wrap input:focus ~ .ph{display:none}
+input[type=date]{font:inherit;font-size:13px;padding:5px 8px;border:1px solid var(--line2);border-radius:8px;background:#fff;color:var(--txt)}
+input[type=date].on{border-color:var(--blue);background:var(--blue-bg);color:var(--blue)}
+.chip{font:inherit;font-size:12px;padding:5px 12px;border:1px solid var(--line2);border-radius:16px;background:#fff;color:var(--txt2);cursor:pointer}
+.chip.on{border-color:var(--blue);background:var(--blue-bg);color:var(--blue);font-weight:500}
+.chip.teal.on{border-color:var(--teal2);background:var(--teal-bg);color:var(--teal)}
+.sep{width:1px;height:20px;background:var(--line2);flex:none;margin:0 2px}
+.custom-row{display:flex;align-items:center;gap:8px;margin-top:10px;font-size:12px;color:var(--txt2);flex-wrap:wrap}
+.custom-row[hidden]{display:none}
+.btn-ok{font:inherit;font-size:12px;padding:5px 14px;border:1px solid var(--teal2);border-radius:16px;background:var(--teal-bg);color:var(--teal);cursor:pointer;font-weight:500}
+.date-note{font-size:11px;color:var(--txt3);margin-top:8px;line-height:1.7}
+.date-note b{color:var(--amber);font-weight:500}
+
+/* ---- 区域2 日报主表 ---- */
+.rep-head{display:flex;align-items:baseline;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:8px}
+.rep-title{font-size:14px;font-weight:600}
+.rep-tag{font-size:11px;color:#fff;background:var(--blue);padding:1px 8px;border-radius:9px}
+.no-report{background:#fdf6e7;border:1px solid #f0ddb0;border-radius:10px;padding:14px 16px;font-size:13px;color:var(--amber);margin-bottom:10px}
+.tbl-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.tbl-hint{font-size:11px;color:var(--txt3);text-align:right;margin:0 2px 4px}
+.tbl-hint[hidden]{display:none}
+table.rep{border-collapse:separate;border-spacing:0;font-size:14px;table-layout:fixed;width:100%}
+table.rep th,table.rep td{padding:9px 12px;text-align:right;white-space:nowrap;border-bottom:1px solid var(--line);border-right:1px solid var(--line)}
+table.rep th:last-child,table.rep td:last-child{border-right:none}
+table.rep th:first-child,table.rep td:first-child{text-align:left;position:sticky;left:0;z-index:2;background:#fff;width:150px;font-weight:500}
+table.rep th.sumc,table.rep td.sumc{position:sticky;left:150px;z-index:2;background:var(--teal-bg);color:var(--teal);font-weight:600;width:70px}
+table.rep thead th{font-size:12px;color:var(--txt2);font-weight:500;border-bottom:1px solid var(--line2);position:sticky;top:0;z-index:3;background:#fff}
+table.rep thead th:first-child{z-index:4}
+table.rep thead th.sumc{z-index:4}
+tr.res td:not(.sumc){background:var(--g-res)}
+tr.reach td:not(.sumc){background:var(--g-reach)}
+tr.comm td:not(.sumc){background:var(--g-comm)}
+tr.iv td:not(.sumc){background:var(--g-iv)}
+tr.ob td:not(.sumc){background:var(--g-ob);color:var(--teal);font-weight:600}
+td.zero{color:var(--txt3)}
+td.dash{color:var(--txt3)}
+tr.ob td.zero{color:#7fb5a4}
+.rep-notes{font-size:11px;color:var(--txt3);margin-top:10px;line-height:1.8}
+.rep-notes li{margin-left:16px}
+.pos-line{font-size:11px;color:var(--txt2);margin-top:8px}
+.pos-line b{font-weight:500;color:var(--txt)}
+
+/* ---- 图表 ---- */
+.chart{width:100%;height:270px}
+
+/* ---- 区域3 招聘漏斗（沙漏型） ---- */
+.hg{display:flex;flex-direction:column;align-items:stretch}
+.hg-layer{display:flex;flex-direction:column;align-items:center;margin:1px 0}
+.hg-bar{height:36px;border-radius:6px;display:flex;align-items:center;justify-content:center;gap:6px;font-size:12.5px;font-weight:600;white-space:nowrap;padding:0 8px;min-width:max-content}
+.hg-bar .bn{white-space:nowrap}
+.hg-bar .bp{font-size:11px;opacity:.92;font-weight:400}
+.hg-side{font-size:11px;color:var(--txt3);text-align:center;margin:2px 0 0;line-height:1.5;max-width:94%}
+.hg-side b{color:var(--txt2);font-weight:500}
+.hg-gap{height:24px;position:relative;margin:3px 0;display:flex;align-items:center;justify-content:center}
+.hg-gap .line{position:absolute;left:4%;right:4%;top:50%;border-top:1px dashed var(--line2)}
+.hg-gap .gt{position:relative;background:var(--card);padding:0 10px;font-size:10.5px;color:var(--txt3);white-space:nowrap}
+.hg-waist .hg-bar{background:var(--teal2);color:#fff;box-shadow:0 1px 5px rgba(29,158,117,.35)}
+.hg-waist .hg-bar .bp{color:#eafff5}
+.hg-shell .hg-bar{background:#f1efe8;color:#8a8678;border:1px dashed #cfcabb;font-weight:500}
+.hg-shell .hg-side{color:#b0ada0}
+.hg-shell .hg-side b{color:#8a8678;font-weight:400}
+.hg-note{font-size:11px;color:var(--txt3);margin-top:12px;line-height:1.8;text-align:left}
+.hg-note b{color:var(--amber);font-weight:500}
+
+/* ---- 区域4 环节分析 ---- */
+.stages-grid{display:grid;grid-template-columns:1fr;gap:10px}
+details.stage{background:var(--card);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+details.stage[open]{border-color:var(--blue)}
+details.stage summary{list-style:none;cursor:pointer;padding:11px 14px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+details.stage summary::-webkit-details-marker{display:none}
+.s-badge{font-size:11px;font-weight:600;padding:2px 10px;border-radius:10px;flex:none}
+.s-badge.warn{background:#fdf0e7;color:var(--orange)}
+.s-badge.info{background:var(--blue-bg);color:var(--blue)}
+.s-badge.ok{background:var(--teal-bg);color:var(--teal)}
+.s-badge.gray{background:#f1efe8;color:#5f5e5a}
+.s-name{font-size:13px;font-weight:500;flex:1;min-width:120px}
+.s-desc{font-size:11px;color:var(--txt3)}
+.s-act{font-size:11px;color:var(--blue);flex:none}
+.stage-body{border-top:1px solid var(--line);padding:10px 14px}
+.stage-body .tip{font-size:11px;color:var(--txt3);margin-bottom:8px;line-height:1.7}
+.s-list{font-size:12px}
+.s-list .it{display:flex;gap:8px;align-items:baseline;padding:5px 0;border-bottom:1px dashed var(--line);flex-wrap:wrap}
+.s-list .it:last-child{border-bottom:none}
+.s-list .nm{font-weight:500;flex:none}
+.s-list .meta{color:var(--txt3);font-size:11px}
+.s-list .tag{font-size:10px;padding:0 7px;border-radius:8px;background:#f1efe8;color:#5f5e5a;flex:none}
+.s-list .tag.hot{background:#fdf0e7;color:var(--orange)}
+.s-empty{font-size:12px;color:var(--txt3)}
+
+/* ---- 口径与健康度 ---- */
+details.notes{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:12px 16px}
+details.notes summary{cursor:pointer;font-size:13px;color:var(--txt2);font-weight:500}
+details.notes ol{margin:10px 0 0 18px;font-size:11px;color:var(--txt3);line-height:1.9}
+.health{margin-top:14px;padding-top:12px;border-top:1px solid var(--line)}
+.health h4{font-size:12px;color:var(--txt2);font-weight:500;margin-bottom:8px}
+.health .rows{display:flex;flex-wrap:wrap;gap:6px 14px}
+.health .h-item{font-size:11px;color:var(--txt2)}
+.health .h-item b{color:var(--txt);font-weight:600}
+.health .h-item.stale b{color:var(--amber)}
+
+/* ---- 桌面 ---- */
+@media(min-width:768px){
+  .wrap{padding:24px 20px 48px}
+  header h1{font-size:22px}
+  .stages-grid{grid-template-columns:1fr 1fr}
+  .chart{height:300px}
+}
+@media(max-width:767px){
+  table.rep{width:412px;font-size:13px}
+  table.rep th,table.rep td{padding:5px 6px}
+  table.rep th:first-child,table.rep td:first-child{width:88px}
+  table.rep th.sumc,table.rep td.sumc{left:88px;width:52px}
+  .hg-bar{height:32px;font-size:12px}
+  .hg-gap .gt{font-size:10px;padding:0 8px}
+}
+</style>
+</head>
+<body data-page-node-id="Caz396Xn07yowZI68EAeas">
+<div data-page-node-id="RNhuf2CVAqlNclJFCMiqQx" class="wrap">
+  <header data-page-node-id="dbVBefWSU6c296ym9MMlOA">
+    <h1 data-page-node-id="cijYW8zIkG8YGQEJPFfDoZ"><!--pnid:657VaJ6lvxQh8d6yrasqlX-->创新招聘组 · 招聘过程看板</h1>
+    <div data-page-node-id="047UcC7Ql38QxsKHWpu5Ju" class="lead"><!--pnid:nYOZCrON2vp1VaGNK7nrbJ-->查看招聘全过程，了解各环节的投入与推进，找到需要优先改善的环节。</div>
+    <div data-page-node-id="xSJh0jCYHzJ3cjvYFp9MUw" class="sub"><!--pnid:IIAySrJxiU2rFZWeZG8Bev-->数据截至 <b data-page-node-id="VhQ1JXafJeuTE2xAIuX3Fo" id="hdr-to"><!--pnid:lJtpkCTeuudL4wsBCLDgP5-->—</b><!--pnid:eCr4YuwmAXMsn1XUIHrFFH--> · 更新于 <span data-page-node-id="OwmK93fXjW2z8squBd5GhM" id="hdr-gen"><!--pnid:4Pd80r3SMJIF35TZsGaa8G-->—</span></div>
+  </header>
+
+  <!--pnid:xcS4PbNzqSawtjFXV5xVFY--><!-- 区域1 日期选择 -->
+  <section data-page-node-id="IZByRhAHU6U0RfpbfNb1Jp">
+    <div data-page-node-id="ZTHWWqV1lneRuisfc348Pl" class="panel datebar">
+      <div data-page-node-id="Au4F70qyTrEPlwCsYg0rUO" class="row">
+        <span data-page-node-id="xao42XOKzxKdJ4MFUsIwXl" class="dlbl"><!--pnid:d1NhKnw3LuGsT9bW7lp0ed-->选择日期</span>
+        <span data-page-node-id="2hylR5f6h25jk96gf0UuRL" class="date-wrap">
+          <input data-page-node-id="ZuepRaKz1RFEn1qKyNFAyD" id="daypick" type="date">
+          <span data-page-node-id="aG5KgsPJEJEwFbzPNa6Jmc" class="ph"><!--pnid:W5BYr3RyZc8REXIoA4ZSFQ-->请选择日期</span>
+        </span>
+        <span data-page-node-id="fJJAHGsFCpkrEjk9zYc2ak" class="sep"></span>
+        <button data-page-node-id="Sg0WL4xTI1LP7oDp1WsxSO" class="chip rng" data-r="7d"><!--pnid:FgjrQf78VzoDxBW72O2OS0-->近7日</button>
+        <button data-page-node-id="N8zQICb55nKgJQvq1HBgEh" class="chip rng" data-r="month"><!--pnid:jr2rS6ga3gGNhjGlnbVH80-->本月</button>
+        <button data-page-node-id="bokHtemU0ZubhdGuYMUZya" class="chip rng" data-r="all"><!--pnid:t683z1WkwWqZmsVQ8Aq1k1-->全部</button>
+        <button data-page-node-id="emh3PWQvftA8oQM0WJ8kK6" class="chip rng" data-r="custom" id="btn-custom"><!--pnid:BvzwRPiLXBAl5n5yVSRMO8-->自选区间</button>
+      </div>
+      <div data-page-node-id="TJc2bWUs51nByA0sq8bMnK" class="custom-row" hidden id="custom-row">
+        <span data-page-node-id="PZXGa52IxQPar6iuDSSc09"><!--pnid:QV1c1nXU6DHSEKOCRKyVuT-->开始</span><input data-page-node-id="xT826J4aupyZomoXuioy1m" id="from-pick" type="date">
+        <span data-page-node-id="NZVS2bRAFIUNUHBpti3Q0o"><!--pnid:A3Xh2kcvHNoilYVw2DYAkZ-->结束</span><input data-page-node-id="2byIvEAeazeUiY60FGorS0" id="to-pick" type="date">
+        <button data-page-node-id="Rz3RRwTEA8dYOOPdFxNxbR" class="btn-ok" id="btn-apply"><!--pnid:DvYhSIWABh9Rp808B6K954-->确认区间</button>
+      </div>
+      <div data-page-node-id="wNK4OE6DwjclM9OhUzlqsZ" class="date-note" id="date-note"></div>
+    </div>
+  </section>
+
+  <!--pnid:t2dCihkDZ6UkHCwGxgSLX1--><!-- 区域2 招聘漏斗（沙漏型） -->
+  <section data-page-node-id="uq2L0mhdPvVh0Vu2qjg9tt">
+    <div data-page-node-id="euT8RlG9Lr7FktdpSHDyHT" class="sec-title"><!--pnid:Crg3Ju3qYBd3O2AqJyHMnd-->招聘漏斗 <span data-page-node-id="3AEa3C4EXgTJ9FNTz1DEgs" class="hint"><!--pnid:gmqTgXFEImtQp53UwyDjVf-->触达→入职逐层收窄 · 入职后留存待补字段</span></div>
+    <div data-page-node-id="gyakPOVGa6LdAxLWo5fbeO" class="panel">
+      <div data-page-node-id="avBDFYXr76ICNSqLDdW2wa" class="hg" id="hourglass"></div>
+      <div data-page-node-id="bXhHxuHo7W1GmnyBz91iJk" class="hg-note" id="hg-note"></div>
+    </div>
+  </section>
+
+  <!--pnid:f4FGFxpqVwwSO0MFfh7hJ9--><!-- 区域3 完整招聘日报 -->
+  <section data-page-node-id="U3KXS0GaOM3Kfs2c1Ra2XS">
+    <div data-page-node-id="0YXeHtvLuazQQMSbG9Zfqm" class="sec-title"><!--pnid:4E29OGda3nsYE19dbl4PHC-->完整招聘日报 <span data-page-node-id="bYxLhopvI4sAZtQbuFjEFN" class="hint"><!--pnid:k8u4QKiSZUOuAawHrvsfFY-->15 项过程指标 · 合计列突出 · 人员列固定顺序</span></div>
+    <div data-page-node-id="b0dLG2viGUS0R7S89cjLHS" class="panel">
+      <div data-page-node-id="5Ucv2b1NRN05N5Vp4HlkbN" class="rep-head">
+        <span data-page-node-id="ckZm5Ln8o1xlYkB7CAyqSu" class="rep-title" id="rep-title"><!--pnid:g5YK7j1ApQCaNkn2ciM8G3-->—</span>
+        <span data-page-node-id="qytqa7GKbv5jykiZnenyYn" class="rep-tag" id="rep-tag"><!--pnid:fmG8VvzZtXa1LVCKiznHqG-->日报</span>
+      </div>
+      <div data-page-node-id="3enOgAN6edRzKsOcAK49Tw" class="no-report" hidden id="no-report"></div>
+      <div data-page-node-id="lXZnhE1YySerX2EDNtrJEG" class="tbl-hint" hidden id="tbl-hint"><!--pnid:ZeVSXTdvmeRTgsNbXKW9aN-->← 左右滑动查看全部人员 →</div>
+      <div data-page-node-id="LA31G2171dgSTIKQdMOMl0" class="tbl-scroll" id="tbl-wrap">
+        <table data-page-node-id="N1pQ2FSPFkhiNqH2a5bVTI" class="rep">
+          <thead data-page-node-id="poo9TGy9szwYbpaheK9LNg"><tr data-page-node-id="nNTBvOpMeos04TFQACDm5V" id="thead-row"></tr></thead>
+          <tbody data-page-node-id="4iHdXqChXNEZLxOwPIBjZR" id="tbody"></tbody>
+        </table>
+      </div>
+      <div data-page-node-id="ZRf3qT3QEqGpxS0IOBfmMz" class="pos-line" id="pos-line"></div>
+      <ul data-page-node-id="dh88aeEPYcIdA6370Ppe6k" class="rep-notes" id="rep-notes" style="list-style:none"></ul>
+    </div>
+  </section>
+
+  <!--pnid:ZSlS7XLoimG7EbeMHGBJBv--><!-- 图表（逐日趋势 + 岗位分布） -->
+  <section data-page-node-id="99EUaX3YZQeqWrSIqLWiUA" class="grid-charts" style="margin-bottom:14px">
+    <div data-page-node-id="DyZxUORQkKj9UIO0YXwh8J" class="sec-title"><!--pnid:plRe4VWFiT2hnfojzInNl2-->逐日趋势 <span data-page-node-id="wUE6f6DRxqngnjWCoAtNtx" class="hint"><!--pnid:aOcgmu6af8oINRQGx8Cs6l-->全期口径 · 高亮当前所选日期/区间</span></div>
+    <div data-page-node-id="Uqu8yjXvIWpnXHtHYBt8ja" class="panel"><div data-page-node-id="Lb1YTTwfZrVbLmNyt9qPfZ" class="chart" id="trend"></div></div>
+    <div data-page-node-id="kR1fLT5xYe4ZnefWMS79Rm" class="sec-title" style="margin-top:14px"><!--pnid:941gcKYkwz6D95OMOMk3yY-->岗位分布 <span data-page-node-id="oG1dUbnFuNSdLnxa85ZSjb" class="hint"><!--pnid:OMYSOmu5vx7XAcYVRSkNH4-->全期口径：邀约 · 到面 · 通过 · 入职</span></div>
+    <div data-page-node-id="md7Rw1mGIhTKCranIxGs58" class="panel"><div data-page-node-id="bALDTvHJTFAgFYR065sNYr" class="chart" id="pos"></div></div>
+  </section>
+
+  <!--pnid:bZgoY9lOKvA15WotcODUGl--><!-- 区域4 环节分析与待核事项 -->
+  <section data-page-node-id="YZa0sluTFw2OybCWoqMdpz">
+    <div data-page-node-id="7VvpVbu5h8drZ7K7UYHAow" class="sec-title"><!--pnid:Jm4JPIbU5zHrAdglTi0tmQ-->环节分析与待核事项 <span data-page-node-id="Va41CGPZMx7OKZrkj6b1C4" class="hint"><!--pnid:llpqg2SSFfLRA5RWIDe9pX-->点击展开人员 / 项目 / 待核清单 · 随所选日期联动</span></div>
+    <div data-page-node-id="yOJdS6aT6OmoCRfXyBeJxk" class="stages-grid" id="stages"></div>
+  </section>
+
+  <!--pnid:C6lqFcoaoYJZ1oAQIx5DW8--><!-- 口径 -->
+  <details data-page-node-id="iMAW9Lpfy3i2bQBVUJkJOX" class="notes">
+    <summary data-page-node-id="BABKqRG5ydmoYdifVz9T0m"><!--pnid:PU1aFKRdbhUx1Dnvv3pzK2-->统计口径说明（点击展开）</summary>
+    <ol data-page-node-id="v85vomNYEJKeJ2NeXu8WX6" id="notes"></ol>
+    <div data-page-node-id="mFU1nLz3GqudLg6oWqGYlQ" class="health">
+      <h4 data-page-node-id="9N56st7Jkar9tlew691KtJ"><!--pnid:g7N6Z4SkgUsciaZohqwwf0-->数据健康度（各源表最新日期）</h4>
+      <div data-page-node-id="J1KyA8OuWkceFZ6TznEi0A" class="rows" id="health"></div>
+    </div>
+  </details>
+</div>
+
+<script data-page-node-id="qzDvlNWmUt9dnfTd0crdmB" data-pnid-children="6JntmrLq0ZTnSJPbdKE6hk">
+window.__DATA__ = {"meta": {"generated_at": "2026-10-24 16:55", "latest_report": "2026-10-23", "first_day": "2026-10-09", "range": {"from": "2026-10-09", "to": "2026-10-23"}, "people": ["戴刚烈", "柴海良", "冯佳豪", "李建江", "吕宁"], "rcv_start": "2026-10-13", "health": {"boss": "2026-10-23", "resume": "2026-10-21", "wecom": "2026-10-23", "invite": "2026-10-22", "onboard": "2026-10-22"}}, "daily": {"2026-10-09": {"metrics": {"发布岗位数": [2, 3, 3, 4, 3], "BOSS帐号": [2, 2, 2, 2, 1], "我看过": [11, 140, 0, 11, 1], "看过我": [42, 434, 0, 117, 170], "我打招呼": [31, 50, 0, 0, 9], "牛人新招呼": [9, 48, 0, 18, 13], "我沟通": [38, 88, 0, 18, 12], "企微添加数": [2, 16, 1, 11, 0], "收到简历数": null, "发出邀约": [0, 0, 0, 0, 0], "实际到面": [0, 0, 0, 0, 0], "未到面": [0, 0, 0, 0, 0], "待面试/待定": [0, 0, 0, 0, 0], "面试通过": [0, 0, 0, 0, 0], "核实入职": [0, 0, 0, 0, 0], "收获简历": [0, 0, 0, 0, 0]}, "positions": ["检验员", "普工", "半导体普工"], "covered": 5, "has_report": true}, "2026-10-10": {"metrics": {"发布岗位数": [5, 5, 3, 4, 3], "BOSS帐号": [2, 2, 2, 2, 1], "我看过": [9, 161, 8, 528, 41], "看过我": [155, 610, 100, 423, 268], "我打招呼": [0, 144, 6, 100, 46], "牛人新招呼": [20, 88, 10, 50, 29], "我沟通": [21, 211, 9, 147, 71], "企微添加数": [3, 22, 6, 19, 0], "收到简历数": null, "发出邀约": [2, 5, 2, 2, 5], "实际到面": [2, 3, 2, 1, 5], "未到面": [0, 2, 0, 1, 0], "待面试/待定": [0, 0, 0, 0, 0], "面试通过": [0, 1, 1, 1, 2], "核实入职": [0, 0, 0, 0, 0], "收获简历": [0, 0, 0, 0, 0]}, "positions": ["检验员", "半导体普工", "普工"], "covered": 5, "has_report": true}, "2026-10-11": {"metrics": {"发布岗位数": [5, 4, 3, 5, 2], "BOSS帐号": [2, 2, 2, 2, 1], "我看过": [117, 189, 65, 412, 52], "看过我": [168, 435, 100, 290, 63], "我打招呼": [100, 50, 19, 100, 31], "牛人新招呼": [20, 44, 8, 33, 1], "我沟通": [123, 96, 24, 139, 32], "企微添加数": [0, 18, 2, 21, 0], "收到简历数": null, "发出邀约": [0, 0, 0, 0, 0], "实际到面": [0, 0, 0, 0, 0], "未到面": [0, 0, 0, 0, 0], "待面试/待定": [0, 0, 0, 0, 0], "面试通过": [0, 0, 0, 0, 0], "核实入职": [0, 0, 0, 0, 0], "收获简历": [0, 0, 0, 0, 0]}, "positions": ["半导体普工", "检验员"], "covered": 5, "has_report": true}, "2026-10-12": {"metrics": {"发布岗位数": [4, 4, 4, 8, 2], "BOSS帐号": [2, 2, 2, 2, 1], "我看过": [184, 367, 67, 167, 27], "看过我": [210, 336, 170, 351, 88], "我打招呼": [100, 94, 39, 100, 49], "牛人新招呼": [23, 53, 15, 38, 10], "我沟通": [125, 128, 48, 138, 55], "企微添加数": [6, 6, 4, 23, 5], "收到简历数": null, "发出邀约": [0, 5, 2, 5, 4], "实际到面": [0, 3, 2, 1, 2], "未到面": [0, 0, 0, 3, 0], "待面试/待定": [0, 2, 0, 1, 2], "面试通过": [0, 0, 2, 1, 1], "核实入职": [0, 1, 0, 0, 0], "收获简历": [0, 0, 0, 0, 0]}, "positions": ["检验员", "半导体普工", "仓管员"], "covered": 5, "has_report": true}, "2026-10-13": {"metrics": {"发布岗位数": [6, 4, 4, 5, 2], "BOSS帐号": [2, 2, 2, 2, 1], "我看过": [6, 54, 24, 338, 13], "看过我": [782, 455, 273, 288, 138], "我打招呼": [100, 26, 21, 100, 17], "牛人新招呼": [148, 72, 32, 36, 27], "我沟通": [220, 59, 32, 130, 24], "企微添加数": [21, 11, 6, 13, 2], "收到简历数": [63, 5, 7, 11, 4], "发出邀约": [0, 0, 1, 1, 0], "实际到面": [0, 0, 0, 1, 0], "未到面": [0, 0, 1, 0, 0], "待面试/待定": [0, 0, 0, 0, 0], "面试通过": [0, 0, 0, 0, 0], "核实入职": [0, 0, 0, 1, 0], "收获简历": [63, 4, 7, 11, 4]}, "positions": ["检验员", "仓管员", "半导体普工"], "covered": 5, "has_report": true}, "2026-10-14": {"metrics": {"发布岗位数": [6, 4, 4, 7, 2], "BOSS帐号": [2, 2, 2, 2, 1], "我看过": [3, 105, 52, 155, 28], "看过我": [567, 325, 171, 211, 88], "我打招呼": [100, 88, 32, 100, 16], "牛人新招呼": [106, 28, 19, 35, 18], "我沟通": [230, 108, 43, 130, 23], "企微添加数": [9, 3, 3, 5, 1], "收到简历数": [72, 0, 3, 6, 1], "发出邀约": [1, 0, 0, 0, 0], "实际到面": [0, 0, 0, 0, 0], "未到面": [0, 0, 0, 0, 0], "待面试/待定": [1, 0, 0, 0, 0], "面试通过": [0, 0, 0, 0, 0], "核实入职": [0, 0, 0, 0, 1], "收获简历": [72, 0, 2, 5, 1]}, "positions": ["国际销售经理", "仓管员", "检验员", "半导体普工"], "covered": 5, "has_report": true}, "2026-10-15": {"metrics": {"发布岗位数": [2, 4, 4, 6, 2], "BOSS帐号": [2, 2, 2, 2, 1], "我看过": [58, 30, 138, 77, 81], "看过我": [473, 395, 175, 233, 122], "我打招呼": [100, 2, 57, 13, 32], "牛人新招呼": [88, 89, 18, 28, 16], "我沟通": [219, 67, 66, 41, 44], "企微添加数": [14, 5, 4, 6, 5], "收到简历数": [86, 39, 6, 3, 7], "发出邀约": [0, 1, 1, 2, 0], "实际到面": [0, 0, 1, 1, 0], "未到面": [0, 0, 0, 0, 0], "待面试/待定": [0, 1, 0, 1, 0], "面试通过": [0, 0, 1, 0, 0], "核实入职": [0, 0, 1, 0, 0], "收获简历": [86, 39, 6, 3, 7]}, "positions": ["仓管员", "国际销售经理", "检验员"], "covered": 5, "has_report": true}, "2026-10-16": {"metrics": {"发布岗位数": [4, 4, 4, 6, 2], "BOSS帐号": [2, 2, 2, 2, 1], "我看过": [69, 57, 84, 44, 115], "看过我": [401, 245, 128, 81, 77], "我打招呼": [100, 39, 62, 50, 34], "牛人新招呼": [93, 38, 14, 3, 21], "我沟通": [227, 87, 73, 54, 50], "企微添加数": [5, 1, 6, 1, 2], "收到简历数": [49, 10, 3, 0, 10], "发出邀约": [0, 0, 0, 0, 1], "实际到面": [0, 0, 0, 0, 1], "未到面": [0, 0, 0, 0, 0], "待面试/待定": [0, 0, 0, 0, 0], "面试通过": [0, 0, 0, 0, 1], "核实入职": [0, 0, 2, 0, 0], "收获简历": [49, 10, 3, 0, 10]}, "positions": ["国际销售经理", "仓管员", "检验员"], "covered": 5, "has_report": true}, "2026-10-17": {"metrics": {"发布岗位数": [4, 0, 0, 0, 0], "BOSS帐号": [2, 2, 2, 2, 1], "我看过": [57, 0, 0, 0, 0], "看过我": [306, 0, 0, 0, 0], "我打招呼": [100, 0, 0, 0, 0], "牛人新招呼": [71, 0, 0, 0, 0], "我沟通": [213, 0, 0, 0, 0], "企微添加数": [2, 1, 0, 2, 0], "收到简历数": [48, 3, 0, 0, 0], "发出邀约": [0, 0, 0, 0, 0], "实际到面": [0, 0, 0, 0, 0], "未到面": [0, 0, 0, 0, 0], "待面试/待定": [0, 0, 0, 0, 0], "面试通过": [0, 0, 0, 0, 0], "核实入职": [0, 0, 0, 0, 0], "收获简历": [50, 0, 0, 0, 0]}, "positions": ["国际销售经理", "仓管员"], "covered": 1, "has_report": true}, "2026-10-18": {"metrics": {"发布岗位数": [4, 0, 0, 0, 0], "BOSS帐号": [2, 2, 2, 2, 1], "我看过": [24, 0, 0, 0, 0], "看过我": [381, 0, 0, 0, 0], "我打招呼": [100, 0, 0, 0, 0], "牛人新招呼": [92, 0, 0, 0, 0], "我沟通": [228, 0, 0, 0, 0], "企微添加数": [2, 0, 0, 0, 0], "收到简历数": [68, 0, 0, 0, 1], "发出邀约": [0, 0, 0, 1, 0], "实际到面": [0, 0, 0, 1, 0], "未到面": [0, 0, 0, 0, 0], "待面试/待定": [0, 0, 0, 0, 0], "面试通过": [0, 0, 0, 1, 0], "核实入职": [0, 0, 0, 0, 0], "收获简历": [68, 0, 0, 0, 0]}, "positions": ["国际销售经理", "仓管员"], "covered": 1, "has_report": true}, "2026-10-19": {"metrics": {"发布岗位数": [4, 4, 4, 0, 4], "BOSS帐号": [2, 2, 2, 2, 1], "我看过": [5, 60, 71, 0, 61], "看过我": [613, 130, 90, 0, 113], "我打招呼": [100, 47, 52, 0, 54], "牛人新招呼": [202, 8, 5, 0, 20], "我沟通": [346, 59, 55, 0, 69], "企微添加数": [1, 0, 4, 0, 2], "收到简历数": [124, 1, 3, 0, 3], "发出邀约": [0, 0, 0, 0, 0], "实际到面": [0, 0, 0, 0, 0], "未到面": [0, 0, 0, 0, 0], "待面试/待定": [0, 0, 0, 0, 0], "面试通过": [0, 0, 0, 0, 0], "核实入职": [0, 0, 0, 0, 0], "收获简历": [124, 1, 2, 0, 3]}, "positions": ["国际销售经理", "仓管员", "检验员", "普工/操作工", "普工"], "covered": 4, "has_report": true}, "2026-10-20": {"metrics": {"发布岗位数": [6, 5, 5, 0, 4], "BOSS帐号": [2, 2, 2, 2, 1], "我看过": [15, 133, 152, 0, 115], "看过我": [486, 126, 103, 0, 121], "我打招呼": [100, 58, 79, 0, 61], "牛人新招呼": [112, 13, 7, 0, 8], "我沟通": [255, 73, 83, 0, 73], "企微添加数": [16, 2, 2, 0, 3], "收到简历数": [82, 4, 0, 0, 5], "发出邀约": [0, 0, 0, 0, 1], "实际到面": [0, 0, 0, 0, 1], "未到面": [0, 0, 0, 0, 0], "待面试/待定": [0, 0, 0, 0, 0], "面试通过": [0, 0, 0, 0, 1], "核实入职": [0, 0, 0, 0, 0], "收获简历": [82, 4, 0, 0, 5]}, "positions": ["国际销售经理", "仓管员", "会计", "检验员", "普工/操作工", "普工"], "covered": 4, "has_report": true}, "2026-10-21": {"metrics": {"发布岗位数": [6, 4, 4, 0, 4], "BOSS帐号": [2, 2, 2, 2, 1], "我看过": [124, 368, 138, 0, 66], "看过我": [575, 123, 84, 0, 105], "我打招呼": [100, 100, 100, 0, 93], "牛人新招呼": [110, 12, 11, 0, 14], "我沟通": [246, 111, 103, 0, 106], "企微添加数": [22, 2, 2, 0, 5], "收到简历数": [79, 2, 0, 0, 2], "发出邀约": [0, 0, 0, 0, 0], "实际到面": [0, 0, 0, 0, 0], "未到面": [0, 0, 0, 0, 0], "待面试/待定": [0, 0, 0, 0, 0], "面试通过": [0, 0, 0, 0, 0], "核实入职": [0, 0, 0, 0, 0], "收获简历": [79, 2, 2, 0, 2]}, "positions": ["国际销售经理", "仓管员", "会计", "检验员", "普工"], "covered": 4, "has_report": true}, "2026-10-22": {"metrics": {"发布岗位数": [5, 4, 4, 0, 4], "BOSS帐号": [2, 2, 2, 2, 1], "我看过": [198, 400, 279, 0, 141], "看过我": [546, 110, 133, 0, 109], "我打招呼": [100, 100, 100, 0, 100], "牛人新招呼": [85, 13, 37, 0, 16], "我沟通": [235, 110, 113, 0, 117], "企微添加数": [14, 4, 0, 0, 7], "收到简历数": [0, 0, 0, 0, 0], "发出邀约": [0, 0, 0, 0, 1], "实际到面": [0, 0, 0, 0, 0], "未到面": [0, 0, 0, 0, 1], "待面试/待定": [0, 0, 0, 0, 0], "面试通过": [0, 0, 0, 0, 0], "核实入职": [0, 0, 0, 0, 1], "收获简历": [64, 1, 3, 0, 5]}, "positions": ["国际销售经理", "会计", "仓管员", "检验员", "普工"], "covered": 4, "has_report": true}, "2026-10-23": {"metrics": {"发布岗位数": [5, 4, 4, 3, 2], "BOSS帐号": [2, 2, 2, 2, 1], "我看过": [145, 176, 17, 83, 68], "看过我": [341, 80, 69, 30, 70], "我打招呼": [100, 99, 99, 50, 47], "牛人新招呼": [70, 10, 7, 5, 20], "我沟通": [221, 108, 105, 54, 68], "企微添加数": [12, 6, 2, 0, 7], "收到简历数": [0, 0, 0, 0, 0], "发出邀约": [0, 0, 0, 0, 0], "实际到面": [0, 0, 0, 0, 0], "未到面": [0, 0, 0, 0, 0], "待面试/待定": [0, 0, 0, 0, 0], "面试通过": [0, 0, 0, 0, 0], "核实入职": [0, 0, 0, 0, 0], "收获简历": [65, 1, 0, 0, 14]}, "positions": ["仓管员", "国际销售经理", "会计", "普工", "检验员"], "covered": 5, "has_report": true}}, "invite_records": [{"d": "2026-10-10", "p": "冯佳豪", "cand": "候选人001", "pos": "封测工", "proj": "秋水", "a": "到面", "ps": "未通过", "ob": "无", "iv": "2026.10.10", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-10", "p": "柴海良", "cand": "候选人002", "pos": "封测工", "proj": "秋水", "a": "到面", "ps": "未通过", "ob": "无", "iv": "2026.10.10", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-10", "p": "吕宁", "cand": "候选人003", "pos": "封测工", "proj": "秋水", "a": "到面", "ps": "未通过", "ob": "无", "iv": "2026.10.12", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-10", "p": "吕宁", "cand": "候选人004", "pos": "封测工", "proj": "秋水", "a": "到面", "ps": "通过", "ob": "入职", "iv": "2026.10.12", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-10", "p": "吕宁", "cand": "候选人005", "pos": "封测工", "proj": "秋水", "a": "到面", "ps": "通过", "ob": "无", "iv": "2026.10.12", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-10", "p": "吕宁", "cand": "候选人006", "pos": "封测工", "proj": "秋水", "a": "到面", "ps": "未通过", "ob": "无", "iv": "2026.10.12", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-10", "p": "柴海良", "cand": "候选人007", "pos": "检验员", "proj": "达尔", "a": "到面", "ps": "未通过", "ob": "无", "iv": "2026.10.10", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-10", "p": "柴海良", "cand": "候选人008", "pos": "巡检", "proj": "达尔", "a": "到面", "ps": "通过", "ob": "入职", "iv": "2026.10.10", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-10", "p": "柴海良", "cand": "候选人009", "pos": "检验员", "proj": "达尔", "a": "未到面", "ps": "未通过", "ob": "无", "iv": "2026.10.10", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-10", "p": "柴海良", "cand": "候选人010", "pos": "检验员", "proj": "达尔", "a": "未到面", "ps": "未通过", "ob": "无", "iv": "2026.10.10", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-10", "p": "冯佳豪", "cand": "候选人011", "pos": "封测工", "proj": "秋水", "a": "到面", "ps": "通过", "ob": "入职", "iv": "2026.10.10", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-10", "p": "吕宁", "cand": "候选人012", "pos": "封测工", "proj": "秋水", "a": "到面", "ps": "未通过", "ob": "无", "iv": "2026.10.12", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-10", "p": "戴刚烈", "cand": "候选人013", "pos": "封测工", "proj": "秋水", "a": "到面", "ps": "未通过", "ob": "无", "iv": "2026.10.12", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-10", "p": "戴刚烈", "cand": "候选人014", "pos": "封测工", "proj": "秋水", "a": "到面", "ps": "未通过", "ob": "无", "iv": "2026.10.12", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-10", "p": "李建江", "cand": "候选人015", "pos": "检验员", "proj": "达尔", "a": "到面", "ps": "通过", "ob": "试岗离职", "iv": "2026.10.10", "rv1": "试岗当天放弃", "rv3": "", "rv7": ""}, {"d": "2026-10-10", "p": "李建江", "cand": "候选人016", "pos": "检验员", "proj": "达尔", "a": "未到面", "ps": "待补", "ob": "无", "iv": "2026.10.12", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-12", "p": "李建江", "cand": "候选人017", "pos": "振测", "proj": "达尔", "a": "到面", "ps": "通过", "ob": "入职", "iv": "2026.10.12", "rv1": "适应", "rv3": "在职", "rv7": ""}, {"d": "2026-10-12", "p": "吕宁", "cand": "候选人018", "pos": "封测工", "proj": "秋水", "a": "到面", "ps": "通过", "ob": "无", "iv": "2026.10.12", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-12", "p": "吕宁", "cand": "候选人019", "pos": "封测工", "proj": "秋水", "a": "到面", "ps": "未通过", "ob": "无", "iv": "2026.10.12", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-12", "p": "李建江", "cand": "候选人020", "pos": "检验员", "proj": "福智芯", "a": "未到面", "ps": "待补", "ob": "无", "iv": "2026.10.13", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-12", "p": "李建江", "cand": "候选人021", "pos": "检验员", "proj": "福智芯", "a": "未到面", "ps": "待补", "ob": "无", "iv": "2026.10.13", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-12", "p": "柴海良", "cand": "候选人022", "pos": "振测", "proj": "达尔", "a": "到面", "ps": "未通过", "ob": "无", "iv": "2026.10.12", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-12", "p": "柴海良", "cand": "候选人023", "pos": "封测工", "proj": "秋水", "a": "到面", "ps": "待补", "ob": "无", "iv": "2026.10.12", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-12", "p": "吕宁", "cand": "候选人024", "pos": "封测工", "proj": "秋水", "a": "待补", "ps": "待补", "ob": "无", "iv": "2026.10.13", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-12", "p": "柴海良", "cand": "候选人025", "pos": "封测工", "proj": "秋水", "a": "到面", "ps": "待补", "ob": "无", "iv": "", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-12", "p": "柴海良", "cand": "候选人026", "pos": "封测工", "proj": "秋水", "a": "待补", "ps": "待补", "ob": "无", "iv": "", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-12", "p": "柴海良", "cand": "候选人027", "pos": "封测工", "proj": "秋水", "a": "待补", "ps": "待补", "ob": "无", "iv": "", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-12", "p": "吕宁", "cand": "候选人028", "pos": "封测工", "proj": "秋水", "a": "待补", "ps": "待补", "ob": "无", "iv": "2026.10.13", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-12", "p": "冯佳豪", "cand": "候选人029", "pos": "封测工", "proj": "秋水", "a": "到面", "ps": "通过", "ob": "入职", "iv": "2026.10.12", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-12", "p": "冯佳豪", "cand": "候选人030", "pos": "检验员", "proj": "达尔", "a": "到面", "ps": "通过", "ob": "入职", "iv": "2026.10.13", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-12", "p": "李建江", "cand": "候选人031", "pos": "仓管员", "proj": "达尔", "a": "未到面", "ps": "待补", "ob": "无", "iv": "2026.10.13", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-12", "p": "李建江", "cand": "候选人032", "pos": "振测", "proj": "达尔", "a": "待补", "ps": "待补", "ob": "无", "iv": "2026.10.14", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-13", "p": "李建江", "cand": "候选人033", "pos": "振测", "proj": "达尔", "a": "到面", "ps": "未通过", "ob": "无", "iv": "2026.10.14", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-13", "p": "冯佳豪", "cand": "候选人034", "pos": "振测", "proj": "达尔", "a": "未到面", "ps": "待补", "ob": "无", "iv": "2026.10.14", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-14", "p": "戴刚烈", "cand": "候选人035", "pos": "仓管员", "proj": "达尔", "a": "待补", "ps": "待补", "ob": "无", "iv": "2026.10.15", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-15", "p": "冯佳豪", "cand": "候选人036", "pos": "振测", "proj": "达尔", "a": "到面", "ps": "通过", "ob": "无", "iv": "2026.10.15", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-15", "p": "李建江", "cand": "候选人037", "pos": "振测", "proj": "达尔", "a": "到面", "ps": "未通过", "ob": "无", "iv": "2026.10.15", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-15", "p": "柴海良", "cand": "候选人038", "pos": "振测", "proj": "达尔", "a": "待补", "ps": "待补", "ob": "无", "iv": "", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-15", "p": "李建江", "cand": "候选人039", "pos": "振测", "proj": "达尔", "a": "待补", "ps": "待补", "ob": "无", "iv": "2026.10.16", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-16", "p": "吕宁", "cand": "候选人040", "pos": "仓管员", "proj": "达尔", "a": "到面", "ps": "通过", "ob": "无", "iv": "2026.10.16", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-18", "p": "李建江", "cand": "候选人041", "pos": "振测", "proj": "达尔", "a": "到面", "ps": "通过", "ob": "无", "iv": "2026.10.19", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-20", "p": "吕宁", "cand": "候选人042", "pos": "操作工", "proj": "博格华纳", "a": "到面", "ps": "通过", "ob": "入职", "iv": "2026.10.20", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-22", "p": "吕宁", "cand": "候选人043", "pos": "操作工", "proj": "博格华纳", "a": "未到面", "ps": "待补", "ob": "无", "iv": "2026.10.22", "rv1": "", "rv3": "", "rv7": ""}], "positions_stat": [{"name": "封测工", "邀约": 19, "到面": 15, "通过": 5, "入职": 3, "项目": ["秋水"]}, {"name": "检验员", "邀约": 8, "到面": 3, "通过": 2, "入职": 2, "项目": ["福智芯", "达尔"]}, {"name": "振测", "邀约": 10, "到面": 6, "通过": 3, "入职": 1, "项目": ["达尔"]}, {"name": "操作工", "邀约": 2, "到面": 1, "通过": 1, "入职": 1, "项目": ["博格华纳"]}, {"name": "巡检", "邀约": 1, "到面": 1, "通过": 1, "入职": 0, "项目": ["达尔"]}, {"name": "仓管员", "邀约": 3, "到面": 1, "通过": 1, "入职": 0, "项目": ["达尔"]}]};
+</script>
+<script data-page-node-id="mFk8Gvhn9WuWY5lVUZeQKU" data-pnid-children="NwTBqX04fPVaFgIkaCzcVs">
+(function(){
+  var D = window.__DATA__;
+  var PEOPLE = D.meta.people;
+  var daily = D.daily;
+  var RECS = D.invite_records;
+  var WEEK = ['周日','周一','周二','周三','周四','周五','周六'];
+
+  var ROWS = [
+    {k:'发布岗位数', grp:'res'},
+    {k:'BOSS帐号', grp:'res'},
+    {k:'我看过', grp:'reach'},
+    {k:'看过我', grp:'reach'},
+    {k:'我打招呼', grp:'reach'},
+    {k:'牛人新招呼', grp:'reach'},
+    {k:'我沟通', grp:'comm'},
+    {k:'企微添加数', grp:'comm'},
+    {k:'收到简历数', grp:'comm'},
+    {k:'发出邀约', grp:'iv'},
+    {k:'实际到面', grp:'iv'},
+    {k:'未到面', grp:'iv'},
+    {k:'待面试/待定', grp:'iv'},
+    {k:'面试通过', grp:'iv'},
+    {k:'核实入职', grp:'ob', label:'★ 核实入职'}
+  ];
+
+  var S = {mode:'day', day: D.meta.latest_report, from:null, to:null};
+
+  function $(id){return document.getElementById(id);}
+  function fmtD(iso){ return iso ? (parseInt(iso.slice(5,7))+'月'+parseInt(iso.slice(8,10))+'日') : '—'; }
+  function fmtDF(iso){ if(!iso) return '—'; var dt=new Date(iso+'T00:00:00'); return iso.slice(0,4)+'年'+fmtD(iso)+'（'+WEEK[dt.getDay()]+'）'; }
+  function pct(a,b){ return b>0 ? ((100.0*a/b).toFixed(1)+'%') : '—'; }
+  function num(v){ return v==null ? '—' : (v>=1000 ? v.toLocaleString('zh-CN') : String(v)); }
+
+  // ---------- 聚合 ----------
+  function curDays(){
+    if(S.mode==='day') return daily[S.day] ? [S.day] : [];
+    return Object.keys(daily).filter(function(d){return d>=S.from && d<=S.to;}).sort();
+  }
+  function metricRow(k){
+    if(S.mode==='day'){
+      var m = daily[S.day];
+      if(!m) return null;
+      return m.metrics[k];   // null 简历缺数原样返回
+    }
+    var ds = curDays();
+    if(!ds.length) return null;
+    if(k==='发布岗位数' || k==='BOSS帐号'){
+      for(var i=ds.length-1;i>=0;i--){ if(daily[ds[i]].has_report) return daily[ds[i]].metrics[k]; }
+      return [0,0,0,0,0];
+    }
+    if(k==='收到简历数'){
+      var vals=[0,0,0,0,0], any=false;
+      ds.forEach(function(d){ var v=daily[d].metrics['收到简历数']; if(v){any=true; v.forEach(function(x,i){vals[i]+=x;});} });
+      return any ? vals : null;
+    }
+    var vals=[0,0,0,0,0];
+    ds.forEach(function(d){ var v=daily[d].metrics[k]||[0,0,0,0,0]; v.forEach(function(x,i){vals[i]+=x;}); });
+    return vals;
+  }
+  function batchStats(){
+    var rs = S.mode==='day'
+      ? RECS.filter(function(r){return r.d===S.day;})
+      : RECS.filter(function(r){return r.d>=S.from && r.d<=S.to;});
+    var b = {n:rs.length, arr:0, noarr:0, apend:0, pass:0, nopass:0, ppend:0, onb:0, quit:0, noonb:0, obAll:0, rv1:0, rv1bad:0, rv3:0, rv7:0, rs:rs};
+    rs.forEach(function(r){
+      if(r.a==='到面') b.arr++; else if(r.a==='未到面') b.noarr++; else b.apend++;
+      if(r.a==='到面'){
+        if(r.ps==='通过') b.pass++; else if(r.ps==='未通过') b.nopass++; else b.ppend++;
+      }
+      if(r.ob==='入职') b.onb++;
+      else if(r.ob==='试岗离职') b.quit++;
+      if(r.ps==='通过' && r.ob==='无') b.noonb++;
+      if(r.ob!=='无'){
+        b.obAll++;
+        if(r.rv1){ b.rv1++; if(/放弃|离职/.test(r.rv1)) b.rv1bad++; }
+        if(r.rv3) b.rv3++;
+        if(r.rv7) b.rv7++;
+      }
+    });
+    return b;
+  }
+  function onbTotal(){ // 主表口径核实入职合计
+    var v = metricRow('核实入职');
+    if(!v) return 0;
+    return v.reduce(function(a,b){return a+b;},0);
+  }
+
+  // ---------- 渲染 ----------
+  function renderDateBar(){
+    var dp = $('daypick');
+    dp.min = D.meta.first_day; dp.max = D.meta.latest_report;
+    $('from-pick').min = D.meta.first_day; $('from-pick').max = D.meta.latest_report;
+    $('to-pick').min = D.meta.first_day; $('to-pick').max = D.meta.latest_report;
+    document.querySelectorAll('.chip.rng').forEach(function(c){c.classList.remove('on');});
+    if(S.mode==='day'){
+      dp.value = S.day; dp.classList.add('on'); dp.classList.remove('empty');
+    }else{
+      dp.value=''; dp.classList.remove('on'); dp.classList.add('empty');
+      var r = S.quick;
+      document.querySelectorAll('.chip.rng').forEach(function(c){
+        if(c.getAttribute('data-r')===r) c.classList.add('on');
+      });
+    }
+    var note=[];
+    if(S.mode==='range'){
+      note.push('区间汇总：'+fmtDF(S.from)+' — '+fmtDF(S.to)+'，实际覆盖数据 '+curDays().length+' 天。');
+    }else{
+      note.push('单日日报。点击「近7日 / 本月 / 全部 / 自选区间」切换为区间汇总；单日与区间互斥。');
+    }
+    var gapDays=[];
+    Object.keys(daily).sort().forEach(function(d){
+      if(daily[d].has_report && daily[d].covered < PEOPLE.length) gapDays.push(d);
+    });
+    var ds = S.mode==='day' ? [S.day] : curDays();
+    var gaps = gapDays.filter(function(d){return ds.indexOf(d)>=0;});
+    if(gaps.length){
+      note.push('<b>覆盖提示：'+gaps.map(function(d){return fmtD(d)+' 仅 '+daily[d].covered+'/'+PEOPLE.length+' 人';}).join('；')+'（BOSS 来源未全量回传，量的对比需谨慎）</b>');
+    }
+    $('date-note').innerHTML = note.join('<br>');
+  }
+
+  function renderMain(){
+    var thead = '<th>漏斗指标</th><th class="sumc">合计</th>' + PEOPLE.map(function(p){return '<th>'+p.slice(0,3)+'</th>';}).join('');
+    $('thead-row').innerHTML = thead;
+
+    var hasReport = S.mode==='day' ? (daily[S.day] && daily[S.day].has_report) : curDays().length>0;
+    var noRep = $('no-report');
+    if(S.mode==='day' && !daily[S.day]){
+      noRep.hidden = false;
+      noRep.textContent = fmtDF(S.day)+'：该日暂无日报（BOSS 数据未回传或当日未发布），日期已保留，缺失不显示为 0。';
+      $('tbl-wrap').style.display='none';
+      $('rep-title').textContent = fmtDF(S.day)+' ｜ 招聘日报';
+      $('rep-tag').textContent='无数据';
+      $('pos-line').innerHTML='';
+      $('rep-notes').innerHTML='';
+      return;
+    }
+    if(S.mode==='day' && !hasReport){
+      noRep.hidden = false;
+      noRep.textContent = '该日 BOSS 来源无日报记录（当日可能未发布岗位或数据未回传），下方数字为其他源表当日记录。';
+    }else{
+      noRep.hidden = true;
+    }
+    $('tbl-wrap').style.display='';
+
+    var html='';
+    ROWS.forEach(function(row){
+      var vals = metricRow(row.k);
+      var cells = '';
+      if(vals==null){
+        cells = '<td class="sumc">—</td>' + PEOPLE.map(function(){return '<td class="dash">—</td>';}).join('');
+      }else{
+        var sum = vals.reduce(function(a,b){return a+b;},0);
+        cells = '<td class="sumc">'+num(sum)+'</td>' + vals.map(function(v){
+          return '<td class="'+(v===0?'zero':'')+'">'+num(v)+'</td>';
+        }).join('');
+      }
+      html += '<tr class="'+row.grp+'"><td>'+(row.label||row.k)+'</td>'+cells+'</tr>';
+    });
+    $('tbody').innerHTML = html;
+
+    // 标题
+    if(S.mode==='day'){
+      $('rep-title').textContent = fmtDF(S.day)+' ｜ 招聘日报';
+      $('rep-tag').textContent = daily[S.day]&&daily[S.day].has_report ? '日报' : '无日报';
+      var plist = daily[S.day] && daily[S.day].positions.length
+        ? '当日发布岗位：<b>'+daily[S.day].positions.join('、')+'</b>' : '';
+      $('pos-line').innerHTML = plist;
+    }else{
+      $('rep-title').textContent = fmtD(S.from)+' — '+fmtD(S.to)+' ｜ 区间汇总';
+      $('rep-tag').textContent='区间';
+      $('pos-line').innerHTML='';
+    }
+
+    // 表旁说明
+    var notes=[];
+    if(S.mode==='range'){
+      var lastRep=null;
+      curDays().forEach(function(d){ if(daily[d].has_report) lastRep=d; });
+      notes.push('发布岗位数、BOSS帐号取区间内最新日报（'+fmtD(lastRep||S.to)+'）的表值，不跨日累加。');
+      if(D.meta.rcv_start > S.from){
+        notes.push('收到简历自 '+fmtD(D.meta.rcv_start)+' 起统计（邮箱实收），此前缺数计「—」。');
+      }
+    }
+    notes.push('邀约、到面、通过按登记批次的当前状态统计；★ 核实入职按入职日期归日；「待面试/待定」含到面状态未填的记录。');
+    notes.push('「我打招呼」为平台日上限 100，不作为努力程度排名依据；0 与缺数「—」含义不同。');
+    $('rep-notes').innerHTML = notes.map(function(n){return '<li>'+n+'</li>';}).join('');
+  }
+
+  function renderHourglass(){
+    function tot(k){ var v = metricRow(k); return v ? v.reduce(function(a,b){return a+b;},0) : 0; }
+    var reach = tot('我看过') + tot('看过我');
+    var comm = tot('我沟通');
+    var resume = tot('收获简历');
+    var wec = tot('企微添加数');
+    var b = batchStats();
+    var onb = b.onb;
+
+    var html = '';
+    // 上半场 · 收敛（7 层；跨源也作转化率，仅作量级参考）
+    var up = [
+      {name:'触达曝光', v:reach, w:100, bg:'#dbe9f8', fg:'#0c447c', rate:null, side:'我看过 + 看过我'},
+      {name:'互动沟通', v:comm, w:86, bg:'#c5dcf2', fg:'#0c447c', rate:pct(comm,reach), side:'我沟通'},
+      {name:'收获简历', v:resume, w:72, bg:'#a9cceb', fg:'#0c447c', rate:pct(resume,comm), side:'BOSS 后台收获简历'},
+      {name:'企微添加数', v:wec, w:60, bg:'#93bde4', fg:'#ffffff', rate:pct(wec,resume), side:'企微添加'},
+      {name:'发出邀约', v:b.n, w:48, bg:'#85b7e3', fg:'#ffffff', rate:pct(b.n,wec), side:'登记批次'},
+      {name:'实际到面', v:b.arr, w:36, bg:'#5d9fd6', fg:'#ffffff', rate:pct(b.arr,b.n), side:'未到面 <b>'+b.noarr+'</b> · 到面待补 <b>'+b.apend+'</b>'},
+      {name:'面试通过', v:b.pass, w:26, bg:'#3a84c4', fg:'#ffffff', rate:pct(b.pass,b.arr), side:'未通过 <b>'+b.nopass+'</b> · 结果待补 <b>'+b.ppend+'</b>'}
+    ];
+    up.forEach(function(L){
+      var rate = L.rate===null ? '' : '<span class="bp">'+L.rate+'</span>';
+      html += '<div class="hg-layer"><div class="hg-bar" style="width:'+L.w+'%;background:'+L.bg+';color:'+L.fg+'">'+
+        '<span class="bn">'+L.name+' '+num(L.v)+'</span>'+rate+'</div>'+
+        '<div class="hg-side">'+L.side+'</div></div>';
+    });
+
+    // 窄腰
+    html += '<div class="hg-layer hg-waist"><div class="hg-bar" style="width:14%">'+
+      '<span class="bn">★入职 '+num(onb)+'</span><span class="bp">'+pct(onb,b.pass)+'</span></div>'+
+      '<div class="hg-side">入职表「网招-入职时间」· 试岗离职 <b>'+b.quit+'</b> 不计</div></div>';
+
+    // 下半场 · 发散（同批入职者回访追踪 + 待建层）
+    html += '<div class="hg-gap"><div class="line"></div><div class="gt">入职后留存跟踪 · 回访覆盖同批入职者</div></div>';
+    var obAll = b.obAll;
+    function rvSide(v, bad){
+      var s = '已回访 <b>'+v+'</b>/入职 '+obAll;
+      if(bad) s += ' · 异常 <b>'+b.rv1bad+'</b>（试岗放弃）';
+      if(obAll-v>0) s += ' · 待补 <b>'+(obAll-v)+'</b>';
+      if(obAll===0) s = '所选范围内暂无入职';
+      return s;
+    }
+    var down = [
+      {name:'入职1天回访', v:b.rv1, w:26, bg:'#d6f1e3', fg:'#0a5c44', side:rvSide(b.rv1, true)},
+      {name:'3天回访', v:b.rv3, w:38, bg:'#bfe8d4', fg:'#0a5c44', side:rvSide(b.rv3)},
+      {name:'7天回访', v:b.rv7, w:52, bg:'#a9dfc4', fg:'#0a5c44', side:rvSide(b.rv7)},
+      {name:'入职30天', shell:true, w:68, field:'邀约表新增「入职30天」'},
+      {name:'老带新', shell:true, w:84, field:'邀约表新增「老带新」'}
+    ];
+    down.forEach(function(L){
+      if(L.shell){
+        html += '<div class="hg-layer hg-shell"><div class="hg-bar" style="width:'+L.w+'%">'+
+          '<span class="bn">'+L.name+'</span><span class="bp">待建</span></div>'+
+          '<div class="hg-side">待建字段：'+L.field+'</div></div>';
+      }else{
+        html += '<div class="hg-layer"><div class="hg-bar" style="width:'+L.w+'%;background:'+L.bg+';color:'+L.fg+'">'+
+          '<span class="bn">'+L.name+' '+num(L.v)+'</span></div>'+
+          '<div class="hg-side">'+L.side+'</div></div>';
+      }
+    });
+
+    $('hourglass').innerHTML = html;
+
+    var fb = b.pass + b.nopass;
+    var onbByDate = onbTotal();
+    $('hg-note').innerHTML =
+      '<b>口径</b>：触达→收获简历→企微→邀约各层来自不同来源（BOSS 后台 / 企微 / 邀约登记），非同批候选人，各层转化率仅作量级参考；邀约→到面→通过→核实入职为同一批登记人选的真实追踪，转化率可比。'+
+      '已反馈面试通过率 '+pct(b.pass, fb)+'（'+b.pass+'/'+fb+'，未反馈不计分母）。'+
+      (S.mode==='day'
+        ? '当日按入职日期归日 '+onbByDate+' 人；当日登记批次截至本次更新已入职 '+onb+' 人（两者日期含义不同）。'
+        : '区间内按入职日期归日 '+onbByDate+' 人；区间内登记批次已入职 '+onb+' 人（后续入职可发生在区间结束之后）。')+
+      '<br><b>下半场</b>：1天/3天/7天回访统计同批入职者（含试岗离职）的回访覆盖，未回访计「待补」；入职30天、老带新字段尚未建立，显示「待建」。';
+  }
+
+  function itemHtml(r, tag, hot){
+    return '<div class="it"><span class="nm">'+r.cand+'</span>'+
+      '<span class="meta">'+r.p+' · '+r.pos+(r.proj?' · '+r.proj:'')+' · 登记 '+fmtD(r.d)+'</span>'+
+      '<span class="tag'+(hot?' hot':'')+'">'+tag+'</span></div>';
+  }
+  function listHtml(rs, empty){
+    if(!rs.length) return '<div class="s-empty">'+(empty||'无')+'</div>';
+    return '<div class="s-list">'+rs+'</div>';
+  }
+  function renderStages(){
+    var b = batchStats();
+    var rs = b.rs;
+    var fb1 = rs.filter(function(r){return r.a==='待补';}).map(function(r){return itemHtml(r,'到面待补',true);}).join('');
+    var fb2 = rs.filter(function(r){return r.a==='到面' && r.ps==='待补';}).map(function(r){return itemHtml(r,'结果待补',true);}).join('');
+    var noarr = rs.filter(function(r){return r.a==='未到面';}).map(function(r){return itemHtml(r,'未到面');}).join('');
+    var nopass = rs.filter(function(r){return r.a==='到面' && r.ps==='未通过';}).map(function(r){return itemHtml(r,'未通过');}).join('');
+    var noonb = rs.filter(function(r){return r.ps==='通过' && r.ob==='无';}).map(function(r){return itemHtml(r,'暂无入职记录');}).join('')
+      + rs.filter(function(r){return r.ob==='试岗离职';}).map(function(r){return itemHtml(r,'试岗当天离职');}).join('');
+
+    // 前端触达覆盖
+    var ds = S.mode==='day' ? [S.day] : curDays();
+    var gaps = [];
+    ds.forEach(function(d){ if(daily[d] && daily[d].has_report && daily[d].covered<PEOPLE.length) gaps.push(d); });
+    var covers = gaps.map(function(d){
+      return '<div class="it"><span class="nm">'+fmtD(d)+'</span><span class="meta">BOSS 来源仅覆盖 '+daily[d].covered+'/'+PEOPLE.length+' 人</span><span class="tag hot">覆盖缺口</span></div>';
+    }).join('');
+    if(D.meta.rcv_start > (S.mode==='day'?S.day:S.from)){
+      covers += '<div class="it"><span class="nm">简历统计</span><span class="meta">自 '+fmtD(D.meta.rcv_start)+' 起统计，此前缺数不计</span><span class="tag">覆盖说明</span></div>';
+    }
+
+    var cards = [
+      {badge:'warn', name:'过程反馈', count:(b.apend+b.ppend), desc:'到面状态待补 '+b.apend+' · 面试结果待补 '+b.ppend,
+       tip:'先核实状态，让后续判断建立在完整反馈上。以下为待补清单：',
+       body: listHtml(fb1+fb2, '所选范围内无待补记录')},
+      {badge:'info', name:'邀约 → 到面', count:b.noarr, desc:'记录未到面 '+b.noarr+' 人 · 看人员/项目分布',
+       tip:'核对邀约确认过程与未到面原因（以下为登记批次中记录为「未到面」的人）：',
+       body: listHtml(noarr)},
+      {badge:'info', name:'到面 → 通过', count:b.nopass, desc:'明确未通过 '+b.nopass+' 人 · 按岗位看集中度',
+       tip:'核对未通过是否集中于某些岗位，以及筛选条件与面试要求是否一致（以下为「已到面、未通过」的人）：',
+       body: listHtml(nopass)},
+      {badge:'ok', name:'通过 → 入职', count:(b.noonb+b.quit), desc:'暂无入职记录 '+b.noonb+' · 试岗当天离职 '+b.quit,
+       tip:'核实通过后的实际状态，了解入职衔接与试岗退出原因。「暂无入职记录」为截至本次更新尚无上报，不等于已流失：',
+       body: listHtml(noonb)},
+      {badge:'gray', name:'前端触达与线索', count:gaps.length, desc:'来源覆盖缺口 '+gaps.length+' 天',
+       tip:'先核实来源覆盖，再观察触达、沟通与资料沉淀的变化；覆盖不完整时，量与量的对比需谨慎：',
+       body: listHtml(covers, '所选范围内来源覆盖完整')}
+    ];
+    $('stages').innerHTML = cards.map(function(c){
+      return '<details class="stage"><summary>'+
+        '<span class="s-badge '+c.badge+'">'+c.name+' · '+c.count+'</span>'+
+        '<span class="s-desc">'+c.desc+'</span><span class="s-act">展开 ▾</span></summary>'+
+        '<div class="stage-body"><div class="tip">'+c.tip+'</div>'+c.body+'</div></details>';
+    }).join('');
+    document.querySelectorAll('details.stage').forEach(function(dt){
+      dt.addEventListener('toggle', function(){
+        dt.querySelector('.s-act').textContent = dt.open ? '收起 ▴' : '展开 ▾';
+      });
+    });
+  }
+
+  // ---------- 图表 ----------
+  var trendChart, posChart;
+  function allDays(){
+    return Object.keys(daily).sort();
+  }
+  function renderCharts(){
+    var days = allDays();
+    var labels = days.map(function(d){return d.slice(5).replace('-','/');});
+    function series(k){
+      return days.map(function(d){ var v=daily[d].metrics[k]; return v?v.reduce(function(a,b){return a+b;},0):0; });
+    }
+    var hlSet = {};
+    if(S.mode==='day'){ hlSet[days.indexOf(S.day)] = true; }
+    else{
+      var i0=days.indexOf(S.from), i1=days.indexOf(S.to);
+      if(i0<0) i0=0; if(i1<0) i1=days.length-1;
+      for(var i=i0;i<=i1;i++) hlSet[i]=true;
+    }
+    trendChart = trendChart || echarts.init($('trend'));
+    trendChart.setOption({
+      grid:{left:36,right:12,top:30,bottom:26},
+      tooltip:{trigger:'axis'},
+      legend:{data:['到面','通过','核实入职'],top:0,itemWidth:14,itemHeight:8,textStyle:{fontSize:11,color:'#5f6672'}},
+      xAxis:{type:'category',data:labels,axisLine:{lineStyle:{color:'#d8dbe0'}},
+        axisLabel:{fontSize:11,interval:0,
+          formatter:function(v,i){ return hlSet[i] ? '{hl|'+v+'}' : v; },
+          rich:{hl:{color:'#185fa5',fontWeight:'bold',fontSize:11}}},
+        axisTick:{show:false}},
+      yAxis:{type:'value',minInterval:1,splitLine:{lineStyle:{color:'#eef0f3'}},axisLabel:{fontSize:11,color:'#9aa0a8'}},
+      series:[
+        {name:'到面',type:'line',data:series('实际到面'),smooth:true,symbol:'circle',symbolSize:5,lineStyle:{width:2,color:'#378add'},itemStyle:{color:'#378add'}},
+        {name:'通过',type:'line',data:series('面试通过'),smooth:true,symbol:'circle',symbolSize:5,lineStyle:{width:2,color:'#1d9e75'},itemStyle:{color:'#1d9e75'}},
+        {name:'核实入职',type:'line',data:series('核实入职'),smooth:true,symbol:'circle',symbolSize:5,lineStyle:{width:2,color:'#d85a30'},itemStyle:{color:'#d85a30'}}
+      ]
+    }, true);
+
+    var pos = D.positions_stat;
+    posChart = posChart || echarts.init($('pos'));
+    posChart.setOption({
+      grid:{left:76,right:30,top:26,bottom:16},
+      tooltip:{trigger:'axis',axisPointer:{type:'shadow'}},
+      legend:{data:['邀约','到面','通过','入职'],top:0,itemWidth:14,itemHeight:8,textStyle:{fontSize:11,color:'#5f6672'}},
+      xAxis:{type:'value',minInterval:1,splitLine:{lineStyle:{color:'#eef0f3'}},axisLabel:{fontSize:11,color:'#9aa0a8'}},
+      yAxis:{type:'category',data:pos.map(function(p){return p.name;}).reverse(),axisLine:{lineStyle:{color:'#d8dbe0'}},axisLabel:{fontSize:11,color:'#333'},axisTick:{show:false}},
+      series:[
+        {name:'邀约',type:'bar',data:pos.map(function(p){return p['邀约'];}).reverse(),barWidth:9,itemStyle:{color:'#b5d4f4',borderRadius:[0,3,3,0]}},
+        {name:'到面',type:'bar',data:pos.map(function(p){return p['到面'];}).reverse(),barWidth:9,itemStyle:{color:'#85b7eb',borderRadius:[0,3,3,0]}},
+        {name:'通过',type:'bar',data:pos.map(function(p){return p['通过'];}).reverse(),barWidth:9,itemStyle:{color:'#5dcaa5',borderRadius:[0,3,3,3]}},
+        {name:'入职',type:'bar',data:pos.map(function(p){return p['入职'];}).reverse(),barWidth:9,itemStyle:{color:'#1d9e75',borderRadius:[0,3,3,0]}}
+      ]
+    }, true);
+  }
+
+  // ---------- 口径与健康度 ----------
+  function renderNotes(){
+    $('notes').innerHTML = [
+      '流量数＝「我看过」+「看过我」；单日为当日值，区间为各日合计。',
+      '发布岗位数：按每人当日 BOSS 后台数据行计；区间视图取最新日报值，不跨日累加。',
+      'BOSS 帐号：每人固定 2 个；吕宁平时 1 个，当日招聘秋水（封测）时为 2 个。',
+      '收到简历数：以邮箱实收记录为准（重复投递已合并计数），'+fmtD(D.meta.rcv_start)+' 起统计，此前标「—」，缺数与 0 含义不同。',
+      '企微添加数：按添加时间归日。',
+      '「我打招呼」为平台日上限 100，不作为努力程度排名依据。',
+      '邀约、到面、通过按「✳️1邀约信息跟进表」登记批次的当前状态统计；★ 核实入职以「✳️2入职信息提交表」为准，按入职时间归日，试岗当天离职者不计。',
+      '批次漏斗追踪所选日期「登记的人」在后续日期的推进；历史状态以本次源表为准，不承诺重现当时时点。',
+      '「暂无入职记录」＝通过但入职表尚无上报，不等于已流失；「待面试/待定」含到面状态未填的记录。',
+      '数据来源：《创新招聘组数据》的 BOSS数据 / 收到简历 / 企微添加 / 邀约跟进表 / 入职提交表。'
+    ].map(function(n){return '<li>'+n+'</li>';}).join('');
+
+    var h = D.meta.health;
+    var hmap = [['BOSS数据',h.boss],['收到简历',h.resume],['企微添加',h.wecom],['邀约跟进',h.invite],['入职提交',h.onboard]];
+    $('health').innerHTML = hmap.map(function(x){
+      var stale = x[1]!=='—' && x[1] < D.meta.latest_report;
+      return '<span class="h-item'+(stale?' stale':'')+'">'+x[0]+' <b>'+x[1]+'</b></span>';
+    }).join('');
+  }
+
+  // ---------- 事件 ----------
+  function checkScrollHint(){
+    var wrap = $('tbl-wrap'), hint = $('tbl-hint');
+    if(wrap.style.display==='none'){ hint.hidden = true; return; }
+    hint.hidden = !(wrap.scrollWidth > wrap.clientWidth + 1);
+  }
+  function render(){
+    renderDateBar(); renderMain(); checkScrollHint(); renderHourglass(); renderStages(); renderCharts();
+  }
+  $('daypick').addEventListener('change', function(){
+    if(!this.value) return;
+    S.mode='day'; S.day=this.value; S.quick=null;
+    render();
+  });
+  document.querySelectorAll('.chip.rng').forEach(function(c){
+    c.addEventListener('click', function(){
+      var r = c.getAttribute('data-r');
+      if(r==='custom'){
+        var row=$('custom-row');
+        row.hidden = !row.hidden;
+        if(!row.hidden){
+          $('from-pick').value = S.mode==='range'?S.from:D.meta.first_day;
+          $('to-pick').value = S.mode==='range'?S.to:D.meta.latest_report;
+        }
+        return;
+      }
+      var to = D.meta.latest_report;
+      var from = to;
+      if(r==='7d'){
+        var d = new Date(to+'T00:00:00'); d.setDate(d.getDate()-6);
+        from = d.toISOString().slice(0,10);
+      }else if(r==='month'){
+        from = to.slice(0,8)+'01';
+      }else{
+        from = D.meta.first_day; to = D.meta.range.to;  // 全部：截止数据实际末日（含日报外数据日）
+      }
+      S.mode='range'; S.from=from; S.to=to; S.quick=r;
+      render();
+    });
+  });
+  $('btn-apply').addEventListener('click', function(){
+    var f=$('from-pick').value, t=$('to-pick').value;
+    if(!f || !t || f>t){ alert('请选择有效的起止日期（开始 ≤ 结束）'); return; }
+    S.mode='range'; S.from=f; S.to=t; S.quick='custom';
+    $('custom-row').hidden = true;
+    render();
+  });
+
+  // ---------- 初始化 ----------
+  $('hdr-to').textContent = D.meta.latest_report;
+  $('hdr-gen').textContent = D.meta.generated_at;
+  renderNotes();
+  render();
+  window.addEventListener('resize', function(){
+    if(trendChart) trendChart.resize();
+    if(posChart) posChart.resize();
+    checkScrollHint();
+  });
+})();
+</script>
+</body>
+</html>

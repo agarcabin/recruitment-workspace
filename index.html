@@ -28,21 +28,22 @@
   </div></header>
   <main>
     <div class="heading"><div><p class="eyebrow">RECRUITMENT WORKSPACE</p><h1 id="page-title">招聘过程看板</h1><p id="page-description">在统一工作台中查看招聘全过程。</p></div>
-      <div class="actions" id="dashboard-actions"><button class="action" id="reload" type="button">重新加载</button><a class="action" id="open-source" target="_blank" rel="noopener noreferrer">在新窗口打开 ↗</a></div>
+      <div class="actions" id="dashboard-actions"><a class="action" href="./embed-tests.html">方案对照测试</a><button class="action" id="reload" type="button">重新加载</button><a class="action" id="open-source" target="_blank" rel="noopener noreferrer">查看原始页面 ↗</a></div>
     </div>
     <section class="viewer" aria-labelledby="page-title">
       <div id="dashboard">
-        <div class="test-result"><strong>嵌入验证：</strong>下方直接加载 WorkBuddy 分享链接。若显示“拒绝连接”，可点击右上角“在新窗口打开”对照检查原页面。</div>
-        <div class="viewer-bar"><span class="dot" aria-hidden="true"></span><span id="load-status" role="status">正在请求 WorkBuddy 页面…</span><a class="source" id="source-link" target="_blank" rel="noopener noreferrer">来源：WorkBuddy ↗</a></div>
+        <div class="test-result"><strong>独立部署副本：</strong>数据截至 2026-10-23，生成于 2026-10-24 16:55。候选人姓名已匿名化；此副本不会自动跟随 WorkBuddy 更新。</div>
+        <div class="viewer-bar"><span class="dot" aria-hidden="true"></span><span id="load-status" role="status">正在加载看板副本…</span><a class="source" id="source-link" target="_blank" rel="noopener noreferrer">来源：WorkBuddy ↗</a></div>
         <div class="frame-wrap"><iframe id="workbuddy-frame" title="WorkBuddy 招聘过程看板" allow="fullscreen" allowfullscreen></iframe></div>
       </div>
       <div id="placeholder" hidden><div class="number" id="placeholder-number" aria-hidden="true">02</div><h2 id="placeholder-title">AI 任务进度</h2><p>此位置已预留，等待接入你生成的页面。</p><p>后续可以配置独立页面链接。</p></div>
     </section>
-    <p class="note" id="embed-note"><strong>嵌入测试：</strong>请以实际显示和操作为准。若内容空白、提示拒绝连接或要求登录，可使用“在新窗口打开”检查原页面。</p>
+    <p class="note" id="embed-note"><strong>页面说明：</strong>当前加载同站部署的看板副本。原始链接等其他加载方式可在“方案对照测试”中检查。</p>
   </main>
   <script>
     // 后续按钮 2、3 可在这里接入独立页面；目前保持占位。
     const WORKBUDDY_URL = 'https://workbuddy.link/p/TLnwVZuv6cHmuRsWtXp5eK?ext2=copy_link';
+    const DASHBOARD_URL = './embeds/dashboard.html';
     const pages = {
       dashboard: {title: '招聘过程看板', description: '在统一工作台中查看招聘全过程。'},
       tasks: {title: 'AI 任务进度', description: '独立页面接入位，由你自行生成和维护。', number: '02'},
@@ -53,15 +54,17 @@
     let timeout;
     function loadDashboard() {
       clearTimeout(timeout);
-      status.textContent = '正在请求 WorkBuddy 页面…';
-      frame.src = WORKBUDDY_URL;
+      status.textContent = '正在加载看板副本…';
+      frame.src = DASHBOARD_URL;
       timeout = setTimeout(() => {status.textContent = '加载时间较长，请检查下方内容或在新窗口打开。';}, 18000);
     }
     frame.addEventListener('load', () => {
       if (!frame.getAttribute('src')) return;
       clearTimeout(timeout);
-      // 跨域页面无法读取其内部状态，load 事件不能作为嵌入成功的判断。
-      status.textContent = '已收到页面加载事件 · 请确认下方内容是否正常显示';
+      // 同站副本可检查实际内容，避免把错误文档的 load 事件当作成功。
+      const content = frame.contentDocument;
+      const hasDashboard = content && content.querySelector('#daypick') && content.querySelector('#hourglass');
+      status.textContent = hasDashboard ? '看板副本已显示 · 可操作日期筛选' : '已收到加载事件 · 请确认内容是否正常';
     });
     frame.addEventListener('error', () => {clearTimeout(timeout);status.textContent = '页面加载失败，请在新窗口打开检查。';});
     function showPage(key) {

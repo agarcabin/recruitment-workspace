@@ -1,0 +1,13 @@
+{
+  "source_url": "https://workbuddy-space-static.codebuddy.work/page/TLnwVZuv6cHmuRsWtXp5eK/5fVfS7kWFdKl/index.html",
+  "snapshot_generated_at": "2026-10-24 16:55",
+  "latest_report": "2026-10-23",
+  "candidate_names_anonymized": 43,
+  "chart_version": "5.5.0",
+  "chart_sha256": "42f8329d989b6f6539dd2b15bbdf0d82025762ac112fbb60dc57b27d7bcf3946",
+  "changes": [
+    "anonymize candidate names",
+    "remove platform editor loader",
+    "host chart dependency locally"
+  ]
+}
