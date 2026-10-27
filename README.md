@@ -1,6 +1,6 @@
 # 招聘综合工作台
 
-在线地址：https://agarcabin.github.io/recruitment-workspace/
+在线地址：https://kanban.agar-cabin.site/
 
 顶部包含三个入口：招聘过程看板、AI 开发进度、岗位信息收集。
 
@@ -16,7 +16,7 @@
 
 ## 嵌入方案对照
 
-打开 [方案对照测试页](https://agarcabin.github.io/recruitment-workspace/embed-tests.html) 可以切换以下五种加载方式。本地浏览器实测结果（2026-10-27）：
+打开 [方案对照测试页](https://kanban.agar-cabin.site/embed-tests.html) 可以切换以下五种加载方式。本地浏览器实测结果（2026-10-27）：
 
 | 方式 | 结果 |
 | --- | --- |
@@ -53,3 +53,5 @@
 运行 `node server.cjs`，打开 http://127.0.0.1:4173 。对照页为 http://127.0.0.1:4173/embed-tests.html 。使用完毕按 Ctrl+C 关闭。
 
 GitHub Pages 从 `codex/github-pages` 分支根目录发布，无需构建。
+
+自定义域名为 `kanban.agar-cabin.site`，由根目录 CNAME 文件和 GitHub Pages 设置维护。
