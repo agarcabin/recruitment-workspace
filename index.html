@@ -16,7 +16,6 @@
     nav{display:flex;gap:8px;flex-wrap:wrap}nav button{border:0;background:transparent;color:var(--muted);border-radius:8px;padding:11px 19px;min-height:44px;font-weight:600}nav button:hover{background:var(--bg)}nav button[aria-pressed="true"]{background:var(--tint);color:var(--blue)}.prototype{margin-left:auto;font-size:12px;border:1px solid var(--line);padding:3px 10px;border-radius:20px;color:var(--muted)}
     main{max-width:1864px;margin:0 auto;padding:24px 32px}.heading{display:flex;align-items:center;justify-content:space-between;gap:18px;margin-bottom:18px}.eyebrow{font-size:12px;letter-spacing:2px;color:var(--muted);margin:0 0 4px}h1{font-size:24px;line-height:1.4;margin:0 0 4px}p{margin:0;color:var(--muted)}.actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap}.action{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:9px 15px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--text);text-decoration:none;white-space:nowrap}.action:hover{border-color:var(--blue);color:var(--blue)}
     .viewer{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--surface)}.viewer-bar{padding:11px 18px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:12px;flex-wrap:wrap;color:var(--muted);font-size:13px}.dot{width:8px;height:8px;flex-shrink:0;border-radius:50%;background:var(--blue)}.source{margin-left:auto;color:var(--muted);text-decoration:none}.source:hover{text-decoration:underline}.frame-wrap{height:calc(100dvh - 310px);min-height:480px;position:relative}iframe{width:100%;height:100%;border:0;display:block;background:white}#placeholder{min-height:480px;display:grid;place-content:center;padding:32px;text-align:center}#placeholder[hidden],#dashboard[hidden]{display:none}#placeholder .number{width:64px;height:64px;display:grid;place-items:center;margin:0 auto 18px;border-radius:16px;color:var(--blue);background:var(--tint);font-size:24px;font-weight:700}h2{font-size:22px;margin:0 0 10px}.note{margin-top:14px;font-size:13px;color:var(--muted)}.note strong{font-weight:600;color:var(--text)}
-    .test-result{padding:12px 18px;background:#fff7e7;color:#795014;border-bottom:1px solid #eed8aa;font-size:14px}.test-result strong{font-weight:700}
     @media(max-width:700px){header{padding:16px}.top{gap:14px;min-height:auto}.prototype{margin-left:auto}nav{order:3;width:100%;gap:4px}nav button{padding:10px 12px;flex:1;font-size:14px}main{padding:20px 12px}.heading{align-items:flex-start;flex-direction:column}h1{font-size:22px}.frame-wrap{height:70dvh;min-height:420px}.source{margin-left:20px}.viewer-bar{gap:8px;padding:12px}}
   </style>
 </head>
@@ -36,8 +35,7 @@
     </div>
     <section class="viewer" id="main-viewer" aria-labelledby="page-title">
       <div id="dashboard">
-        <div class="test-result"><strong>独立部署副本：</strong>数据截至 2026-10-23，生成于 2026-10-24 16:55。候选人姓名已匿名化；此副本不会自动跟随 WorkBuddy 更新。</div>
-        <div class="viewer-bar"><span class="dot" aria-hidden="true"></span><span id="load-status" role="status">正在加载看板副本…</span><a class="source" id="source-link" target="_blank" rel="noopener noreferrer">来源：WorkBuddy ↗</a></div>
+        <div class="viewer-bar"><span class="dot" aria-hidden="true"></span><span id="load-status" role="status">快照日期：读取中…</span><a class="source" id="source-link" target="_blank" rel="noopener noreferrer">来源：WorkBuddy ↗</a></div>
         <div class="frame-wrap"><iframe id="workbuddy-frame" title="WorkBuddy 招聘过程看板" allow="fullscreen" allowfullscreen></iframe></div>
       </div>
     </section>
@@ -61,9 +59,9 @@
     let timeout;
     function loadDashboard() {
       clearTimeout(timeout);
-      status.textContent = '正在加载看板副本…';
+      status.textContent = '快照日期：读取中…';
       frame.src = DASHBOARD_URL;
-      timeout = setTimeout(() => {status.textContent = '加载时间较长，请检查下方内容或在新窗口打开。';}, 18000);
+      timeout = setTimeout(() => {status.textContent = '快照日期：读取超时，请重新加载。';}, 18000);
     }
     frame.addEventListener('load', () => {
       if (!frame.getAttribute('src')) return;
@@ -71,9 +69,10 @@
       // 同站副本可检查实际内容，避免把错误文档的 load 事件当作成功。
       const content = frame.contentDocument;
       const hasDashboard = content && content.querySelector('#daypick') && content.querySelector('#hourglass');
-      status.textContent = hasDashboard ? '看板副本已显示 · 可操作日期筛选' : '已收到加载事件 · 请确认内容是否正常';
+      const snapshotDate = content?.defaultView?.__DATA__?.meta?.generated_at;
+      status.textContent = hasDashboard && snapshotDate ? `快照日期：${snapshotDate}` : '快照日期：暂不可用，请检查内容。';
     });
-    frame.addEventListener('error', () => {clearTimeout(timeout);status.textContent = '页面加载失败，请在新窗口打开检查。';});
+    frame.addEventListener('error', () => {clearTimeout(timeout);status.textContent = '快照日期：加载失败，请重新加载。';});
     function showPage(key) {
       const page = pages[key] || pages.dashboard;
       const isDashboard = page === pages.dashboard;
