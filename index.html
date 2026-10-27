@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>创新招聘组 · 综合工作台</title>
+  <style>
+    :root{--bg:#f4f6f9;--surface:#fff;--text:#172b43;--muted:#53647a;--line:#dfe5ed;--blue:#1762aa;--tint:#eaf3ff;--green:#087957}
+    *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:15px/1.6 system-ui,-apple-system,"Segoe UI","Microsoft YaHei",sans-serif}
+    button,a{font:inherit}button{cursor:pointer}button:focus-visible,a:focus-visible{outline:3px solid var(--blue);outline-offset:4px}button,a{touch-action:manipulation}
+    header{background:var(--surface);border-bottom:1px solid var(--line);padding:0 32px}.top{max-width:1800px;margin:auto;display:flex;align-items:center;gap:32px;min-height:80px;flex-wrap:wrap}.brand{font-size:18px;font-weight:750;white-space:nowrap}.brand span{display:inline-grid;place-items:center;width:32px;height:32px;margin-right:10px;background:var(--blue);color:white;border-radius:8px;font-size:16px}
+    nav{display:flex;gap:8px;flex-wrap:wrap}nav button{border:0;background:transparent;color:var(--muted);border-radius:8px;padding:11px 19px;min-height:44px;font-weight:600}nav button:hover{background:var(--bg)}nav button[aria-pressed="true"]{background:var(--tint);color:var(--blue)}.prototype{margin-left:auto;font-size:12px;border:1px solid var(--line);padding:3px 10px;border-radius:20px;color:var(--muted)}
+    main{max-width:1864px;margin:0 auto;padding:24px 32px}.heading{display:flex;align-items:center;justify-content:space-between;gap:18px;margin-bottom:18px}.eyebrow{font-size:12px;letter-spacing:2px;color:var(--muted);margin:0 0 4px}h1{font-size:24px;line-height:1.4;margin:0 0 4px}p{margin:0;color:var(--muted)}.actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap}.action{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:9px 15px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--text);text-decoration:none;white-space:nowrap}.action:hover{border-color:var(--blue);color:var(--blue)}
+    .viewer{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--surface)}.viewer-bar{padding:11px 18px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:12px;flex-wrap:wrap;color:var(--muted);font-size:13px}.dot{width:8px;height:8px;flex-shrink:0;border-radius:50%;background:var(--blue)}.source{margin-left:auto;color:var(--muted);text-decoration:none}.source:hover{text-decoration:underline}.frame-wrap{height:calc(100dvh - 310px);min-height:480px;position:relative}iframe{width:100%;height:100%;border:0;display:block;background:white}#placeholder{min-height:480px;display:grid;place-content:center;padding:32px;text-align:center}#placeholder[hidden],#dashboard[hidden]{display:none}#placeholder .number{width:64px;height:64px;display:grid;place-items:center;margin:0 auto 18px;border-radius:16px;color:var(--blue);background:var(--tint);font-size:24px;font-weight:700}h2{font-size:22px;margin:0 0 10px}.note{margin-top:14px;font-size:13px;color:var(--muted)}.note strong{font-weight:600;color:var(--text)}
+    .test-result{padding:12px 18px;background:#fff7e7;color:#795014;border-bottom:1px solid #eed8aa;font-size:14px}.test-result strong{font-weight:700}
+    @media(max-width:700px){header{padding:16px}.top{gap:14px;min-height:auto}.prototype{margin-left:auto}nav{order:3;width:100%;gap:4px}nav button{padding:10px 12px;flex:1;font-size:14px}main{padding:20px 12px}.heading{align-items:flex-start;flex-direction:column}h1{font-size:22px}.frame-wrap{height:70dvh;min-height:420px}.source{margin-left:20px}.viewer-bar{gap:8px;padding:12px}}
+  </style>
+</head>
+<body>
+  <header><div class="top">
+    <div class="brand"><span aria-hidden="true">招</span>创新招聘组</div>
+    <nav aria-label="工作台导航">
+      <button type="button" data-page="dashboard" aria-pressed="true">看板</button>
+      <button type="button" data-page="tasks" aria-pressed="false">AI 任务进度</button>
+      <button type="button" data-page="positions" aria-pressed="false">岗位信息收集</button>
+    </nav>
+    <span class="prototype">原型预览</span>
+  </div></header>
+  <main>
+    <div class="heading"><div><p class="eyebrow">RECRUITMENT WORKSPACE</p><h1 id="page-title">招聘过程看板</h1><p id="page-description">在统一工作台中查看招聘全过程。</p></div>
+      <div class="actions" id="dashboard-actions"><button class="action" id="reload" type="button">重新加载</button><a class="action" id="open-source" target="_blank" rel="noopener noreferrer">在新窗口打开 ↗</a></div>
+    </div>
+    <section class="viewer" aria-labelledby="page-title">
+      <div id="dashboard">
+        <div class="test-result"><strong>嵌入验证：</strong>下方直接加载 WorkBuddy 分享链接。若显示“拒绝连接”，可点击右上角“在新窗口打开”对照检查原页面。</div>
+        <div class="viewer-bar"><span class="dot" aria-hidden="true"></span><span id="load-status" role="status">正在请求 WorkBuddy 页面…</span><a class="source" id="source-link" target="_blank" rel="noopener noreferrer">来源：WorkBuddy ↗</a></div>
+        <div class="frame-wrap"><iframe id="workbuddy-frame" title="WorkBuddy 招聘过程看板" allow="fullscreen" allowfullscreen></iframe></div>
+      </div>
+      <div id="placeholder" hidden><div class="number" id="placeholder-number" aria-hidden="true">02</div><h2 id="placeholder-title">AI 任务进度</h2><p>此位置已预留，等待接入你生成的页面。</p><p>后续可以配置独立页面链接。</p></div>
+    </section>
+    <p class="note" id="embed-note"><strong>嵌入测试：</strong>请以实际显示和操作为准。若内容空白、提示拒绝连接或要求登录，可使用“在新窗口打开”检查原页面。</p>
+  </main>
+  <script>
+    // 后续按钮 2、3 可在这里接入独立页面；目前保持占位。
+    const WORKBUDDY_URL = 'https://workbuddy.link/p/TLnwVZuv6cHmuRsWtXp5eK?ext2=copy_link';
+    const pages = {
+      dashboard: {title: '招聘过程看板', description: '在统一工作台中查看招聘全过程。'},
+      tasks: {title: 'AI 任务进度', description: '独立页面接入位，由你自行生成和维护。', number: '02'},
+      positions: {title: '岗位信息收集', description: '独立页面接入位，由你自行生成和维护。', number: '03'}
+    };
+    const frame = document.getElementById('workbuddy-frame');
+    const status = document.getElementById('load-status');
+    let timeout;
+    function loadDashboard() {
+      clearTimeout(timeout);
+      status.textContent = '正在请求 WorkBuddy 页面…';
+      frame.src = WORKBUDDY_URL;
+      timeout = setTimeout(() => {status.textContent = '加载时间较长，请检查下方内容或在新窗口打开。';}, 18000);
+    }
+    frame.addEventListener('load', () => {
+      if (!frame.getAttribute('src')) return;
+      clearTimeout(timeout);
+      // 跨域页面无法读取其内部状态，load 事件不能作为嵌入成功的判断。
+      status.textContent = '已收到页面加载事件 · 请确认下方内容是否正常显示';
+    });
+    frame.addEventListener('error', () => {clearTimeout(timeout);status.textContent = '页面加载失败，请在新窗口打开检查。';});
+    function showPage(key) {
+      const page = pages[key] || pages.dashboard;
+      const isDashboard = page === pages.dashboard;
+      document.querySelectorAll('[data-page]').forEach(button => button.setAttribute('aria-pressed', String(button.dataset.page === (pages[key] ? key : 'dashboard'))));
+      document.getElementById('page-title').textContent = page.title;
+      document.getElementById('page-description').textContent = page.description;
+      document.getElementById('dashboard').hidden = !isDashboard;
+      document.getElementById('placeholder').hidden = isDashboard;
+      document.getElementById('dashboard-actions').style.display = isDashboard ? '' : 'none';
+      document.getElementById('embed-note').hidden = !isDashboard;
+      if (!isDashboard) {
+        document.getElementById('placeholder-title').textContent = page.title;
+        document.getElementById('placeholder-number').textContent = page.number;
+      }
+    }
+    document.querySelectorAll('[data-page]').forEach(button => button.addEventListener('click', () => {location.hash = button.dataset.page;}));
+    window.addEventListener('hashchange', () => showPage(location.hash.slice(1)));
+    document.getElementById('reload').addEventListener('click', loadDashboard);
+    document.getElementById('open-source').href = WORKBUDDY_URL;
+    document.getElementById('source-link').href = WORKBUDDY_URL;
+    showPage(location.hash.slice(1));
+    loadDashboard();
+  </script>
+</body>
+</html>
