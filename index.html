@@ -4,6 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>创新招聘组 · 综合工作台</title>
+  <link rel="stylesheet" href="./task-preview.css">
+  <script src="./task-preview.js" defer></script>
+  <link rel="stylesheet" href="./positions.css">
+  <script src="./positions.js" defer></script>
   <style>
     :root{--bg:#f4f6f9;--surface:#fff;--text:#172b43;--muted:#53647a;--line:#dfe5ed;--blue:#1762aa;--tint:#eaf3ff;--green:#087957}
     *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:15px/1.6 system-ui,-apple-system,"Segoe UI","Microsoft YaHei",sans-serif}
@@ -20,34 +24,37 @@
   <header><div class="top">
     <div class="brand"><span aria-hidden="true">招</span>创新招聘组</div>
     <nav aria-label="工作台导航">
-      <button type="button" data-page="dashboard" aria-pressed="true">看板</button>
-      <button type="button" data-page="tasks" aria-pressed="false">AI 任务进度</button>
+      <button type="button" data-page="dashboard" aria-pressed="true">招聘过程看板</button>
+      <button type="button" data-page="tasks" aria-pressed="false">AI 开发进度</button>
       <button type="button" data-page="positions" aria-pressed="false">岗位信息收集</button>
     </nav>
-    <span class="prototype">原型预览</span>
+    <span class="prototype">招聘工作台</span>
   </div></header>
   <main>
     <div class="heading"><div><p class="eyebrow">RECRUITMENT WORKSPACE</p><h1 id="page-title">招聘过程看板</h1><p id="page-description">在统一工作台中查看招聘全过程。</p></div>
       <div class="actions" id="dashboard-actions"><a class="action" href="./embed-tests.html">方案对照测试</a><button class="action" id="reload" type="button">重新加载</button><a class="action" id="open-source" target="_blank" rel="noopener noreferrer">查看原始页面 ↗</a></div>
     </div>
-    <section class="viewer" aria-labelledby="page-title">
+    <section class="viewer" id="main-viewer" aria-labelledby="page-title">
       <div id="dashboard">
         <div class="test-result"><strong>独立部署副本：</strong>数据截至 2026-10-23，生成于 2026-10-24 16:55。候选人姓名已匿名化；此副本不会自动跟随 WorkBuddy 更新。</div>
         <div class="viewer-bar"><span class="dot" aria-hidden="true"></span><span id="load-status" role="status">正在加载看板副本…</span><a class="source" id="source-link" target="_blank" rel="noopener noreferrer">来源：WorkBuddy ↗</a></div>
         <div class="frame-wrap"><iframe id="workbuddy-frame" title="WorkBuddy 招聘过程看板" allow="fullscreen" allowfullscreen></iframe></div>
       </div>
-      <div id="placeholder" hidden><div class="number" id="placeholder-number" aria-hidden="true">02</div><h2 id="placeholder-title">AI 任务进度</h2><p>此位置已预留，等待接入你生成的页面。</p><p>后续可以配置独立页面链接。</p></div>
     </section>
+    <section id="task-panel" hidden aria-labelledby="page-title">
+      <div class="task-loading" role="status">正在加载任务快照…</div>
+    </section>
+    <section id="positions-panel" hidden aria-labelledby="page-title"></section>
     <p class="note" id="embed-note"><strong>页面说明：</strong>当前加载同站部署的看板副本。原始链接等其他加载方式可在“方案对照测试”中检查。</p>
   </main>
   <script>
-    // 后续按钮 2、3 可在这里接入独立页面；目前保持占位。
+    // 三个页面分别展示招聘过程、滴答开发进度和文档入口。
     const WORKBUDDY_URL = 'https://workbuddy.link/p/TLnwVZuv6cHmuRsWtXp5eK?ext2=copy_link';
     const DASHBOARD_URL = './embeds/dashboard.html';
     const pages = {
       dashboard: {title: '招聘过程看板', description: '在统一工作台中查看招聘全过程。'},
-      tasks: {title: 'AI 任务进度', description: '独立页面接入位，由你自行生成和维护。', number: '02'},
-      positions: {title: '岗位信息收集', description: '独立页面接入位，由你自行生成和维护。', number: '03'}
+      tasks: {title: 'AI 开发进度', description: '滴答清单中的项目、优先级与子任务，一处查看。'},
+      positions: {title: '岗位信息收集', description: '企业招聘采集清单与团队数据，集中查阅。'}
     };
     const frame = document.getElementById('workbuddy-frame');
     const status = document.getElementById('load-status');
@@ -70,17 +77,20 @@
     function showPage(key) {
       const page = pages[key] || pages.dashboard;
       const isDashboard = page === pages.dashboard;
+      const isTasks = page === pages.tasks;
+      const isPositions = page === pages.positions;
+      document.body.dataset.page = isTasks ? 'tasks' : isPositions ? 'positions' : 'dashboard';
       document.querySelectorAll('[data-page]').forEach(button => button.setAttribute('aria-pressed', String(button.dataset.page === (pages[key] ? key : 'dashboard'))));
       document.getElementById('page-title').textContent = page.title;
       document.getElementById('page-description').textContent = page.description;
       document.getElementById('dashboard').hidden = !isDashboard;
-      document.getElementById('placeholder').hidden = isDashboard;
+      document.getElementById('main-viewer').hidden = !isDashboard;
+      document.getElementById('task-panel').hidden = !isTasks;
+      document.getElementById('positions-panel').hidden = !isPositions;
       document.getElementById('dashboard-actions').style.display = isDashboard ? '' : 'none';
       document.getElementById('embed-note').hidden = !isDashboard;
-      if (!isDashboard) {
-        document.getElementById('placeholder-title').textContent = page.title;
-        document.getElementById('placeholder-number').textContent = page.number;
-      }
+      if (isTasks) document.dispatchEvent(new Event('task-preview:open'));
+      if (isPositions) document.dispatchEvent(new Event('positions:open'));
     }
     document.querySelectorAll('[data-page]').forEach(button => button.addEventListener('click', () => {location.hash = button.dataset.page;}));
     window.addEventListener('hashchange', () => showPage(location.hash.slice(1)));

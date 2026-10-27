@@ -5,7 +5,7 @@ const port = Number(process.env.PORT || 4173);
 http.createServer((req, res) => {
   const pathname = new URL(req.url, 'http://localhost').pathname;
   if (pathname === '/favicon.ico') {res.writeHead(204);res.end();return;}
-  const routes = {'/': ['index.html', 'text/html'], '/index.html': ['index.html', 'text/html'], '/embed-tests.html': ['embed-tests.html', 'text/html'], '/embeds/dashboard.html': ['embeds/dashboard.html', 'text/html'], '/assets/echarts.min.js': ['assets/echarts.min.js', 'application/javascript']};
+  const routes = {'/': ['index.html', 'text/html'], '/index.html': ['index.html', 'text/html'], '/embed-tests.html': ['embed-tests.html', 'text/html'], '/embeds/dashboard.html': ['embeds/dashboard.html', 'text/html'], '/assets/echarts.min.js': ['assets/echarts.min.js', 'application/javascript'], '/task-preview.css': ['task-preview.css', 'text/css'], '/task-preview.js': ['task-preview.js', 'application/javascript'], '/positions.css': ['positions.css', 'text/css'], '/positions.js': ['positions.js', 'application/javascript'], '/data/ai-development.json': ['data/ai-development.json', 'application/json']};
   const route = routes[pathname];
   if (!route) {res.writeHead(404);res.end('Not found');return;}
   fs.readFile(path.join(__dirname, route[0]), (error, data) => {

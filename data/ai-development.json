@@ -1,0 +1,250 @@
+{
+  "folder": {
+    "id": "6ae00d8eb096751ca78efeee",
+    "name": "AI 开发进度",
+    "sortOrder": -1099511627776,
+    "showAll": true,
+    "viewMode": "kanban"
+  },
+  "capturedAt": "2026-10-27T10:31:28.454074+00:00",
+  "projects": [
+    {
+      "id": "6ae04e6fe4b03273ad95cbfa",
+      "name": "✋🏻自动打招呼系统",
+      "color": null,
+      "sortOrder": -1082331758592,
+      "groupId": "6ae00d8eb096751ca78efeee",
+      "tasks": [
+        {
+          "id": "6adff760b096751ca78efe35",
+          "title": "打招呼系统 完善",
+          "content": "",
+          "priority": 3,
+          "status": 0,
+          "sortOrder": -1099511627776,
+          "isAllDay": false,
+          "columnId": "6adff747b096751ca78efe29"
+        },
+        {
+          "id": "6ae05425b096757fb804c59b",
+          "title": "排查什么原因导致了 boss 无限刷新",
+          "content": "目前只有 Win32 UIA 可行",
+          "priority": 0,
+          "status": 0,
+          "sortOrder": -2199023255552,
+          "parentId": "6adff760b096751ca78efe35",
+          "isAllDay": false
+        },
+        {
+          "id": "6ae061fcb096757fb804c7b0",
+          "title": "排查模拟按键能否在 codex 内置浏览器后台发挥作用",
+          "content": "左右按钮可以直接切换电子简历，ESC可以直接返回到牛人列表",
+          "priority": 0,
+          "status": 0,
+          "sortOrder": -3298534883328,
+          "parentId": "6adff760b096751ca78efe35",
+          "isAllDay": false
+        },
+        {
+          "id": "6ae06228b096757fb804c7e3",
+          "title": "打招呼系统 MVP",
+          "content": "",
+          "priority": 5,
+          "status": 0,
+          "sortOrder": -4398046511104,
+          "isAllDay": false
+        },
+        {
+          "id": "6ae068f0b096757fb804c846",
+          "title": "确认提供 LLM 分析的文本是纯文本简历OCR内容，还是 json",
+          "content": "",
+          "priority": 0,
+          "status": 0,
+          "sortOrder": -5497558138880,
+          "parentId": "6adff760b096751ca78efe35",
+          "isAllDay": false
+        },
+        {
+          "id": "6ae06a31b096757fb804c867",
+          "title": "简历分析任务交给 子agent，保证主 agent 上下文压缩率",
+          "content": "",
+          "priority": 0,
+          "status": 0,
+          "sortOrder": -6597069766656,
+          "parentId": "6adff760b096751ca78efe35",
+          "isAllDay": false
+        },
+        {
+          "id": "6ae06b2eb096757fb804c87b",
+          "title": "判断 ds 能否使用 codex 的 plan 模式，把菜单选择改为 plan 选项",
+          "content": "",
+          "priority": 0,
+          "status": 0,
+          "sortOrder": -7696581394432,
+          "parentId": "6adff760b096751ca78efe35",
+          "isAllDay": false
+        }
+      ],
+      "columns": []
+    },
+    {
+      "id": "6ae04e82e4b03273ad95cdc1",
+      "name": "🌐创新招聘组站点",
+      "color": null,
+      "sortOrder": -1073741824000,
+      "groupId": "6ae00d8eb096751ca78efeee",
+      "tasks": [
+        {
+          "id": "6adf0c83b096755a797a2ff2",
+          "title": "看板网站",
+          "content": "",
+          "priority": 1,
+          "status": 0,
+          "sortOrder": -2199023255552,
+          "isAllDay": false,
+          "columnId": "6adff3d2b096751ca78efde1"
+        },
+        {
+          "id": "6adff6e9b096751ca78efdfc",
+          "title": "查询对接文丽总日报的方法",
+          "content": "",
+          "priority": 1,
+          "status": 0,
+          "sortOrder": -1099511627776,
+          "isAllDay": false,
+          "columnId": "6adff3d2b096751ca78efde1"
+        }
+      ],
+      "columns": []
+    },
+    {
+      "id": "6ae04e88e4b03273ad95ce34",
+      "name": "🟢企业微信机器人",
+      "color": null,
+      "sortOrder": -1069446856704,
+      "groupId": "6ae00d8eb096751ca78efeee",
+      "tasks": [
+        {
+          "id": "6ae03336b096751ca78f0007",
+          "title": "岗位评估 skill",
+          "content": "（辅助戴刚烈）",
+          "priority": 1,
+          "status": 0,
+          "sortOrder": -2199023255552,
+          "isAllDay": false,
+          "columnId": "6acb0c10b096754cc8ad670c"
+        },
+        {
+          "id": "6ae033c7b096751ca78f001d",
+          "title": "岗位信息标准化输出 skill",
+          "content": "",
+          "priority": 1,
+          "status": 0,
+          "sortOrder": -3298534883328,
+          "isAllDay": false,
+          "columnId": "6ae04d7eb096757af0402e3a"
+        },
+        {
+          "id": "6ae05aaeb096757fb804c6c3",
+          "title": "组内表格自动更新",
+          "content": "",
+          "desc": "",
+          "priority": 1,
+          "status": 0,
+          "sortOrder": -4398046511104,
+          "isAllDay": false,
+          "items": [
+            {
+              "id": "6ae05b30b096757fb804c6d1",
+              "status": 0,
+              "title": "读取群聊内容（需要企业微信管理员在管理后台把这个「会话消息读取/聊天会话」类 API 权限开给机器人所属应用）",
+              "sortOrder": 0,
+              "startDate": null,
+              "isAllDay": false,
+              "timeZone": "Asia/Shanghai",
+              "completedTime": null
+            }
+          ]
+        },
+        {
+          "id": "6ae06067b096757fb804c720",
+          "title": "岗位招聘常用QA skill",
+          "content": "",
+          "priority": 1,
+          "status": 0,
+          "sortOrder": -5497558138880,
+          "isAllDay": false
+        },
+        {
+          "id": "6ae0613cb096757fb804c79c",
+          "title": "岗位智能回复推荐 skill",
+          "content": "",
+          "priority": 0,
+          "status": 0,
+          "sortOrder": -6597069766656,
+          "isAllDay": false
+        }
+      ],
+      "columns": []
+    },
+    {
+      "id": "6ae04e90e4b03273ad95cf0e",
+      "name": "🐜蚂蚁家空间",
+      "color": null,
+      "sortOrder": -1067299373056,
+      "groupId": "6ae00d8eb096751ca78efeee",
+      "tasks": [
+        {
+          "id": "6adf0c7bb096755a797a2fe8",
+          "title": "协商如何对接",
+          "content": "",
+          "priority": 1,
+          "status": 0,
+          "sortOrder": -1099511627776,
+          "isAllDay": false,
+          "columnId": "6ab0add9a31a52d9e57be853"
+        }
+      ],
+      "columns": []
+    },
+    {
+      "id": "6ae04e99e4b03273ad95cfc3",
+      "name": "🗄其他",
+      "color": null,
+      "sortOrder": -1065151889408,
+      "groupId": "6ae00d8eb096751ca78efeee",
+      "tasks": [
+        {
+          "id": "6ad1a684b096751fde127cc1",
+          "title": "待办1：招聘报表里面的BOSS数据，你看看每天定时或者做个智能体，让workbuddy从BOSS后台 ，帮大家读过来",
+          "content": "",
+          "priority": 0,
+          "status": 0,
+          "sortOrder": -5497558138880,
+          "isAllDay": false,
+          "columnId": "6ad19376b096751fde127c34"
+        },
+        {
+          "id": "6ad1a69bb096751fde127ccf",
+          "title": "待办3：美康销售有一些要填的报表，现在他们是人工填的，后续也可以弄个AI，让AI自动填，或者给个简单的提示词，让大家复制，看怎么样方便怎么来，还要考虑大家的接受能力",
+          "content": "",
+          "priority": 0,
+          "status": 0,
+          "sortOrder": -4398046511104,
+          "isAllDay": false,
+          "columnId": "6ad19376b096751fde127c34"
+        },
+        {
+          "id": "6ae060f6b096757fb804c776",
+          "title": "帮俞立纲做海外企业资源站点demo",
+          "content": "",
+          "priority": 0,
+          "status": 0,
+          "sortOrder": -7696581394432,
+          "isAllDay": false
+        }
+      ],
+      "columns": []
+    }
+  ]
+}
