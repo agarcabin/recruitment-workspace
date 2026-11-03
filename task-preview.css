@@ -55,7 +55,7 @@ body[data-page=tasks] #page-description{font-size:13px;color:var(--md-muted);lin
 .dev-calendar-day:last-child{border-right:0}
 .dev-calendar-day.weekend{background:#f8f9fc}
 .dev-day-number{display:inline-flex;align-items:center;justify-content:center;min-width:24px;height:24px;font-size:12px;font-weight:500;color:var(--md-ink);font-variant-numeric:tabular-nums}
-.dev-calendar-day.outside-month .dev-day-number{color:#747d8b}
+.dev-calendar-day.outside-month .dev-day-number{color:#626d7c}
 .dev-calendar-day.outside-month{background:#f5f6f9}
 .dev-day-number.today{border-radius:50%;color:#fff;background:var(--md-primary)}
 .dev-calendar-events{position:relative;display:grid;grid-template-columns:repeat(7,minmax(0,1fr));grid-auto-rows:44px;gap:4px 0;padding:0 4px 8px;margin-top:36px;min-height:48px}
