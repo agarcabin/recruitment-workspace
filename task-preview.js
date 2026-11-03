@@ -3,7 +3,7 @@
   const panel = document.getElementById('task-panel');
   const priorities = [{value:5,name:'高优先级',color:'high'},{value:3,name:'中优先级',color:'medium'},{value:1,name:'低优先级',color:'low'},{value:0,name:'无优先级',color:'none'}];
   let data, loading=false, query='', collapsed=new Set(), board, count, dialog, detail, searchInput, reload;
-  let timeline, rangeStart=null, rangeEnd=null;
+  let timeline, monthStart=null;
   const DAY=86400000;
   function dateKey(value) {
     if(!value||!Number.isFinite(new Date(value).getTime()))return null;
@@ -62,7 +62,7 @@
       const visible=roots.filter(t=>matches(project,t));
       if(query&&!visible.length)continue;
       const column=el('section','dev-column');column.setAttribute('aria-label',project.name);
-      const header=el('div','dev-column-head');const h3=el('h3','',project.name);h3.append(el('span','dev-column-count',String(project.tasks.length)));header.append(h3);column.append(header);
+      const header=el('div','dev-column-head');const h3=el('h3','',projectName(project));const dot=el('span','dev-project-dot project-'+data.projects.indexOf(project));dot.setAttribute('aria-hidden','true');h3.prepend(dot);h3.append(el('span','dev-column-count',String(project.tasks.length)));header.append(h3);column.append(header);
       const body=el('div','dev-column-body');
       for(const priority of priorities){
         const tasks=visible.filter(t=>(t.priority||0)===priority.value);
@@ -83,57 +83,78 @@
   function renderView() {
     renderTimeline();renderBoard();
   }
-  function fitSchedule() {
-    const dates=data.projects.flatMap(p=>p.tasks.map(schedule).filter(Boolean));
-    const today=day(new Date());
-    rangeStart=dates.length?Math.min(...dates.map(d=>d.start))-DAY:today;
-    rangeEnd=dates.length?Math.max(...dates.map(d=>d.end))+DAY:today+13*DAY;
+  function calendarWeeks(month) {
+    const date=new Date(month),year=date.getUTCFullYear(),index=date.getUTCMonth();
+    const offset=(new Date(Date.UTC(year,index,1)).getUTCDay()+6)%7;
+    const length=new Date(Date.UTC(year,index+1,0)).getUTCDate();
+    const first=Date.UTC(year,index,1)-offset*DAY;
+    return Array.from({length:Math.ceil((offset+length)/7)},(_,i)=>first+i*7*DAY);
   }
+  function weekSegments(entries,weekStart) {
+    const weekEnd=weekStart+6*DAY,lanes=[];
+    return entries.filter(e=>e.dates.start<=weekEnd&&e.dates.end>=weekStart)
+      .sort((a,b)=>a.dates.start-b.dates.start||b.dates.end-a.dates.end)
+      .map(entry=>{
+        const start=Math.round((Math.max(entry.dates.start,weekStart)-weekStart)/DAY)+1;
+        const end=Math.round((Math.min(entry.dates.end,weekEnd)-weekStart)/DAY)+1;
+        let lane=lanes.findIndex(last=>last<start);if(lane<0)lane=lanes.length;lanes[lane]=end;
+        return {...entry,start,end,lane,continuesBefore:entry.dates.start<weekStart,continuesAfter:entry.dates.end>weekEnd};
+      });
+  }
+  function projectName(project) {return project.name.replace(/^[^\p{L}\p{N}]+/u,'').trim();}
   function renderTimeline() {
     timeline.replaceChildren();
-    if(rangeStart===null)fitSchedule();
-    const controls=el('div','dev-timeline-controls');
-    const title=el('div','dev-timeline-title');const headingTitle=el('h2','dev-section-title','已排期时间线');headingTitle.id='dev-timeline-title';
-    const range=el('span','dev-range',`${dayLabel(rangeStart)} — ${dayLabel(rangeEnd)}`);range.setAttribute('aria-live','polite');title.append(headingTitle,range);controls.append(title);
+    const today=day(new Date());
+    if(monthStart===null){const now=new Date(today);monthStart=Date.UTC(now.getUTCFullYear(),now.getUTCMonth(),1);}
+    const current=new Date(monthStart),year=current.getUTCFullYear(),month=current.getUTCMonth();
+    const monthEnd=Date.UTC(year,month+1,1)-DAY;
+    const entries=data.projects.flatMap((project,index)=>project.tasks.filter(t=>matches(project,t)&&schedule(t)).map(task=>({project,task,dates:schedule(task),index})));
+    const inMonth=entries.filter(e=>e.dates.start<=monthEnd&&e.dates.end>=monthStart);
+    const controls=el('div','dev-calendar-toolbar');
+    const title=el('div','dev-calendar-title');const h2=el('h2','dev-section-title','排期月历');h2.id='dev-timeline-title';
+    title.append(h2,el('span','dev-calendar-caption','仅显示已排期任务'));controls.append(title);
     const nav=el('div','dev-range-actions');
-    for(const [text,label,action]of[
-      ['←','向前查看两周',()=>{rangeStart-=14*DAY;rangeEnd-=14*DAY;}],
-      ['今天','查看从今天开始的两周',()=>{rangeStart=day(new Date());rangeEnd=rangeStart+13*DAY;}],
-      ['→','向后查看两周',()=>{rangeStart+=14*DAY;rangeEnd+=14*DAY;}],
-      ['全部排期','显示全部任务排期',fitSchedule]
-    ]){const button=el('button','dev-reload',text);button.type='button';button.setAttribute('aria-label',label);button.addEventListener('click',()=>{action();renderTimeline();});nav.append(button);}
+    const monthLabel=el('span','dev-month-label',year+' 年 '+(month+1)+' 月');monthLabel.setAttribute('aria-live','polite');
+    const button=(text,label,action)=>{const b=el('button','dev-reload',text);b.type='button';b.setAttribute('aria-label',label);b.addEventListener('click',()=>{action();renderTimeline();});return b;};
+    nav.append(button('本月','返回本月',()=>{monthStart=null;}),button('‹','上一个月',()=>{monthStart=Date.UTC(year,month-1,1);}),monthLabel,button('›','下一个月',()=>{monthStart=Date.UTC(year,month+1,1);}));
     controls.append(nav);timeline.append(controls);
-    const days=Math.round((rangeEnd-rangeStart)/DAY)+1;
-    const scroll=el('div','dev-timeline-scroll');scroll.tabIndex=0;scroll.setAttribute('role','region');scroll.setAttribute('aria-label','任务时间线，可横向滚动查看日期');
-    const grid=el('div','dev-timeline-grid');grid.style.setProperty('--days',days);
-    const heading=el('div','dev-timeline-heading');heading.append(el('div','dev-timeline-label','项目 / 任务'));
-    const ticks=el('div','dev-timeline-days');const today=day(new Date());
-    for(let i=0;i<days;i++){const value=rangeStart+i*DAY;const date=new Date(value);const tick=el('div','dev-timeline-day',`${date.getUTCMonth()+1}/${date.getUTCDate()}`);if(value===today){tick.classList.add('today');tick.title='今天';}if([0,6].includes(date.getUTCDay()))tick.classList.add('weekend');ticks.append(tick);}
-    heading.append(ticks);grid.append(heading);
-    let scheduledCount=0,visibleCount=0;
-    for(const project of data.projects){
-      const matched=project.tasks.filter(t=>matches(project,t));
-      const dated=matched.filter(t=>schedule(t));scheduledCount+=dated.length;
-      const visible=dated.filter(t=>{const d=schedule(t);return d.start<=rangeEnd&&d.end>=rangeStart;}).sort((a,b)=>schedule(a).start-schedule(b).start);
-      if(visible.length){
-        const projectRow=el('div','dev-timeline-project',project.name);grid.append(projectRow);
-        for(const task of visible){
-          visibleCount++;const d=schedule(task);const row=el('div','dev-timeline-row');
-          const label=el('button','dev-timeline-label dev-timeline-task',task.title);label.type='button';label.addEventListener('click',()=>openTask(project,task));
-          const parent=project.tasks.find(t=>t.id===task.parentId);if(parent)label.append(el('small','',`子任务 · ${parent.title}`));
-          const track=el('div','dev-timeline-track');
-          if(today>=rangeStart&&today<=rangeEnd){const line=el('span','dev-today-line');line.style.left=`${(today-rangeStart)/DAY/days*100}%`;line.setAttribute('aria-hidden','true');track.append(line);}
-          const bar=el('button',`dev-timeline-bar ${color(task)}`,task.title);bar.type='button';
-          const dates=d.start===d.end?dayLabel(d.start):`${dayLabel(d.start)} — ${dayLabel(d.end)}`;
-          bar.title=`${task.title} · ${dates} · ${priorityName(task)}`;bar.setAttribute('aria-label',`查看任务：${bar.title}`);
-          bar.style.left=`${(Math.max(d.start,rangeStart)-rangeStart)/DAY/days*100}%`;
-          bar.style.width=`${((Math.min(d.end,rangeEnd)-Math.max(d.start,rangeStart))/DAY+1)/days*100}%`;
-          bar.addEventListener('click',()=>openTask(project,task));track.append(bar);row.append(label,track);grid.append(row);
-        }
+    const meta=el('div','dev-calendar-meta');
+    const summary=el('span','',inMonth.length?'本月 '+inMonth.length+' 项排期':'本月暂无排期');summary.setAttribute('role','status');
+    meta.append(summary,el('span','','跨周任务连续展示 · 点击任务查看详情'));timeline.append(meta);
+    const calendar=el('div','dev-calendar');calendar.setAttribute('role','region');calendar.setAttribute('aria-label',year+'年'+(month+1)+'月任务日历');
+    const weekdays=el('div','dev-weekdays');for(const name of ['周一','周二','周三','周四','周五','周六','周日'])weekdays.append(el('div','',name));calendar.append(weekdays);
+    for(const weekStart of calendarWeeks(monthStart)){
+      const week=el('div','dev-calendar-week');const days=el('div','dev-calendar-dates');
+      for(let i=0;i<7;i++){
+        const value=weekStart+i*DAY,date=new Date(value),cell=el('div','dev-calendar-day');
+        if(date.getUTCMonth()!==month)cell.classList.add('outside-month');
+        if(i>=5)cell.classList.add('weekend');
+        const label=el('span','dev-day-number',date.getUTCDate()===1?(date.getUTCMonth()+1)+'月1日':String(date.getUTCDate()));
+        label.setAttribute('aria-label',dayLabel(value));
+        if(value===today){label.classList.add('today');label.setAttribute('aria-current','date');}
+        cell.append(label);days.append(cell);
       }
+      week.append(days);
+      const segments=weekSegments(entries,weekStart),lanes=el('div','dev-calendar-events');
+      const laneCount=segments.length?Math.max(...segments.map(s=>s.lane))+1:0;
+      lanes.style.setProperty('--lanes',laneCount);
+      for(const segment of segments){
+        const {project,task,dates,index}=segment;
+        const bar=el('button','dev-calendar-event project-'+index);bar.type='button';
+        bar.style.gridColumn=segment.start+' / '+(segment.end+1);bar.style.gridRow=String(segment.lane+1);
+        if(segment.continuesBefore)bar.classList.add('continues-before');if(segment.continuesAfter)bar.classList.add('continues-after');
+        const datesText=dayLabel(dates.start)+' — '+dayLabel(dates.end);
+        const title=(segment.continuesBefore?'‹ ':'')+task.title+(segment.continuesAfter?' ›':'');
+        bar.append(el('span','dev-event-name',title),el('span','dev-event-meta',projectName(project)+' · '+datesText));
+        bar.title=task.title+' · '+project.name+' · '+datesText+' · '+priorityName(task);
+        bar.setAttribute('aria-label','查看任务：'+bar.title);bar.addEventListener('click',()=>openTask(project,task));lanes.append(bar);
+      }
+      week.append(lanes);calendar.append(week);
     }
-    const summary=el('p','dev-timeline-summary',`已排期 ${scheduledCount} 项 · 当前范围 ${visibleCount} 项`);summary.setAttribute('role','status');timeline.append(summary);
-    if(visibleCount){scroll.append(grid);timeline.append(scroll);}else timeline.append(el('p','dev-empty',scheduledCount?'当前日期范围内没有任务。点击“全部排期”查看其他日期。':query?'没有匹配的已排期任务。':'暂时没有设置日期的任务。可在滴答清单中设置开始或截止日期，更新快照后将在这里展示。'));
+    timeline.append(calendar);
+    const legend=el('div','dev-calendar-legend');const projectIds=new Set(entries.filter(e=>{const weeks=calendarWeeks(monthStart);return e.dates.start<=weeks[weeks.length-1]+6*DAY&&e.dates.end>=weeks[0];}).map(e=>e.project.id));
+    data.projects.forEach((project,index)=>{if(!projectIds.has(project.id))return;const label=el('span','dev-legend-item');const dot=el('span','dev-project-dot project-'+index);dot.setAttribute('aria-hidden','true');label.append(dot,el('span','',projectName(project)));legend.append(label);});
+    legend.append(el('span','dev-calendar-note','相邻月份日期以浅色显示'));timeline.append(legend);
   }
   function createDialog() {
     dialog=el('dialog','dev-dialog');dialog.setAttribute('aria-labelledby','dev-detail-title');
@@ -161,9 +182,9 @@
     const time=new Intl.DateTimeFormat('zh-CN',{timeZone:'Asia/Shanghai',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hour12:false}).format(new Date(data.capturedAt));
     meta.append(el('span','dev-snapshot',`滴答快照 · ${time}`));toolbar.append(meta);
     const controls=el('div','dev-controls');
-    const label=el('label','dev-search');label.append(el('span','','⌕'));
+    const label=el('label','dev-search');const searchIcon=el('span','dev-search-icon');searchIcon.setAttribute('aria-hidden','true');label.append(searchIcon);
     searchInput=el('input');searchInput.type='search';searchInput.placeholder='搜索任务、说明或检查项';searchInput.setAttribute('aria-label','搜索开发任务');searchInput.value=query;searchInput.addEventListener('input',()=>{query=searchInput.value.trim().toLocaleLowerCase();renderView();});label.append(searchInput);controls.append(label);
-    reload=el('button','dev-reload','重新加载');reload.type='button';reload.addEventListener('click',()=>load(true));controls.append(reload);toolbar.append(controls);panel.append(toolbar);
+    reload=el('button','dev-reload','刷新快照');reload.type='button';reload.addEventListener('click',()=>load(true));controls.append(reload);toolbar.append(controls);panel.append(toolbar);
     timeline=el('section','dev-timeline');timeline.setAttribute('aria-labelledby','dev-timeline-title');
     const boardSection=el('section','dev-board-section');boardSection.setAttribute('aria-labelledby','dev-board-title');const boardTitle=el('h2','dev-section-title','项目看板');boardTitle.id='dev-board-title';
     board=el('div','dev-board');boardSection.append(boardTitle,board);panel.append(timeline,boardSection,el('p','dev-footnote','只读快照 · 日期按北京时间展示 · 点击任务查看详情'));

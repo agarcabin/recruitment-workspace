@@ -5,7 +5,11 @@
 顶部包含三个入口：招聘过程看板、AI 开发进度、岗位信息收集。
 
 - 招聘过程看板：在 iframe 中显示独立部署的招聘过程看板副本。
-- AI 开发进度：展示国内滴答清单「AI 开发进度」文件夹的只读快照。上方时间线仅展示已排期任务，下方看板按项目分栏、优先级分组展示全部任务，保留父子任务关系。搜索同时作用于两部分；支持日期导航和任务详情，点击详情窗外侧空白或按 Esc 可关闭。
+- AI 开发进度：展示国内滴答清单「AI 开发进度」文件夹的只读快照。上方月历按周一至周日每行 7 天展示完整月份，仅展示已排期任务；跨周任务分段延续，重叠任务自动分层。可切换月份、返回本月，项目色彩与下方看板一致。下方看板展示全部任务，保留优先级和父子任务关系。搜索同时作用于两部分；点击任务可查看详情，点击详情窗外侧空白或按 Esc 可关闭。
+
+## 视觉规范
+
+使用 Google Material Design 2 的网格、字体层级、表面阴影和交互状态规则，以靛蓝为主色，采用底部指示线导航、白色日历表面与一致的项目色。参考：[布局](https://m2.material.io/design/layout/understanding-layout.html)、[间距](https://m2.material.io/design/layout/spacing-methods.html)、[层级](https://m2.material.io/go/design-elevation)。检索到的 [Material Design skill](https://github.com/izynu/ochrelle/blob/main/skills/ochrelle-material-design/SKILL.md) 主要面向 M3，因此本项目以官方 MD2 文档为版本依据。
 - 岗位信息收集：集中打开温州天超电器、温州泰昌铁塔、合达电子的招聘信息采集清单，以及「创新招聘组数据」。文档权限由原文档的分享设置决定。
 
 ## 开发任务数据
