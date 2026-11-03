@@ -3,7 +3,7 @@
   const panel = document.getElementById('task-panel');
   const priorities = [{value:5,name:'高优先级',color:'high'},{value:3,name:'中优先级',color:'medium'},{value:1,name:'低优先级',color:'low'},{value:0,name:'无优先级',color:'none'}];
   let data, loading=false, query='', collapsed=new Set(), board, count, dialog, detail, searchInput, reload;
-  let view='board', timeline, viewButtons=[], rangeStart=null, rangeEnd=null;
+  let timeline, rangeStart=null, rangeEnd=null;
   const DAY=86400000;
   function dateKey(value) {
     if(!value||!Number.isFinite(new Date(value).getTime()))return null;
@@ -40,7 +40,7 @@
     const copy=el('span','dev-task-copy');copy.append(el('span','dev-task-title',task.title));
     const description=task.content||task.desc||(task.items?.[0]?.title?`· ${task.items[0].title}`:'');
     if(description)copy.append(el('span','dev-task-description',description));
-    if(!nested)copy.append(el('span','dev-task-project',project.name));
+    const dates=schedule(task);if(dates)copy.append(el('span','dev-task-date',`${dayLabel(dates.start)} — ${dayLabel(dates.end)}`));
     if(task.items?.length)copy.append(el('span','dev-task-items',`☷ ${task.items.filter(i=>i.status===1||i.status===2).length}/${task.items.length} 检查项`));
     button.append(square,copy);button.addEventListener('click',()=>openTask(project,task));row.append(button);return row;
   }
@@ -62,7 +62,7 @@
       const visible=roots.filter(t=>matches(project,t));
       if(query&&!visible.length)continue;
       const column=el('section','dev-column');column.setAttribute('aria-label',project.name);
-      const header=el('div','dev-column-head');const h2=el('h2','',project.name);h2.append(el('span','dev-column-count',String(project.tasks.length)));header.append(h2);column.append(header);
+      const header=el('div','dev-column-head');const h3=el('h3','',project.name);h3.append(el('span','dev-column-count',String(project.tasks.length)));header.append(h3);column.append(header);
       const body=el('div','dev-column-body');
       for(const priority of priorities){
         const tasks=visible.filter(t=>(t.priority||0)===priority.value);
@@ -81,9 +81,7 @@
     count.textContent=query?`找到 ${totalMatches} 项匹配任务`:`${data.projects.length} 个项目 · ${all} 项未完成任务`;
   }
   function renderView() {
-    renderBoard();board.hidden=view!=='board';timeline.hidden=view!=='timeline';
-    viewButtons.forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.view===view)));
-    if(view==='timeline')renderTimeline();
+    renderTimeline();renderBoard();
   }
   function fitSchedule() {
     const dates=data.projects.flatMap(p=>p.tasks.map(schedule).filter(Boolean));
@@ -95,7 +93,8 @@
     timeline.replaceChildren();
     if(rangeStart===null)fitSchedule();
     const controls=el('div','dev-timeline-controls');
-    const range=el('strong','dev-range',`${dayLabel(rangeStart)} — ${dayLabel(rangeEnd)}`);range.setAttribute('aria-live','polite');controls.append(range);
+    const title=el('div','dev-timeline-title');const headingTitle=el('h2','dev-section-title','已排期时间线');headingTitle.id='dev-timeline-title';
+    const range=el('span','dev-range',`${dayLabel(rangeStart)} — ${dayLabel(rangeEnd)}`);range.setAttribute('aria-live','polite');title.append(headingTitle,range);controls.append(title);
     const nav=el('div','dev-range-actions');
     for(const [text,label,action]of[
       ['←','向前查看两周',()=>{rangeStart-=14*DAY;rangeEnd-=14*DAY;}],
@@ -111,12 +110,10 @@
     const ticks=el('div','dev-timeline-days');const today=day(new Date());
     for(let i=0;i<days;i++){const value=rangeStart+i*DAY;const date=new Date(value);const tick=el('div','dev-timeline-day',`${date.getUTCMonth()+1}/${date.getUTCDate()}`);if(value===today){tick.classList.add('today');tick.title='今天';}if([0,6].includes(date.getUTCDay()))tick.classList.add('weekend');ticks.append(tick);}
     heading.append(ticks);grid.append(heading);
-    let scheduledCount=0,visibleCount=0,undatedCount=0;
-    const unscheduled=el('div','dev-unscheduled');const unscheduledHeading=el('h2','','未排期');unscheduled.append(unscheduledHeading);
+    let scheduledCount=0,visibleCount=0;
     for(const project of data.projects){
       const matched=project.tasks.filter(t=>matches(project,t));
-      const dated=matched.filter(t=>schedule(t));const undated=matched.filter(t=>!schedule(t));
-      scheduledCount+=dated.length;undatedCount+=undated.length;
+      const dated=matched.filter(t=>schedule(t));scheduledCount+=dated.length;
       const visible=dated.filter(t=>{const d=schedule(t);return d.start<=rangeEnd&&d.end>=rangeStart;}).sort((a,b)=>schedule(a).start-schedule(b).start);
       if(visible.length){
         const projectRow=el('div','dev-timeline-project',project.name);grid.append(projectRow);
@@ -134,15 +131,16 @@
           bar.addEventListener('click',()=>openTask(project,task));track.append(bar);row.append(label,track);grid.append(row);
         }
       }
-      if(undated.length){const group=el('section','dev-unscheduled-project');group.append(el('h3','',`${project.name} · ${undated.length}`));for(const task of undated){const button=el('button','dev-undated-task',task.title);button.type='button';button.addEventListener('click',()=>openTask(project,task));const parent=project.tasks.find(t=>t.id===task.parentId);if(parent)button.append(el('small','',`子任务 · ${parent.title}`));group.append(button);}unscheduled.append(group);}
     }
-    const summary=el('p','dev-timeline-summary',`已排期 ${scheduledCount} 项 · 当前范围 ${visibleCount} 项 · 未排期 ${undatedCount} 项`);summary.setAttribute('role','status');timeline.append(summary);
+    const summary=el('p','dev-timeline-summary',`已排期 ${scheduledCount} 项 · 当前范围 ${visibleCount} 项`);summary.setAttribute('role','status');timeline.append(summary);
     if(visibleCount){scroll.append(grid);timeline.append(scroll);}else timeline.append(el('p','dev-empty',scheduledCount?'当前日期范围内没有任务。点击“全部排期”查看其他日期。':query?'没有匹配的已排期任务。':'暂时没有设置日期的任务。可在滴答清单中设置开始或截止日期，更新快照后将在这里展示。'));
-    timeline.append(el('p','dev-timeline-hint','日期按北京时间展示；横条表示开始至截止日期，点击可查看详情。'));
-    if(undatedCount){unscheduledHeading.textContent=`未排期 · ${undatedCount}`;timeline.append(unscheduled);}
   }
   function createDialog() {
     dialog=el('dialog','dev-dialog');dialog.setAttribute('aria-labelledby','dev-detail-title');
+    const outside=event=>{const rect=dialog.getBoundingClientRect();return event.clientX<rect.left||event.clientX>rect.right||event.clientY<rect.top||event.clientY>rect.bottom;};
+    let pressedOutside=false;
+    dialog.addEventListener('pointerdown',event=>{pressedOutside=event.target===dialog&&outside(event);});
+    dialog.addEventListener('click',event=>{if(pressedOutside&&event.target===dialog&&outside(event))dialog.close();pressedOutside=false;});
     const head=el('div','dev-dialog-head','任务详情');const close=el('button','dev-close','×');close.type='button';close.setAttribute('aria-label','关闭任务详情');close.addEventListener('click',()=>dialog.close());head.append(close);dialog.append(head);
     detail=el('div','dev-detail');dialog.append(detail);panel.append(dialog);
   }
@@ -162,12 +160,13 @@
     const toolbar=el('div','dev-toolbar');const meta=el('div','dev-source');count=el('span','dev-total');meta.append(count);
     const time=new Intl.DateTimeFormat('zh-CN',{timeZone:'Asia/Shanghai',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hour12:false}).format(new Date(data.capturedAt));
     meta.append(el('span','dev-snapshot',`滴答快照 · ${time}`));toolbar.append(meta);
-    const controls=el('div','dev-controls');const switcher=el('div','dev-view-switch');switcher.setAttribute('role','group');switcher.setAttribute('aria-label','任务视图');viewButtons=[];
-    for(const [key,name]of[['board','看板'],['timeline','时间线']]){const button=el('button','',name);button.type='button';button.dataset.view=key;button.addEventListener('click',()=>{view=key;renderView();});switcher.append(button);viewButtons.push(button);}controls.append(switcher);
+    const controls=el('div','dev-controls');
     const label=el('label','dev-search');label.append(el('span','','⌕'));
     searchInput=el('input');searchInput.type='search';searchInput.placeholder='搜索任务、说明或检查项';searchInput.setAttribute('aria-label','搜索开发任务');searchInput.value=query;searchInput.addEventListener('input',()=>{query=searchInput.value.trim().toLocaleLowerCase();renderView();});label.append(searchInput);controls.append(label);
     reload=el('button','dev-reload','重新加载');reload.type='button';reload.addEventListener('click',()=>load(true));controls.append(reload);toolbar.append(controls);panel.append(toolbar);
-    board=el('div','dev-board');timeline=el('div','dev-timeline');panel.append(board,timeline,el('p','dev-footnote','看板按项目与优先级分组；时间线按任务日期展示。当前为只读快照。'));
+    timeline=el('section','dev-timeline');timeline.setAttribute('aria-labelledby','dev-timeline-title');
+    const boardSection=el('section','dev-board-section');boardSection.setAttribute('aria-labelledby','dev-board-title');const boardTitle=el('h2','dev-section-title','项目看板');boardTitle.id='dev-board-title';
+    board=el('div','dev-board');boardSection.append(boardTitle,board);panel.append(timeline,boardSection,el('p','dev-footnote','只读快照 · 日期按北京时间展示 · 点击任务查看详情'));
     createDialog();renderView();
   }
   async function load(force=false) {
