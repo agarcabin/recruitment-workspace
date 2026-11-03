@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html data-page-node-id="OqREi4gaXgeomFf1whFJnU" lang="zh-CN">
-<head data-page-node-id="Ot15GhalBhOftxSSfsl3QR">
+<html data-page-node-id="5zZ4sKtI2eOjdsIvFcz1mO" lang="zh-CN">
+<head data-page-node-id="W9lyf5zg7VTtW1sUCTVyYn">
 
-<meta data-page-node-id="kIY16i9IZAz4oI5WY7MWU1" charset="UTF-8">
-<meta data-page-node-id="UEhzscQmAVc8GRnd1pr3wl" content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport">
-<title data-page-node-id="4hKEfwmJYBSuq8KrMcA3oP" data-pnid-children="sm9dvDmVn6Je9mtKhcBDyE">创新招聘组 · 招聘过程看板</title>
-<script data-page-node-id="dllZqfI1d7vLw4Ar3DSEXT" src="../assets/echarts.min.js"></script>
-<style data-page-node-id="k3DxR8jJXnBPOlFNWpBuZm" data-pnid-children="hgx5JmIjgp9RvjbIzrUadQ">
+<meta data-page-node-id="Kny5QgRZcZ5Tf2m1eiCvwX" charset="UTF-8">
+<meta data-page-node-id="Rt0ped7FVPExwTFaVOB84M" content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport">
+<title data-page-node-id="x5gQaLcHqIu4ucizOssv7H" data-pnid-children="6SRXw04YDDN62P07M7tGhz">创新招聘组 · 招聘过程看板</title>
+<script data-page-node-id="az8PshTkhhfBT8TxUWVkS9" src="../assets/echarts.min.js"></script>
+<style data-page-node-id="5l4INNkYjuZfetlsl8Tayc" data-pnid-children="tWIBjR5c7bSNNWFi1UB9RH">
 :root{
   --bg:#f5f6f8; --card:#ffffff; --line:#e6e8ec; --line2:#d8dbe0;
   --txt:#1a1a1a; --txt2:#5f6672; --txt3:#9aa0a8;
@@ -67,6 +67,12 @@ table.rep th.sumc,table.rep td.sumc{position:sticky;left:150px;z-index:2;backgro
 table.rep thead th{font-size:12px;color:var(--txt2);font-weight:500;border-bottom:1px solid var(--line2);position:sticky;top:0;z-index:3;background:#fff}
 table.rep thead th:first-child{z-index:4}
 table.rep thead th.sumc{z-index:4}
+/* ---- 部门报表（转置：行=指标 · 列=日期） ---- */
+table.rep2{table-layout:auto}
+table.rep2 th,table.rep2 td{padding:6px 9px;font-size:12.5px}
+table.rep2 th:first-child,table.rep2 td:first-child{width:96px}
+table.rep2 th.sumc,table.rep2 td.sumc{left:var(--sumL,96px);width:58px}
+table.rep2 thead th{white-space:nowrap}
 tr.res td:not(.sumc){background:var(--g-res)}
 tr.reach td:not(.sumc){background:var(--g-reach)}
 tr.comm td:not(.sumc){background:var(--g-comm)}
@@ -150,102 +156,121 @@ details.notes ol{margin:10px 0 0 18px;font-size:11px;color:var(--txt3);line-heig
   table.rep th,table.rep td{padding:5px 6px}
   table.rep th:first-child,table.rep td:first-child{width:88px}
   table.rep th.sumc,table.rep td.sumc{left:88px;width:52px}
+  table.rep2{width:auto}
+  table.rep2 th,table.rep2 td{padding:4px 5px;font-size:11px}
+  table.rep2 th:first-child,table.rep2 td:first-child{width:80px}
+  table.rep2 th.sumc,table.rep2 td.sumc{left:var(--sumL,80px);width:50px}
   .hg-bar{height:32px;font-size:12px}
   .hg-gap .gt{font-size:10px;padding:0 8px}
 }
 </style>
 </head>
-<body data-page-node-id="Caz396Xn07yowZI68EAeas">
-<div data-page-node-id="RNhuf2CVAqlNclJFCMiqQx" class="wrap">
-  <header data-page-node-id="dbVBefWSU6c296ym9MMlOA">
-    <h1 data-page-node-id="cijYW8zIkG8YGQEJPFfDoZ"><!--pnid:657VaJ6lvxQh8d6yrasqlX-->创新招聘组 · 招聘过程看板</h1>
-    <div data-page-node-id="047UcC7Ql38QxsKHWpu5Ju" class="lead"><!--pnid:nYOZCrON2vp1VaGNK7nrbJ-->查看招聘全过程，了解各环节的投入与推进，找到需要优先改善的环节。</div>
-    <div data-page-node-id="xSJh0jCYHzJ3cjvYFp9MUw" class="sub"><!--pnid:IIAySrJxiU2rFZWeZG8Bev-->数据截至 <b data-page-node-id="VhQ1JXafJeuTE2xAIuX3Fo" id="hdr-to"><!--pnid:lJtpkCTeuudL4wsBCLDgP5-->—</b><!--pnid:eCr4YuwmAXMsn1XUIHrFFH--> · 更新于 <span data-page-node-id="OwmK93fXjW2z8squBd5GhM" id="hdr-gen"><!--pnid:4Pd80r3SMJIF35TZsGaa8G-->—</span></div>
+<body data-page-node-id="hQILMYhcng5T4TPa7acwLt">
+<div data-page-node-id="xrCgLeoAPe0KXhBuHxBnsC" class="wrap">
+  <header data-page-node-id="xjWIp7XUSCC59zGENaB2W3">
+    <h1 data-page-node-id="HJPReKKByjh1j0J6n9V8NX"><!--pnid:ko11cWnPKPzJta3EgEolFC-->创新招聘组 · 招聘过程看板</h1>
+    <div data-page-node-id="abTGt9dORBCDjD1hhMbQdr" class="lead"><!--pnid:NmPRrBYHWFqiHEzWuO0zOp-->查看招聘全过程，了解各环节的投入与推进，找到需要优先改善的环节。</div>
+    <div data-page-node-id="loxta3u7mLmWQSkPU2WcQa" class="sub"><!--pnid:piHd9lofyPTw8hajo3CrkH-->数据截至 <b data-page-node-id="Ja4QdY6hoee54BccZGo5lu" id="hdr-to"><!--pnid:AmN0iGeyL03rSbQboSh9ut-->—</b><!--pnid:9A5h2nYTmIF2x0qsmWIz14--> · 更新于 <span data-page-node-id="XkkYXgfQ0gKlt6snDPoQ9L" id="hdr-gen"><!--pnid:vDmTaSDpqLR4ObCycyYnuW-->—</span></div>
   </header>
 
-  <!--pnid:xcS4PbNzqSawtjFXV5xVFY--><!-- 区域1 日期选择 -->
-  <section data-page-node-id="IZByRhAHU6U0RfpbfNb1Jp">
-    <div data-page-node-id="ZTHWWqV1lneRuisfc348Pl" class="panel datebar">
-      <div data-page-node-id="Au4F70qyTrEPlwCsYg0rUO" class="row">
-        <span data-page-node-id="xao42XOKzxKdJ4MFUsIwXl" class="dlbl"><!--pnid:d1NhKnw3LuGsT9bW7lp0ed-->选择日期</span>
-        <span data-page-node-id="2hylR5f6h25jk96gf0UuRL" class="date-wrap">
-          <input data-page-node-id="ZuepRaKz1RFEn1qKyNFAyD" id="daypick" type="date">
-          <span data-page-node-id="aG5KgsPJEJEwFbzPNa6Jmc" class="ph"><!--pnid:W5BYr3RyZc8REXIoA4ZSFQ-->请选择日期</span>
+  <!--pnid:moPxSGGK5Tv1s6VFJBwiIs--><!-- 区域1 日期选择 -->
+  <section data-page-node-id="E8sr2wVkJqVJ8t4KSoTQWS">
+    <div data-page-node-id="WVLiWtxoZ2vBtTGRxE4zaH" class="panel datebar">
+      <div data-page-node-id="LIHycrJqZPtc2BBRGSlYj1" class="row">
+        <span data-page-node-id="HI3ZIgczDGmc84JlNQxDh9" class="dlbl"><!--pnid:bKvEbgzB2som00Iix1cVLj-->选择日期</span>
+        <span data-page-node-id="ymzvV5hv0qnLuWElYlzFCk" class="date-wrap">
+          <input data-page-node-id="Oy5wOnW96paDB7LK8iDWoJ" id="daypick" type="date">
+          <span data-page-node-id="ect00EOJ6rvhFeoE8knPHM" class="ph"><!--pnid:FVUz4KEXrhHMrji5iiEull-->请选择日期</span>
         </span>
-        <span data-page-node-id="fJJAHGsFCpkrEjk9zYc2ak" class="sep"></span>
-        <button data-page-node-id="Sg0WL4xTI1LP7oDp1WsxSO" class="chip rng" data-r="7d"><!--pnid:FgjrQf78VzoDxBW72O2OS0-->近7日</button>
-        <button data-page-node-id="N8zQICb55nKgJQvq1HBgEh" class="chip rng" data-r="month"><!--pnid:jr2rS6ga3gGNhjGlnbVH80-->本月</button>
-        <button data-page-node-id="bokHtemU0ZubhdGuYMUZya" class="chip rng" data-r="all"><!--pnid:t683z1WkwWqZmsVQ8Aq1k1-->全部</button>
-        <button data-page-node-id="emh3PWQvftA8oQM0WJ8kK6" class="chip rng" data-r="custom" id="btn-custom"><!--pnid:BvzwRPiLXBAl5n5yVSRMO8-->自选区间</button>
+        <span data-page-node-id="q1nMqxaj2TdpMRA1IOYTMI" class="sep"></span>
+        <button data-page-node-id="EmtLKanPBipHQspaJvyEi5" class="chip rng" data-r="7d"><!--pnid:Z5RHIFWouCSTuQp0p5z2F4-->近7日</button>
+        <button data-page-node-id="LdGVsNEDvymCRgvd3kLTkj" class="chip rng" data-r="month"><!--pnid:nnJEBS3ZLM4U5yMPBNFGAn-->本月</button>
+        <button data-page-node-id="sbACPdOx7ZumOuwatktKFY" class="chip rng" data-r="all"><!--pnid:IphKT1Po5RupcCyyKuD30Q-->全部</button>
+        <button data-page-node-id="dbCXtUi6CcJ9ToMgRLiK4w" class="chip rng" data-r="custom" id="btn-custom"><!--pnid:9EFGZUJdRFcLX2PGd6rcbg-->自选区间</button>
       </div>
-      <div data-page-node-id="TJc2bWUs51nByA0sq8bMnK" class="custom-row" hidden id="custom-row">
-        <span data-page-node-id="PZXGa52IxQPar6iuDSSc09"><!--pnid:QV1c1nXU6DHSEKOCRKyVuT-->开始</span><input data-page-node-id="xT826J4aupyZomoXuioy1m" id="from-pick" type="date">
-        <span data-page-node-id="NZVS2bRAFIUNUHBpti3Q0o"><!--pnid:A3Xh2kcvHNoilYVw2DYAkZ-->结束</span><input data-page-node-id="2byIvEAeazeUiY60FGorS0" id="to-pick" type="date">
-        <button data-page-node-id="Rz3RRwTEA8dYOOPdFxNxbR" class="btn-ok" id="btn-apply"><!--pnid:DvYhSIWABh9Rp808B6K954-->确认区间</button>
+      <div data-page-node-id="yt49ikC6LmNx5V9ZeayLOR" class="custom-row" hidden id="custom-row">
+        <span data-page-node-id="H455SuFQcnWwRh8sxudRnT"><!--pnid:dEJRnizYisQZWMv9Kgnaae-->开始</span><input data-page-node-id="ya1EQ3jvWL4FztOUYwB1SP" id="from-pick" type="date">
+        <span data-page-node-id="pwa0TUJN9dGCreRx1F1NQ9"><!--pnid:rsk36pN1yUWuuMgridBEJD-->结束</span><input data-page-node-id="no83zWvpExaIZXijioSWZP" id="to-pick" type="date">
+        <button data-page-node-id="uWiE0nWinZ7NxFi5z88HD1" class="btn-ok" id="btn-apply"><!--pnid:wDDGvKc3bKmSHAayVzkwCn-->确认区间</button>
       </div>
-      <div data-page-node-id="wNK4OE6DwjclM9OhUzlqsZ" class="date-note" id="date-note"></div>
+      <div data-page-node-id="i6xvjz013lFR83vDKHFbOB" class="date-note" id="date-note"></div>
     </div>
   </section>
 
-  <!--pnid:t2dCihkDZ6UkHCwGxgSLX1--><!-- 区域2 招聘漏斗（沙漏型） -->
-  <section data-page-node-id="uq2L0mhdPvVh0Vu2qjg9tt">
-    <div data-page-node-id="euT8RlG9Lr7FktdpSHDyHT" class="sec-title"><!--pnid:Crg3Ju3qYBd3O2AqJyHMnd-->招聘漏斗 <span data-page-node-id="3AEa3C4EXgTJ9FNTz1DEgs" class="hint"><!--pnid:gmqTgXFEImtQp53UwyDjVf-->触达→入职逐层收窄 · 入职后留存待补字段</span></div>
-    <div data-page-node-id="gyakPOVGa6LdAxLWo5fbeO" class="panel">
-      <div data-page-node-id="avBDFYXr76ICNSqLDdW2wa" class="hg" id="hourglass"></div>
-      <div data-page-node-id="bXhHxuHo7W1GmnyBz91iJk" class="hg-note" id="hg-note"></div>
+  <!--pnid:aQ0MPgjjO5JZVoX0m4eUIc--><!-- 区域2 招聘漏斗（沙漏型） -->
+  <section data-page-node-id="W55zJoKIcS08fKuJj3oqOo">
+    <div data-page-node-id="8AbXFTQ8729zODwMvITNt4" class="sec-title"><!--pnid:72HF7A2HWMawqDavi7r13N-->招聘漏斗 <span data-page-node-id="eu8trCCab8mpfUQMs3hHat" class="hint"><!--pnid:FXTCP68SCL53DU3GmNZQjb-->触达→入职逐层收窄 · 入职后留存待补字段</span></div>
+    <div data-page-node-id="0RNMt2e3x7Vc9FKX15F0iQ" class="panel">
+      <div data-page-node-id="goKb1NzylmkJxvmDqZ1cs2" class="hg" id="hourglass"></div>
+      <div data-page-node-id="5XXYZY4Itkh0DutseSzXoi" class="hg-note" id="hg-note"></div>
     </div>
   </section>
 
-  <!--pnid:f4FGFxpqVwwSO0MFfh7hJ9--><!-- 区域3 完整招聘日报 -->
-  <section data-page-node-id="U3KXS0GaOM3Kfs2c1Ra2XS">
-    <div data-page-node-id="0YXeHtvLuazQQMSbG9Zfqm" class="sec-title"><!--pnid:4E29OGda3nsYE19dbl4PHC-->完整招聘日报 <span data-page-node-id="bYxLhopvI4sAZtQbuFjEFN" class="hint"><!--pnid:k8u4QKiSZUOuAawHrvsfFY-->15 项过程指标 · 合计列突出 · 人员列固定顺序</span></div>
-    <div data-page-node-id="b0dLG2viGUS0R7S89cjLHS" class="panel">
-      <div data-page-node-id="5Ucv2b1NRN05N5Vp4HlkbN" class="rep-head">
-        <span data-page-node-id="ckZm5Ln8o1xlYkB7CAyqSu" class="rep-title" id="rep-title"><!--pnid:g5YK7j1ApQCaNkn2ciM8G3-->—</span>
-        <span data-page-node-id="qytqa7GKbv5jykiZnenyYn" class="rep-tag" id="rep-tag"><!--pnid:fmG8VvzZtXa1LVCKiznHqG-->日报</span>
+  <!--pnid:f6TujbsSNMcA0wy3MHyyGq--><!-- 区域3 完整招聘日报 -->
+  <section data-page-node-id="EOQ3zkL261CgVorOibYWiN">
+    <div data-page-node-id="TqX52ITbmP1leQwEFozqxM" class="sec-title"><!--pnid:UokFvoM1SV6CwkqPVg6Yq9-->完整招聘日报 <span data-page-node-id="2r4eo6wUIN4Sc1iWrAEinX" class="hint"><!--pnid:VwOVle6iIi2z0hM5zgrZAN-->15 项过程指标 · 合计列突出 · 人员列固定顺序</span></div>
+    <div data-page-node-id="C21CqWXtB0I0byTXf0OvoU" class="panel">
+      <div data-page-node-id="15xYtzL1PKfjYlXg87WJV6" class="rep-head">
+        <span data-page-node-id="NLfItRlfqM2kkXBDZoTOYL" class="rep-title" id="rep-title"><!--pnid:W9bl8jbmy2r8XH2ZJf2i2E-->—</span>
+        <span data-page-node-id="Tpi1OZsgYgNOcG2diA7laU" class="rep-tag" id="rep-tag"><!--pnid:xYUKpedj94ZHYMhQwjT9ZX-->日报</span>
       </div>
-      <div data-page-node-id="3enOgAN6edRzKsOcAK49Tw" class="no-report" hidden id="no-report"></div>
-      <div data-page-node-id="lXZnhE1YySerX2EDNtrJEG" class="tbl-hint" hidden id="tbl-hint"><!--pnid:ZeVSXTdvmeRTgsNbXKW9aN-->← 左右滑动查看全部人员 →</div>
-      <div data-page-node-id="LA31G2171dgSTIKQdMOMl0" class="tbl-scroll" id="tbl-wrap">
-        <table data-page-node-id="N1pQ2FSPFkhiNqH2a5bVTI" class="rep">
-          <thead data-page-node-id="poo9TGy9szwYbpaheK9LNg"><tr data-page-node-id="nNTBvOpMeos04TFQACDm5V" id="thead-row"></tr></thead>
-          <tbody data-page-node-id="4iHdXqChXNEZLxOwPIBjZR" id="tbody"></tbody>
+      <div data-page-node-id="bYp3mrLYrTqHRQAclgNFAO" class="no-report" hidden id="no-report"></div>
+      <div data-page-node-id="3Wa5SRfKdDHruIUVVIyexs" class="tbl-hint" hidden id="tbl-hint"><!--pnid:Sr1ZGi690AQ8npSho04O1n-->← 左右滑动查看全部人员 →</div>
+      <div data-page-node-id="OHjD7lOXam0HqQyK0SHdgq" class="tbl-scroll" id="tbl-wrap">
+        <table data-page-node-id="dps3oWoSEO4zxEFeSgipFm" class="rep">
+          <thead data-page-node-id="NMLnFS1S3tLCID476hQ91y"><tr data-page-node-id="kLkDUyj7RvcQfOpz6zJpZg" id="thead-row"></tr></thead>
+          <tbody data-page-node-id="oBNhrLfLewEiNswIUss0H7" id="tbody"></tbody>
         </table>
       </div>
-      <div data-page-node-id="ZRf3qT3QEqGpxS0IOBfmMz" class="pos-line" id="pos-line"></div>
-      <ul data-page-node-id="dh88aeEPYcIdA6370Ppe6k" class="rep-notes" id="rep-notes" style="list-style:none"></ul>
+      <div data-page-node-id="O7udeMjBE8jM5q0QmYAbfY" class="pos-line" id="pos-line"></div>
+      <ul data-page-node-id="UMjdaPvhdDEqxyc0EA4h99" class="rep-notes" id="rep-notes" style="list-style:none"></ul>
+    </div>
+
+    <div data-page-node-id="aTKZcqhVuYmiwFlibs6oAG" class="panel" style="margin-top:14px">
+      <div data-page-node-id="Qjmgaufpz1184W2oUVaM9b" class="rep-head">
+        <span data-page-node-id="aoxJmoBEOjaQtrGksJybh6" class="rep-title"><!--pnid:tsCU3PlNe8rYhpo8GOTJ7t-->部门报表 <span data-page-node-id="luaathnRxSFAjM9NLYpApY" class="hint"><!--pnid:YwZoLCN0huTL4xRk4dQj73-->行=漏斗指标 · 列=日期（新→旧）· 随日期选择联动 · 不足 7 天自动补足</span></span>
+        <span data-page-node-id="mC17cbVEezzMB8woCFdkuY" class="rep-tag" id="dept-title"><!--pnid:jsSJNBSLHqovO8eTM2bWBu-->—</span>
+      </div>
+      <div data-page-node-id="O4IprXj4Z0TFd0ZlGQm0u2" class="tbl-hint" hidden id="dept-hint"><!--pnid:lwjb2yuz8P9yMesc1HF1bd-->← 左右滑动查看全部日期 →</div>
+      <div data-page-node-id="DbFdW3XdbzCk7NRxJLyXan" class="tbl-scroll" id="dept-wrap">
+        <table data-page-node-id="2gg9WYDNLv68KoyQoYAEWr" class="rep rep2">
+          <thead data-page-node-id="nlzTLaThvHTQVhSvZ3r1WR"><tr data-page-node-id="b6wI7nSoHdp2g1mTXBAg7P" id="dept-head"></tr></thead>
+          <tbody data-page-node-id="a3gmfMQnC2OGgDHUmnLYhJ" id="dept-body"></tbody>
+        </table>
+      </div>
+      <ul data-page-node-id="zMRcjiJwj4cbxl84T4NPaZ" class="rep-notes" id="dept-notes" style="list-style:none"></ul>
     </div>
   </section>
 
-  <!--pnid:ZSlS7XLoimG7EbeMHGBJBv--><!-- 图表（逐日趋势 + 岗位分布） -->
-  <section data-page-node-id="99EUaX3YZQeqWrSIqLWiUA" class="grid-charts" style="margin-bottom:14px">
-    <div data-page-node-id="DyZxUORQkKj9UIO0YXwh8J" class="sec-title"><!--pnid:plRe4VWFiT2hnfojzInNl2-->逐日趋势 <span data-page-node-id="wUE6f6DRxqngnjWCoAtNtx" class="hint"><!--pnid:aOcgmu6af8oINRQGx8Cs6l-->全期口径 · 高亮当前所选日期/区间</span></div>
-    <div data-page-node-id="Uqu8yjXvIWpnXHtHYBt8ja" class="panel"><div data-page-node-id="Lb1YTTwfZrVbLmNyt9qPfZ" class="chart" id="trend"></div></div>
-    <div data-page-node-id="kR1fLT5xYe4ZnefWMS79Rm" class="sec-title" style="margin-top:14px"><!--pnid:941gcKYkwz6D95OMOMk3yY-->岗位分布 <span data-page-node-id="oG1dUbnFuNSdLnxa85ZSjb" class="hint"><!--pnid:OMYSOmu5vx7XAcYVRSkNH4-->全期口径：邀约 · 到面 · 通过 · 入职</span></div>
-    <div data-page-node-id="md7Rw1mGIhTKCranIxGs58" class="panel"><div data-page-node-id="bALDTvHJTFAgFYR065sNYr" class="chart" id="pos"></div></div>
+  <!--pnid:IrFGk1ABN6iRBmUx25r4pO--><!-- 图表（逐日趋势 + 客户分布） -->
+  <section data-page-node-id="gkTzWKuGYBh8zwcwgpuiLe" class="grid-charts" style="margin-bottom:14px">
+    <div data-page-node-id="IiHnoRXpbEOXVwTn0s2CFo" class="sec-title"><!--pnid:RcrOc9E3QGAFg97sHqtZUL-->逐日趋势 <span data-page-node-id="BjOcRJSKHhFZtgp1C9IhBi" class="hint"><!--pnid:01CaX64MZThptOQld6t1nb-->全期口径 · 高亮当前所选日期/区间</span></div>
+    <div data-page-node-id="BMp1Qr2Y9h2BMYFD2yLRsx" class="panel"><div data-page-node-id="V22MWOT9dEI8Jqona7XTjW" class="chart" id="trend"></div></div>
+    <div data-page-node-id="Er59eRHGVnKu1JaVHqzxbK" class="sec-title" style="margin-top:14px"><!--pnid:AmiA32LDO4tDc5ms2uiUmn-->客户分布 <span data-page-node-id="CN6uI0zJdnHYN1qXFpR5cX" class="hint"><!--pnid:iOCA3MjvLvmJKreW7KzYFc-->按客户项目 · 邀约 · 到面 · 通过 · 入职</span></div>
+    <div data-page-node-id="XetzcSaI8I8Hylx2077SCD" class="panel"><div data-page-node-id="s5UCxc17JydNUcGjUDOpil" class="chart" id="cli"></div></div>
   </section>
 
-  <!--pnid:bZgoY9lOKvA15WotcODUGl--><!-- 区域4 环节分析与待核事项 -->
-  <section data-page-node-id="YZa0sluTFw2OybCWoqMdpz">
-    <div data-page-node-id="7VvpVbu5h8drZ7K7UYHAow" class="sec-title"><!--pnid:Jm4JPIbU5zHrAdglTi0tmQ-->环节分析与待核事项 <span data-page-node-id="Va41CGPZMx7OKZrkj6b1C4" class="hint"><!--pnid:llpqg2SSFfLRA5RWIDe9pX-->点击展开人员 / 项目 / 待核清单 · 随所选日期联动</span></div>
-    <div data-page-node-id="yOJdS6aT6OmoCRfXyBeJxk" class="stages-grid" id="stages"></div>
+  <!--pnid:p81bWtB0cSndo0PrWYSrAL--><!-- 区域4 环节分析与待核事项 -->
+  <section data-page-node-id="BaT1cLtgTuF9ZcecZemMQ7">
+    <div data-page-node-id="N4NYHeTAXjGQTNJdGpLFH9" class="sec-title"><!--pnid:qZznK9xY1vS8PS6Yr2nuHg-->环节分析与待核事项 <span data-page-node-id="Jflrm2eiujbTARz8K5O7Rp" class="hint"><!--pnid:GTpyQyLgdA6F2uNkfBubyu-->点击展开人员 / 项目 / 待核清单 · 随所选日期联动</span></div>
+    <div data-page-node-id="LQI5uAUbzL0V0fZW7vz53o" class="stages-grid" id="stages"></div>
   </section>
 
-  <!--pnid:C6lqFcoaoYJZ1oAQIx5DW8--><!-- 口径 -->
-  <details data-page-node-id="iMAW9Lpfy3i2bQBVUJkJOX" class="notes">
-    <summary data-page-node-id="BABKqRG5ydmoYdifVz9T0m"><!--pnid:PU1aFKRdbhUx1Dnvv3pzK2-->统计口径说明（点击展开）</summary>
-    <ol data-page-node-id="v85vomNYEJKeJ2NeXu8WX6" id="notes"></ol>
-    <div data-page-node-id="mFU1nLz3GqudLg6oWqGYlQ" class="health">
-      <h4 data-page-node-id="9N56st7Jkar9tlew691KtJ"><!--pnid:g7N6Z4SkgUsciaZohqwwf0-->数据健康度（各源表最新日期）</h4>
-      <div data-page-node-id="J1KyA8OuWkceFZ6TznEi0A" class="rows" id="health"></div>
+  <!--pnid:bMPZRBhgqFJAUIfK1M66IK--><!-- 口径 -->
+  <details data-page-node-id="3ZojK0KjEcBKSYApgmlSYQ" class="notes">
+    <summary data-page-node-id="y0RE0y4XvvecR7GUa5EpLK"><!--pnid:YFdLV6xv49gFqWeDCf2iwh-->统计口径说明（点击展开）</summary>
+    <ol data-page-node-id="IW9IQ3MzFJNyvYT2URn5tm" id="notes"></ol>
+    <div data-page-node-id="8oqiIocaN9on51DTRsOaDH" class="health">
+      <h4 data-page-node-id="47tzF5pm2NleEMMnTE75mX"><!--pnid:zqjJYcNlmbt55yNkt4dQiF-->数据健康度（各源表最新日期）</h4>
+      <div data-page-node-id="bXKNF3YuNjLTeklXgT6NIb" class="rows" id="health"></div>
     </div>
   </details>
 </div>
 
-<script data-page-node-id="qzDvlNWmUt9dnfTd0crdmB" data-pnid-children="6JntmrLq0ZTnSJPbdKE6hk">
-window.__DATA__ = {"meta": {"generated_at": "2026-10-24 16:55", "latest_report": "2026-10-23", "first_day": "2026-10-09", "range": {"from": "2026-10-09", "to": "2026-10-23"}, "people": ["戴刚烈", "柴海良", "冯佳豪", "李建江", "吕宁"], "rcv_start": "2026-10-13", "health": {"boss": "2026-10-23", "resume": "2026-10-21", "wecom": "2026-10-23", "invite": "2026-10-22", "onboard": "2026-10-22"}}, "daily": {"2026-10-09": {"metrics": {"发布岗位数": [2, 3, 3, 4, 3], "BOSS帐号": [2, 2, 2, 2, 1], "我看过": [11, 140, 0, 11, 1], "看过我": [42, 434, 0, 117, 170], "我打招呼": [31, 50, 0, 0, 9], "牛人新招呼": [9, 48, 0, 18, 13], "我沟通": [38, 88, 0, 18, 12], "企微添加数": [2, 16, 1, 11, 0], "收到简历数": null, "发出邀约": [0, 0, 0, 0, 0], "实际到面": [0, 0, 0, 0, 0], "未到面": [0, 0, 0, 0, 0], "待面试/待定": [0, 0, 0, 0, 0], "面试通过": [0, 0, 0, 0, 0], "核实入职": [0, 0, 0, 0, 0], "收获简历": [0, 0, 0, 0, 0]}, "positions": ["检验员", "普工", "半导体普工"], "covered": 5, "has_report": true}, "2026-10-10": {"metrics": {"发布岗位数": [5, 5, 3, 4, 3], "BOSS帐号": [2, 2, 2, 2, 1], "我看过": [9, 161, 8, 528, 41], "看过我": [155, 610, 100, 423, 268], "我打招呼": [0, 144, 6, 100, 46], "牛人新招呼": [20, 88, 10, 50, 29], "我沟通": [21, 211, 9, 147, 71], "企微添加数": [3, 22, 6, 19, 0], "收到简历数": null, "发出邀约": [2, 5, 2, 2, 5], "实际到面": [2, 3, 2, 1, 5], "未到面": [0, 2, 0, 1, 0], "待面试/待定": [0, 0, 0, 0, 0], "面试通过": [0, 1, 1, 1, 2], "核实入职": [0, 0, 0, 0, 0], "收获简历": [0, 0, 0, 0, 0]}, "positions": ["检验员", "半导体普工", "普工"], "covered": 5, "has_report": true}, "2026-10-11": {"metrics": {"发布岗位数": [5, 4, 3, 5, 2], "BOSS帐号": [2, 2, 2, 2, 1], "我看过": [117, 189, 65, 412, 52], "看过我": [168, 435, 100, 290, 63], "我打招呼": [100, 50, 19, 100, 31], "牛人新招呼": [20, 44, 8, 33, 1], "我沟通": [123, 96, 24, 139, 32], "企微添加数": [0, 18, 2, 21, 0], "收到简历数": null, "发出邀约": [0, 0, 0, 0, 0], "实际到面": [0, 0, 0, 0, 0], "未到面": [0, 0, 0, 0, 0], "待面试/待定": [0, 0, 0, 0, 0], "面试通过": [0, 0, 0, 0, 0], "核实入职": [0, 0, 0, 0, 0], "收获简历": [0, 0, 0, 0, 0]}, "positions": ["半导体普工", "检验员"], "covered": 5, "has_report": true}, "2026-10-12": {"metrics": {"发布岗位数": [4, 4, 4, 8, 2], "BOSS帐号": [2, 2, 2, 2, 1], "我看过": [184, 367, 67, 167, 27], "看过我": [210, 336, 170, 351, 88], "我打招呼": [100, 94, 39, 100, 49], "牛人新招呼": [23, 53, 15, 38, 10], "我沟通": [125, 128, 48, 138, 55], "企微添加数": [6, 6, 4, 23, 5], "收到简历数": null, "发出邀约": [0, 5, 2, 5, 4], "实际到面": [0, 3, 2, 1, 2], "未到面": [0, 0, 0, 3, 0], "待面试/待定": [0, 2, 0, 1, 2], "面试通过": [0, 0, 2, 1, 1], "核实入职": [0, 1, 0, 0, 0], "收获简历": [0, 0, 0, 0, 0]}, "positions": ["检验员", "半导体普工", "仓管员"], "covered": 5, "has_report": true}, "2026-10-13": {"metrics": {"发布岗位数": [6, 4, 4, 5, 2], "BOSS帐号": [2, 2, 2, 2, 1], "我看过": [6, 54, 24, 338, 13], "看过我": [782, 455, 273, 288, 138], "我打招呼": [100, 26, 21, 100, 17], "牛人新招呼": [148, 72, 32, 36, 27], "我沟通": [220, 59, 32, 130, 24], "企微添加数": [21, 11, 6, 13, 2], "收到简历数": [63, 5, 7, 11, 4], "发出邀约": [0, 0, 1, 1, 0], "实际到面": [0, 0, 0, 1, 0], "未到面": [0, 0, 1, 0, 0], "待面试/待定": [0, 0, 0, 0, 0], "面试通过": [0, 0, 0, 0, 0], "核实入职": [0, 0, 0, 1, 0], "收获简历": [63, 4, 7, 11, 4]}, "positions": ["检验员", "仓管员", "半导体普工"], "covered": 5, "has_report": true}, "2026-10-14": {"metrics": {"发布岗位数": [6, 4, 4, 7, 2], "BOSS帐号": [2, 2, 2, 2, 1], "我看过": [3, 105, 52, 155, 28], "看过我": [567, 325, 171, 211, 88], "我打招呼": [100, 88, 32, 100, 16], "牛人新招呼": [106, 28, 19, 35, 18], "我沟通": [230, 108, 43, 130, 23], "企微添加数": [9, 3, 3, 5, 1], "收到简历数": [72, 0, 3, 6, 1], "发出邀约": [1, 0, 0, 0, 0], "实际到面": [0, 0, 0, 0, 0], "未到面": [0, 0, 0, 0, 0], "待面试/待定": [1, 0, 0, 0, 0], "面试通过": [0, 0, 0, 0, 0], "核实入职": [0, 0, 0, 0, 1], "收获简历": [72, 0, 2, 5, 1]}, "positions": ["国际销售经理", "仓管员", "检验员", "半导体普工"], "covered": 5, "has_report": true}, "2026-10-15": {"metrics": {"发布岗位数": [2, 4, 4, 6, 2], "BOSS帐号": [2, 2, 2, 2, 1], "我看过": [58, 30, 138, 77, 81], "看过我": [473, 395, 175, 233, 122], "我打招呼": [100, 2, 57, 13, 32], "牛人新招呼": [88, 89, 18, 28, 16], "我沟通": [219, 67, 66, 41, 44], "企微添加数": [14, 5, 4, 6, 5], "收到简历数": [86, 39, 6, 3, 7], "发出邀约": [0, 1, 1, 2, 0], "实际到面": [0, 0, 1, 1, 0], "未到面": [0, 0, 0, 0, 0], "待面试/待定": [0, 1, 0, 1, 0], "面试通过": [0, 0, 1, 0, 0], "核实入职": [0, 0, 1, 0, 0], "收获简历": [86, 39, 6, 3, 7]}, "positions": ["仓管员", "国际销售经理", "检验员"], "covered": 5, "has_report": true}, "2026-10-16": {"metrics": {"发布岗位数": [4, 4, 4, 6, 2], "BOSS帐号": [2, 2, 2, 2, 1], "我看过": [69, 57, 84, 44, 115], "看过我": [401, 245, 128, 81, 77], "我打招呼": [100, 39, 62, 50, 34], "牛人新招呼": [93, 38, 14, 3, 21], "我沟通": [227, 87, 73, 54, 50], "企微添加数": [5, 1, 6, 1, 2], "收到简历数": [49, 10, 3, 0, 10], "发出邀约": [0, 0, 0, 0, 1], "实际到面": [0, 0, 0, 0, 1], "未到面": [0, 0, 0, 0, 0], "待面试/待定": [0, 0, 0, 0, 0], "面试通过": [0, 0, 0, 0, 1], "核实入职": [0, 0, 2, 0, 0], "收获简历": [49, 10, 3, 0, 10]}, "positions": ["国际销售经理", "仓管员", "检验员"], "covered": 5, "has_report": true}, "2026-10-17": {"metrics": {"发布岗位数": [4, 0, 0, 0, 0], "BOSS帐号": [2, 2, 2, 2, 1], "我看过": [57, 0, 0, 0, 0], "看过我": [306, 0, 0, 0, 0], "我打招呼": [100, 0, 0, 0, 0], "牛人新招呼": [71, 0, 0, 0, 0], "我沟通": [213, 0, 0, 0, 0], "企微添加数": [2, 1, 0, 2, 0], "收到简历数": [48, 3, 0, 0, 0], "发出邀约": [0, 0, 0, 0, 0], "实际到面": [0, 0, 0, 0, 0], "未到面": [0, 0, 0, 0, 0], "待面试/待定": [0, 0, 0, 0, 0], "面试通过": [0, 0, 0, 0, 0], "核实入职": [0, 0, 0, 0, 0], "收获简历": [50, 0, 0, 0, 0]}, "positions": ["国际销售经理", "仓管员"], "covered": 1, "has_report": true}, "2026-10-18": {"metrics": {"发布岗位数": [4, 0, 0, 0, 0], "BOSS帐号": [2, 2, 2, 2, 1], "我看过": [24, 0, 0, 0, 0], "看过我": [381, 0, 0, 0, 0], "我打招呼": [100, 0, 0, 0, 0], "牛人新招呼": [92, 0, 0, 0, 0], "我沟通": [228, 0, 0, 0, 0], "企微添加数": [2, 0, 0, 0, 0], "收到简历数": [68, 0, 0, 0, 1], "发出邀约": [0, 0, 0, 1, 0], "实际到面": [0, 0, 0, 1, 0], "未到面": [0, 0, 0, 0, 0], "待面试/待定": [0, 0, 0, 0, 0], "面试通过": [0, 0, 0, 1, 0], "核实入职": [0, 0, 0, 0, 0], "收获简历": [68, 0, 0, 0, 0]}, "positions": ["国际销售经理", "仓管员"], "covered": 1, "has_report": true}, "2026-10-19": {"metrics": {"发布岗位数": [4, 4, 4, 0, 4], "BOSS帐号": [2, 2, 2, 2, 1], "我看过": [5, 60, 71, 0, 61], "看过我": [613, 130, 90, 0, 113], "我打招呼": [100, 47, 52, 0, 54], "牛人新招呼": [202, 8, 5, 0, 20], "我沟通": [346, 59, 55, 0, 69], "企微添加数": [1, 0, 4, 0, 2], "收到简历数": [124, 1, 3, 0, 3], "发出邀约": [0, 0, 0, 0, 0], "实际到面": [0, 0, 0, 0, 0], "未到面": [0, 0, 0, 0, 0], "待面试/待定": [0, 0, 0, 0, 0], "面试通过": [0, 0, 0, 0, 0], "核实入职": [0, 0, 0, 0, 0], "收获简历": [124, 1, 2, 0, 3]}, "positions": ["国际销售经理", "仓管员", "检验员", "普工/操作工", "普工"], "covered": 4, "has_report": true}, "2026-10-20": {"metrics": {"发布岗位数": [6, 5, 5, 0, 4], "BOSS帐号": [2, 2, 2, 2, 1], "我看过": [15, 133, 152, 0, 115], "看过我": [486, 126, 103, 0, 121], "我打招呼": [100, 58, 79, 0, 61], "牛人新招呼": [112, 13, 7, 0, 8], "我沟通": [255, 73, 83, 0, 73], "企微添加数": [16, 2, 2, 0, 3], "收到简历数": [82, 4, 0, 0, 5], "发出邀约": [0, 0, 0, 0, 1], "实际到面": [0, 0, 0, 0, 1], "未到面": [0, 0, 0, 0, 0], "待面试/待定": [0, 0, 0, 0, 0], "面试通过": [0, 0, 0, 0, 1], "核实入职": [0, 0, 0, 0, 0], "收获简历": [82, 4, 0, 0, 5]}, "positions": ["国际销售经理", "仓管员", "会计", "检验员", "普工/操作工", "普工"], "covered": 4, "has_report": true}, "2026-10-21": {"metrics": {"发布岗位数": [6, 4, 4, 0, 4], "BOSS帐号": [2, 2, 2, 2, 1], "我看过": [124, 368, 138, 0, 66], "看过我": [575, 123, 84, 0, 105], "我打招呼": [100, 100, 100, 0, 93], "牛人新招呼": [110, 12, 11, 0, 14], "我沟通": [246, 111, 103, 0, 106], "企微添加数": [22, 2, 2, 0, 5], "收到简历数": [79, 2, 0, 0, 2], "发出邀约": [0, 0, 0, 0, 0], "实际到面": [0, 0, 0, 0, 0], "未到面": [0, 0, 0, 0, 0], "待面试/待定": [0, 0, 0, 0, 0], "面试通过": [0, 0, 0, 0, 0], "核实入职": [0, 0, 0, 0, 0], "收获简历": [79, 2, 2, 0, 2]}, "positions": ["国际销售经理", "仓管员", "会计", "检验员", "普工"], "covered": 4, "has_report": true}, "2026-10-22": {"metrics": {"发布岗位数": [5, 4, 4, 0, 4], "BOSS帐号": [2, 2, 2, 2, 1], "我看过": [198, 400, 279, 0, 141], "看过我": [546, 110, 133, 0, 109], "我打招呼": [100, 100, 100, 0, 100], "牛人新招呼": [85, 13, 37, 0, 16], "我沟通": [235, 110, 113, 0, 117], "企微添加数": [14, 4, 0, 0, 7], "收到简历数": [0, 0, 0, 0, 0], "发出邀约": [0, 0, 0, 0, 1], "实际到面": [0, 0, 0, 0, 0], "未到面": [0, 0, 0, 0, 1], "待面试/待定": [0, 0, 0, 0, 0], "面试通过": [0, 0, 0, 0, 0], "核实入职": [0, 0, 0, 0, 1], "收获简历": [64, 1, 3, 0, 5]}, "positions": ["国际销售经理", "会计", "仓管员", "检验员", "普工"], "covered": 4, "has_report": true}, "2026-10-23": {"metrics": {"发布岗位数": [5, 4, 4, 3, 2], "BOSS帐号": [2, 2, 2, 2, 1], "我看过": [145, 176, 17, 83, 68], "看过我": [341, 80, 69, 30, 70], "我打招呼": [100, 99, 99, 50, 47], "牛人新招呼": [70, 10, 7, 5, 20], "我沟通": [221, 108, 105, 54, 68], "企微添加数": [12, 6, 2, 0, 7], "收到简历数": [0, 0, 0, 0, 0], "发出邀约": [0, 0, 0, 0, 0], "实际到面": [0, 0, 0, 0, 0], "未到面": [0, 0, 0, 0, 0], "待面试/待定": [0, 0, 0, 0, 0], "面试通过": [0, 0, 0, 0, 0], "核实入职": [0, 0, 0, 0, 0], "收获简历": [65, 1, 0, 0, 14]}, "positions": ["仓管员", "国际销售经理", "会计", "普工", "检验员"], "covered": 5, "has_report": true}}, "invite_records": [{"d": "2026-10-10", "p": "冯佳豪", "cand": "冯庆宇", "pos": "封测工", "proj": "秋水", "a": "到面", "ps": "未通过", "ob": "无", "iv": "2026.10.10", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-10", "p": "柴海良", "cand": "董浩男", "pos": "封测工", "proj": "秋水", "a": "到面", "ps": "未通过", "ob": "无", "iv": "2026.10.10", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-10", "p": "吕宁", "cand": "王庆伟", "pos": "封测工", "proj": "秋水", "a": "到面", "ps": "未通过", "ob": "无", "iv": "2026.10.12", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-10", "p": "吕宁", "cand": "唐明怡", "pos": "封测工", "proj": "秋水", "a": "到面", "ps": "通过", "ob": "入职", "iv": "2026.10.12", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-10", "p": "吕宁", "cand": "晏廷进", "pos": "封测工", "proj": "秋水", "a": "到面", "ps": "通过", "ob": "无", "iv": "2026.10.12", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-10", "p": "吕宁", "cand": "陈保密", "pos": "封测工", "proj": "秋水", "a": "到面", "ps": "未通过", "ob": "无", "iv": "2026.10.12", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-10", "p": "柴海良", "cand": "陈元霞", "pos": "检验员", "proj": "达尔", "a": "到面", "ps": "未通过", "ob": "无", "iv": "2026.10.10", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-10", "p": "柴海良", "cand": "王晓", "pos": "巡检", "proj": "达尔", "a": "到面", "ps": "通过", "ob": "入职", "iv": "2026.10.10", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-10", "p": "柴海良", "cand": "彭水秀", "pos": "检验员", "proj": "达尔", "a": "未到面", "ps": "未通过", "ob": "无", "iv": "2026.10.10", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-10", "p": "柴海良", "cand": "刘慧", "pos": "检验员", "proj": "达尔", "a": "未到面", "ps": "未通过", "ob": "无", "iv": "2026.10.10", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-10", "p": "冯佳豪", "cand": "卢锦怡", "pos": "封测工", "proj": "秋水", "a": "到面", "ps": "通过", "ob": "入职", "iv": "2026.10.10", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-10", "p": "吕宁", "cand": "唐梓源", "pos": "封测工", "proj": "秋水", "a": "到面", "ps": "未通过", "ob": "无", "iv": "2026.10.12", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-10", "p": "戴刚烈", "cand": "曹镓骏", "pos": "封测工", "proj": "秋水", "a": "到面", "ps": "未通过", "ob": "无", "iv": "2026.10.12", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-10", "p": "戴刚烈", "cand": "曹连栋", "pos": "封测工", "proj": "秋水", "a": "到面", "ps": "未通过", "ob": "无", "iv": "2026.10.12", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-10", "p": "李建江", "cand": "董芳芳", "pos": "检验员", "proj": "达尔", "a": "到面", "ps": "通过", "ob": "试岗离职", "iv": "2026.10.10", "rv1": "试岗当天放弃", "rv3": "", "rv7": ""}, {"d": "2026-10-10", "p": "李建江", "cand": "姚雯", "pos": "检验员", "proj": "达尔", "a": "未到面", "ps": "待补", "ob": "无", "iv": "2026.10.12", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-12", "p": "李建江", "cand": "连玉娴", "pos": "振测", "proj": "达尔", "a": "到面", "ps": "通过", "ob": "入职", "iv": "2026.10.12", "rv1": "适应", "rv3": "在职", "rv7": ""}, {"d": "2026-10-12", "p": "吕宁", "cand": "刘瑞艳", "pos": "封测工", "proj": "秋水", "a": "到面", "ps": "通过", "ob": "无", "iv": "2026.10.12", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-12", "p": "吕宁", "cand": "生茂棠", "pos": "封测工", "proj": "秋水", "a": "到面", "ps": "未通过", "ob": "无", "iv": "2026.10.12", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-12", "p": "李建江", "cand": "李慧娟", "pos": "检验员", "proj": "福智芯", "a": "未到面", "ps": "待补", "ob": "无", "iv": "2026.10.13", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-12", "p": "李建江", "cand": "胡绍芬", "pos": "检验员", "proj": "福智芯", "a": "未到面", "ps": "待补", "ob": "无", "iv": "2026.10.13", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-12", "p": "柴海良", "cand": "兰萍", "pos": "振测", "proj": "达尔", "a": "到面", "ps": "未通过", "ob": "无", "iv": "2026.10.12", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-12", "p": "柴海良", "cand": "孟伟", "pos": "封测工", "proj": "秋水", "a": "到面", "ps": "待补", "ob": "无", "iv": "2026.10.12", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-12", "p": "吕宁", "cand": "杨月梅", "pos": "封测工", "proj": "秋水", "a": "待补", "ps": "待补", "ob": "无", "iv": "2026.10.13", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-12", "p": "柴海良", "cand": "宋晗钰", "pos": "封测工", "proj": "秋水", "a": "到面", "ps": "待补", "ob": "无", "iv": "", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-12", "p": "柴海良", "cand": "彭易超", "pos": "封测工", "proj": "秋水", "a": "待补", "ps": "待补", "ob": "无", "iv": "", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-12", "p": "柴海良", "cand": "官建根", "pos": "封测工", "proj": "秋水", "a": "待补", "ps": "待补", "ob": "无", "iv": "", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-12", "p": "吕宁", "cand": "沈月娥", "pos": "封测工", "proj": "秋水", "a": "待补", "ps": "待补", "ob": "无", "iv": "2026.10.13", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-12", "p": "冯佳豪", "cand": "李先齐", "pos": "封测工", "proj": "秋水", "a": "到面", "ps": "通过", "ob": "入职", "iv": "2026.10.12", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-12", "p": "冯佳豪", "cand": "金忆梦", "pos": "检验员", "proj": "达尔", "a": "到面", "ps": "通过", "ob": "入职", "iv": "2026.10.13", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-12", "p": "李建江", "cand": "田素素", "pos": "仓管员", "proj": "达尔", "a": "未到面", "ps": "待补", "ob": "无", "iv": "2026.10.13", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-12", "p": "李建江", "cand": "邓书琴", "pos": "振测", "proj": "达尔", "a": "待补", "ps": "待补", "ob": "无", "iv": "2026.10.14", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-13", "p": "李建江", "cand": "肖田华", "pos": "振测", "proj": "达尔", "a": "到面", "ps": "未通过", "ob": "无", "iv": "2026.10.14", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-13", "p": "冯佳豪", "cand": "文佳佳", "pos": "振测", "proj": "达尔", "a": "未到面", "ps": "待补", "ob": "无", "iv": "2026.10.14", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-14", "p": "戴刚烈", "cand": "周茹美", "pos": "仓管员", "proj": "达尔", "a": "待补", "ps": "待补", "ob": "无", "iv": "2026.10.15", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-15", "p": "冯佳豪", "cand": "金沙沙", "pos": "振测", "proj": "达尔", "a": "到面", "ps": "通过", "ob": "无", "iv": "2026.10.15", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-15", "p": "李建江", "cand": "王慧", "pos": "振测", "proj": "达尔", "a": "到面", "ps": "未通过", "ob": "无", "iv": "2026.10.15", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-15", "p": "柴海良", "cand": "王一", "pos": "振测", "proj": "达尔", "a": "待补", "ps": "待补", "ob": "无", "iv": "", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-15", "p": "李建江", "cand": "谭小丽", "pos": "振测", "proj": "达尔", "a": "待补", "ps": "待补", "ob": "无", "iv": "2026.10.16", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-16", "p": "吕宁", "cand": "杨雪莲", "pos": "仓管员", "proj": "达尔", "a": "到面", "ps": "通过", "ob": "无", "iv": "2026.10.16", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-18", "p": "李建江", "cand": "徐月", "pos": "振测", "proj": "达尔", "a": "到面", "ps": "通过", "ob": "无", "iv": "2026.10.19", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-20", "p": "吕宁", "cand": "赵文艳", "pos": "操作工", "proj": "博格华纳", "a": "到面", "ps": "通过", "ob": "入职", "iv": "2026.10.20", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-22", "p": "吕宁", "cand": "朱桓毅", "pos": "操作工", "proj": "博格华纳", "a": "未到面", "ps": "待补", "ob": "无", "iv": "2026.10.22", "rv1": "", "rv3": "", "rv7": ""}], "positions_stat": [{"name": "封测工", "邀约": 19, "到面": 15, "通过": 5, "入职": 3, "项目": ["秋水"]}, {"name": "检验员", "邀约": 8, "到面": 3, "通过": 2, "入职": 2, "项目": ["福智芯", "达尔"]}, {"name": "振测", "邀约": 10, "到面": 6, "通过": 3, "入职": 1, "项目": ["达尔"]}, {"name": "操作工", "邀约": 2, "到面": 1, "通过": 1, "入职": 1, "项目": ["博格华纳"]}, {"name": "巡检", "邀约": 1, "到面": 1, "通过": 1, "入职": 0, "项目": ["达尔"]}, {"name": "仓管员", "邀约": 3, "到面": 1, "通过": 1, "入职": 0, "项目": ["达尔"]}]};
+<script data-page-node-id="Q35NEJEPZIneeuHiKH4jXa" data-pnid-children="W9xm3amsCiS7InsnrzWLzO">
+window.__DATA__ = {"meta": {"generated_at": "2026-11-01 21:47", "latest_report": "2026-10-31", "first_day": "2026-10-09", "range": {"from": "2026-10-09", "to": "2026-10-31"}, "people": ["戴刚烈", "柴海良", "冯佳豪", "李建江", "吕宁"], "rcv_start": "2026-10-13", "health": {"boss": "2026-10-31", "resume": "2026-10-31", "wecom": "2026-10-31", "invite": "2026-10-29", "onboard": "2026-10-29"}}, "daily": {"2026-10-09": {"metrics": {"发布岗位数": [2, 3, 3, 4, 3], "BOSS帐号": [2, 2, 2, 2, 1], "我看过": [11, 140, 0, 11, 1], "看过我": [42, 434, 0, 117, 170], "我打招呼": [31, 50, 0, 0, 9], "牛人新招呼": [9, 48, 0, 18, 13], "我沟通": [38, 88, 0, 18, 12], "企微添加数": [2, 16, 1, 11, 0], "收到简历数": null, "发出邀约": [0, 0, 0, 0, 0], "实际到面": [0, 0, 0, 0, 0], "未到面": [0, 0, 0, 0, 0], "待面试/待定": [0, 0, 0, 0, 0], "面试通过": [0, 0, 0, 0, 0], "核实入职": [0, 0, 0, 0, 0], "收获简历": [0, 0, 0, 0, 0]}, "positions": ["检验员", "普工", "半导体普工"], "covered": 5, "has_report": true}, "2026-10-10": {"metrics": {"发布岗位数": [5, 5, 3, 4, 3], "BOSS帐号": [2, 2, 2, 2, 1], "我看过": [9, 161, 8, 528, 41], "看过我": [155, 610, 100, 423, 268], "我打招呼": [0, 144, 6, 100, 46], "牛人新招呼": [20, 88, 10, 50, 29], "我沟通": [21, 211, 9, 147, 71], "企微添加数": [3, 22, 6, 19, 0], "收到简历数": null, "发出邀约": [2, 5, 2, 2, 5], "实际到面": [2, 3, 2, 1, 5], "未到面": [0, 2, 0, 1, 0], "待面试/待定": [0, 0, 0, 0, 0], "面试通过": [0, 1, 1, 1, 2], "核实入职": [0, 0, 0, 0, 0], "收获简历": [0, 0, 0, 0, 0]}, "positions": ["检验员", "半导体普工", "普工"], "covered": 5, "has_report": true}, "2026-10-11": {"metrics": {"发布岗位数": [5, 4, 3, 5, 2], "BOSS帐号": [2, 2, 2, 2, 1], "我看过": [117, 189, 65, 412, 52], "看过我": [168, 435, 100, 290, 63], "我打招呼": [100, 50, 19, 100, 31], "牛人新招呼": [20, 44, 8, 33, 1], "我沟通": [123, 96, 24, 139, 32], "企微添加数": [0, 18, 2, 21, 0], "收到简历数": null, "发出邀约": [0, 0, 0, 0, 0], "实际到面": [0, 0, 0, 0, 0], "未到面": [0, 0, 0, 0, 0], "待面试/待定": [0, 0, 0, 0, 0], "面试通过": [0, 0, 0, 0, 0], "核实入职": [0, 0, 0, 0, 0], "收获简历": [0, 0, 0, 0, 0]}, "positions": ["半导体普工", "检验员"], "covered": 5, "has_report": true}, "2026-10-12": {"metrics": {"发布岗位数": [4, 4, 4, 8, 2], "BOSS帐号": [2, 2, 2, 2, 1], "我看过": [184, 367, 67, 167, 27], "看过我": [210, 336, 170, 351, 88], "我打招呼": [100, 94, 39, 100, 49], "牛人新招呼": [23, 53, 15, 38, 10], "我沟通": [125, 128, 48, 138, 55], "企微添加数": [6, 6, 4, 23, 5], "收到简历数": null, "发出邀约": [0, 5, 2, 5, 4], "实际到面": [0, 3, 2, 1, 2], "未到面": [0, 0, 0, 3, 0], "待面试/待定": [0, 2, 0, 1, 2], "面试通过": [0, 0, 2, 1, 1], "核实入职": [0, 1, 0, 0, 0], "收获简历": [0, 0, 0, 0, 0]}, "positions": ["检验员", "半导体普工", "仓管员"], "covered": 5, "has_report": true}, "2026-10-13": {"metrics": {"发布岗位数": [6, 4, 4, 5, 2], "BOSS帐号": [2, 2, 2, 2, 1], "我看过": [6, 54, 24, 338, 13], "看过我": [782, 455, 273, 288, 138], "我打招呼": [100, 26, 21, 100, 17], "牛人新招呼": [148, 72, 32, 36, 27], "我沟通": [220, 59, 32, 130, 24], "企微添加数": [21, 11, 6, 13, 2], "收到简历数": [63, 5, 7, 11, 4], "发出邀约": [0, 0, 1, 1, 0], "实际到面": [0, 0, 0, 1, 0], "未到面": [0, 0, 1, 0, 0], "待面试/待定": [0, 0, 0, 0, 0], "面试通过": [0, 0, 0, 0, 0], "核实入职": [0, 0, 0, 1, 0], "收获简历": [63, 4, 7, 11, 4]}, "positions": ["检验员", "仓管员", "半导体普工"], "covered": 5, "has_report": true}, "2026-10-14": {"metrics": {"发布岗位数": [6, 4, 4, 7, 2], "BOSS帐号": [2, 2, 2, 2, 1], "我看过": [3, 105, 52, 155, 28], "看过我": [567, 325, 171, 211, 88], "我打招呼": [100, 88, 32, 100, 16], "牛人新招呼": [106, 28, 19, 35, 18], "我沟通": [230, 108, 43, 130, 23], "企微添加数": [9, 3, 3, 5, 1], "收到简历数": [72, 0, 3, 6, 1], "发出邀约": [1, 0, 0, 0, 0], "实际到面": [0, 0, 0, 0, 0], "未到面": [0, 0, 0, 0, 0], "待面试/待定": [1, 0, 0, 0, 0], "面试通过": [0, 0, 0, 0, 0], "核实入职": [0, 0, 0, 0, 1], "收获简历": [72, 0, 2, 5, 1]}, "positions": ["国际销售经理", "仓管员", "检验员", "半导体普工"], "covered": 5, "has_report": true}, "2026-10-15": {"metrics": {"发布岗位数": [2, 4, 4, 6, 2], "BOSS帐号": [2, 2, 2, 2, 1], "我看过": [58, 30, 138, 77, 81], "看过我": [473, 395, 175, 233, 122], "我打招呼": [100, 2, 57, 13, 32], "牛人新招呼": [88, 89, 18, 28, 16], "我沟通": [219, 67, 66, 41, 44], "企微添加数": [14, 5, 4, 6, 5], "收到简历数": [86, 39, 6, 3, 7], "发出邀约": [0, 1, 1, 2, 0], "实际到面": [0, 0, 1, 1, 0], "未到面": [0, 0, 0, 0, 0], "待面试/待定": [0, 1, 0, 1, 0], "面试通过": [0, 0, 1, 0, 0], "核实入职": [0, 0, 1, 0, 0], "收获简历": [86, 39, 6, 3, 7]}, "positions": ["仓管员", "国际销售经理", "检验员"], "covered": 5, "has_report": true}, "2026-10-16": {"metrics": {"发布岗位数": [4, 4, 4, 6, 2], "BOSS帐号": [2, 2, 2, 2, 1], "我看过": [69, 57, 84, 44, 115], "看过我": [401, 245, 128, 81, 77], "我打招呼": [100, 39, 62, 50, 34], "牛人新招呼": [93, 38, 14, 3, 21], "我沟通": [227, 87, 73, 54, 50], "企微添加数": [5, 1, 6, 1, 2], "收到简历数": [49, 10, 3, 0, 10], "发出邀约": [0, 0, 0, 0, 1], "实际到面": [0, 0, 0, 0, 1], "未到面": [0, 0, 0, 0, 0], "待面试/待定": [0, 0, 0, 0, 0], "面试通过": [0, 0, 0, 0, 1], "核实入职": [0, 0, 2, 0, 0], "收获简历": [49, 10, 3, 0, 10]}, "positions": ["国际销售经理", "仓管员", "检验员"], "covered": 5, "has_report": true}, "2026-10-17": {"metrics": {"发布岗位数": [4, 0, 0, 0, 0], "BOSS帐号": [2, 2, 2, 2, 1], "我看过": [57, 0, 0, 0, 0], "看过我": [306, 0, 0, 0, 0], "我打招呼": [100, 0, 0, 0, 0], "牛人新招呼": [71, 0, 0, 0, 0], "我沟通": [213, 0, 0, 0, 0], "企微添加数": [2, 1, 0, 2, 0], "收到简历数": [48, 3, 0, 0, 0], "发出邀约": [0, 0, 0, 0, 0], "实际到面": [0, 0, 0, 0, 0], "未到面": [0, 0, 0, 0, 0], "待面试/待定": [0, 0, 0, 0, 0], "面试通过": [0, 0, 0, 0, 0], "核实入职": [0, 0, 0, 0, 0], "收获简历": [50, 0, 0, 0, 0]}, "positions": ["国际销售经理", "仓管员"], "covered": 1, "has_report": true}, "2026-10-18": {"metrics": {"发布岗位数": [4, 0, 0, 0, 0], "BOSS帐号": [2, 2, 2, 2, 1], "我看过": [24, 0, 0, 0, 0], "看过我": [381, 0, 0, 0, 0], "我打招呼": [100, 0, 0, 0, 0], "牛人新招呼": [92, 0, 0, 0, 0], "我沟通": [228, 0, 0, 0, 0], "企微添加数": [2, 0, 0, 0, 0], "收到简历数": [68, 0, 0, 0, 1], "发出邀约": [0, 0, 0, 1, 0], "实际到面": [0, 0, 0, 1, 0], "未到面": [0, 0, 0, 0, 0], "待面试/待定": [0, 0, 0, 0, 0], "面试通过": [0, 0, 0, 1, 0], "核实入职": [0, 0, 0, 0, 0], "收获简历": [68, 0, 0, 0, 0]}, "positions": ["国际销售经理", "仓管员"], "covered": 1, "has_report": true}, "2026-10-19": {"metrics": {"发布岗位数": [4, 4, 4, 0, 4], "BOSS帐号": [2, 2, 2, 2, 1], "我看过": [5, 60, 71, 0, 61], "看过我": [613, 130, 90, 0, 113], "我打招呼": [100, 47, 52, 0, 54], "牛人新招呼": [202, 8, 5, 0, 20], "我沟通": [346, 59, 55, 0, 69], "企微添加数": [1, 0, 4, 0, 2], "收到简历数": [124, 1, 3, 0, 3], "发出邀约": [0, 0, 0, 0, 0], "实际到面": [0, 0, 0, 0, 0], "未到面": [0, 0, 0, 0, 0], "待面试/待定": [0, 0, 0, 0, 0], "面试通过": [0, 0, 0, 0, 0], "核实入职": [0, 0, 0, 0, 0], "收获简历": [124, 1, 2, 0, 3]}, "positions": ["国际销售经理", "仓管员", "检验员", "普工/操作工", "普工"], "covered": 4, "has_report": true}, "2026-10-20": {"metrics": {"发布岗位数": [6, 5, 5, 0, 4], "BOSS帐号": [2, 2, 2, 2, 1], "我看过": [15, 133, 152, 0, 115], "看过我": [486, 126, 103, 0, 121], "我打招呼": [100, 58, 79, 0, 61], "牛人新招呼": [112, 13, 7, 0, 8], "我沟通": [255, 73, 83, 0, 73], "企微添加数": [16, 2, 2, 0, 3], "收到简历数": [82, 4, 0, 0, 5], "发出邀约": [0, 0, 0, 0, 1], "实际到面": [0, 0, 0, 0, 1], "未到面": [0, 0, 0, 0, 0], "待面试/待定": [0, 0, 0, 0, 0], "面试通过": [0, 0, 0, 0, 1], "核实入职": [0, 0, 0, 0, 0], "收获简历": [82, 4, 0, 0, 5]}, "positions": ["国际销售经理", "仓管员", "会计", "检验员", "普工/操作工", "普工"], "covered": 4, "has_report": true}, "2026-10-21": {"metrics": {"发布岗位数": [6, 4, 4, 0, 4], "BOSS帐号": [2, 2, 2, 2, 1], "我看过": [124, 368, 138, 0, 66], "看过我": [575, 123, 84, 0, 105], "我打招呼": [100, 100, 100, 0, 93], "牛人新招呼": [110, 12, 11, 0, 14], "我沟通": [246, 111, 103, 0, 106], "企微添加数": [22, 2, 2, 0, 5], "收到简历数": [79, 2, 0, 0, 2], "发出邀约": [0, 0, 0, 0, 0], "实际到面": [0, 0, 0, 0, 0], "未到面": [0, 0, 0, 0, 0], "待面试/待定": [0, 0, 0, 0, 0], "面试通过": [0, 0, 0, 0, 0], "核实入职": [0, 0, 0, 0, 0], "收获简历": [79, 2, 2, 0, 2]}, "positions": ["国际销售经理", "仓管员", "会计", "检验员", "普工"], "covered": 4, "has_report": true}, "2026-10-22": {"metrics": {"发布岗位数": [5, 4, 4, 0, 4], "BOSS帐号": [2, 2, 2, 2, 1], "我看过": [198, 400, 279, 0, 141], "看过我": [546, 110, 133, 0, 109], "我打招呼": [100, 100, 100, 0, 100], "牛人新招呼": [85, 13, 37, 0, 16], "我沟通": [235, 110, 113, 0, 117], "企微添加数": [14, 4, 0, 0, 7], "收到简历数": [63, 2, 3, 0, 5], "发出邀约": [0, 0, 0, 0, 1], "实际到面": [0, 0, 0, 0, 0], "未到面": [0, 0, 0, 0, 1], "待面试/待定": [0, 0, 0, 0, 0], "面试通过": [0, 0, 0, 0, 0], "核实入职": [0, 0, 0, 0, 1], "收获简历": [64, 1, 3, 0, 5]}, "positions": ["国际销售经理", "会计", "仓管员", "检验员", "普工"], "covered": 4, "has_report": true}, "2026-10-23": {"metrics": {"发布岗位数": [5, 4, 4, 3, 2], "BOSS帐号": [2, 2, 2, 2, 1], "我看过": [145, 176, 17, 83, 68], "看过我": [341, 80, 69, 30, 70], "我打招呼": [100, 99, 99, 50, 47], "牛人新招呼": [70, 10, 7, 5, 20], "我沟通": [221, 108, 105, 54, 68], "企微添加数": [12, 6, 2, 0, 7], "收到简历数": [65, 1, 3, 0, 14], "发出邀约": [0, 0, 0, 0, 0], "实际到面": [0, 0, 0, 0, 0], "未到面": [0, 0, 0, 0, 0], "待面试/待定": [0, 0, 0, 0, 0], "面试通过": [0, 0, 0, 0, 0], "核实入职": [0, 0, 0, 0, 0], "收获简历": [65, 1, 0, 0, 14]}, "positions": ["仓管员", "国际销售经理", "会计", "普工", "检验员"], "covered": 5, "has_report": true}, "2026-10-24": {"metrics": {"发布岗位数": [7, 0, 4, 5, 2], "BOSS帐号": [2, 2, 2, 2, 1], "我看过": [170, 0, 195, 75, 82], "看过我": [219, 0, 96, 64, 51], "我打招呼": [100, 0, 100, 50, 50], "牛人新招呼": [46, 0, 7, 4, 11], "我沟通": [162, 0, 106, 64, 61], "企微添加数": [8, 2, 3, 7, 1], "收到简历数": [13, 0, 1, 1, 9], "发出邀约": [0, 0, 0, 0, 0], "实际到面": [0, 0, 0, 0, 0], "未到面": [0, 0, 0, 0, 0], "待面试/待定": [0, 0, 0, 0, 0], "面试通过": [0, 0, 0, 0, 0], "核实入职": [0, 0, 0, 0, 0], "收获简历": [12, 0, 0, 1, 8]}, "positions": ["国际销售经理", "仓管员", "普工", "会计", "检验员"], "covered": 4, "has_report": true}, "2026-10-25": {"metrics": {"发布岗位数": [6, 4, 4, 4, 2], "BOSS帐号": [2, 2, 2, 2, 1], "我看过": [153, 1, 275, 45, 69], "看过我": [217, 75, 80, 112, 84], "我打招呼": [100, 0, 100, 50, 50], "牛人新招呼": [35, 10, 1, 9, 16], "我沟通": [155, 1, 102, 63, 67], "企微添加数": [13, 1, 0, 11, 1], "收到简历数": [14, 0, 0, 0, 5], "发出邀约": [0, 0, 0, 0, 0], "实际到面": [0, 0, 0, 0, 0], "未到面": [0, 0, 0, 0, 0], "待面试/待定": [0, 0, 0, 0, 0], "面试通过": [0, 0, 0, 0, 0], "核实入职": [0, 0, 0, 0, 0], "收获简历": [14, 0, 0, 0, 5]}, "positions": ["普工", "国际销售经理", "仓管员", "检验员"], "covered": 5, "has_report": true}, "2026-10-26": {"metrics": {"发布岗位数": [7, 6, 6, 9, 4], "BOSS帐号": [2, 2, 2, 2, 1], "我看过": [279, 141, 203, 187, 159], "看过我": [331, 62, 146, 452, 180], "我打招呼": [150, 127, 143, 55, 94], "牛人新招呼": [73, 7, 8, 103, 36], "我沟通": [241, 135, 152, 149, 133], "企微添加数": [17, 5, 3, 25, 5], "收到简历数": [28, 2, 0, 24, 21], "发出邀约": [0, 2, 0, 2, 1], "实际到面": [0, 2, 0, 2, 1], "未到面": [0, 0, 0, 0, 0], "待面试/待定": [0, 0, 0, 0, 0], "面试通过": [0, 0, 0, 0, 1], "核实入职": [0, 0, 0, 0, 0], "收获简历": [29, 0, 0, 24, 21]}, "positions": ["普工", "国际销售经理", "仓管员", "焊工", "喷粉", "折弯", "检验员"], "covered": 5, "has_report": true}, "2026-10-27": {"metrics": {"发布岗位数": [7, 6, 6, 16, 4], "BOSS帐号": [2, 2, 2, 2, 1], "我看过": [436, 169, 218, 188, 125], "看过我": [415, 87, 147, 370, 141], "我打招呼": [151, 150, 60, 200, 100], "牛人新招呼": [87, 8, 25, 61, 33], "我沟通": [246, 162, 79, 297, 138], "企微添加数": [19, 5, 10, 13, 5], "收到简历数": [30, 0, 1, 2, 17], "发出邀约": [6, 0, 0, 1, 6], "实际到面": [4, 0, 0, 1, 4], "未到面": [0, 0, 0, 0, 0], "待面试/待定": [2, 0, 0, 0, 2], "面试通过": [0, 0, 0, 1, 2], "核实入职": [0, 0, 0, 0, 0], "收获简历": [30, 0, 1, 2, 17]}, "positions": ["普工", "国际销售经理", "仓管员", "焊工"], "covered": 5, "has_report": true}, "2026-10-28": {"metrics": {"发布岗位数": [8, 4, 4, 10, 4], "BOSS帐号": [2, 2, 2, 2, 1], "我看过": [273, 82, 165, 168, 133], "看过我": [472, 62, 139, 282, 151], "我打招呼": [150, 76, 61, 150, 100], "牛人新招呼": [74, 5, 19, 27, 36], "我沟通": [252, 83, 81, 190, 133], "企微添加数": [15, 1, 5, 14, 4], "收到简历数": [30, 0, 0, 3, 20], "发出邀约": [1, 0, 0, 0, 1], "实际到面": [0, 0, 0, 0, 1], "未到面": [0, 0, 0, 0, 0], "待面试/待定": [1, 0, 0, 0, 0], "面试通过": [0, 0, 0, 0, 1], "核实入职": [0, 0, 0, 0, 1], "收获简历": [30, 0, 0, 3, 20]}, "positions": ["普工", "国际销售经理", "仓管员"], "covered": 5, "has_report": true}, "2026-10-29": {"metrics": {"发布岗位数": [9, 4, 4, 10, 4], "BOSS帐号": [2, 2, 2, 2, 1], "我看过": [495, 13, 127, 228, 165], "看过我": [262, 48, 128, 240, 136], "我打招呼": [150, 10, 100, 150, 100], "牛人新招呼": [58, 5, 14, 32, 35], "我沟通": [221, 16, 114, 188, 137], "企微添加数": [6, 11, 4, 11, 3], "收到简历数": [45, 0, 0, 4, 37], "发出邀约": [0, 0, 1, 1, 1], "实际到面": [0, 0, 1, 1, 1], "未到面": [0, 0, 0, 0, 0], "待面试/待定": [0, 0, 0, 0, 0], "面试通过": [0, 0, 1, 1, 0], "核实入职": [0, 0, 0, 1, 1], "收获简历": [29, 0, 0, 2, 24]}, "positions": ["国际销售经理", "普工"], "covered": 5, "has_report": true}, "2026-10-30": {"metrics": {"发布岗位数": [7, 4, 4, 9, 4], "BOSS帐号": [2, 2, 2, 2, 1], "我看过": [343, 109, 87, 438, 167], "看过我": [127, 185, 139, 220, 144], "我打招呼": [141, 100, 100, 150, 59], "牛人新招呼": [23, 22, 18, 35, 32], "我沟通": [170, 120, 116, 189, 87], "企微添加数": [7, 12, 7, 14, 7], "收到简历数": [24, 0, 0, 17, 38], "发出邀约": [0, 0, 0, 0, 0], "实际到面": [0, 0, 0, 0, 0], "未到面": [0, 0, 0, 0, 0], "待面试/待定": [0, 0, 0, 0, 0], "面试通过": [0, 0, 0, 0, 0], "核实入职": [0, 0, 0, 0, 0], "收获简历": [13, 0, 0, 17, 38]}, "positions": ["国际销售经理", "普工"], "covered": 5, "has_report": true}, "2026-10-31": {"metrics": {"发布岗位数": [5, 6, 4, 10, 3], "BOSS帐号": [2, 2, 2, 2, 1], "我看过": [441, 151, 84, 337, 90], "看过我": [128, 198, 124, 95, 102], "我打招呼": [150, 150, 100, 37, 21], "牛人新招呼": [18, 25, 13, 17, 32], "我沟通": [170, 175, 114, 55, 70], "企微添加数": [5, 17, 2, 9, 6], "收到简历数": [12, 0, 0, 3, 29], "发出邀约": [0, 0, 0, 0, 0], "实际到面": [0, 0, 0, 0, 0], "未到面": [0, 0, 0, 0, 0], "待面试/待定": [0, 0, 0, 0, 0], "面试通过": [0, 0, 0, 0, 0], "核实入职": [0, 0, 0, 0, 0], "收获简历": [10, 0, 0, 3, 38]}, "positions": ["国际销售经理", "普工"], "covered": 5, "has_report": true}}, "invite_records": [{"d": "2026-10-10", "p": "冯佳豪", "cand": "冯庆宇", "pos": "封测工", "proj": "秋水", "a": "到面", "ps": "未通过", "ob": "无", "iv": "2026.10.10", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-10", "p": "柴海良", "cand": "董浩男", "pos": "封测工", "proj": "秋水", "a": "到面", "ps": "未通过", "ob": "无", "iv": "2026.10.10", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-10", "p": "吕宁", "cand": "王庆伟", "pos": "封测工", "proj": "秋水", "a": "到面", "ps": "未通过", "ob": "无", "iv": "2026.10.12", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-10", "p": "吕宁", "cand": "唐明怡", "pos": "封测工", "proj": "秋水", "a": "到面", "ps": "通过", "ob": "入职", "iv": "2026.10.12", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-10", "p": "吕宁", "cand": "晏廷进", "pos": "封测工", "proj": "秋水", "a": "到面", "ps": "通过", "ob": "无", "iv": "2026.10.12", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-10", "p": "吕宁", "cand": "陈保密", "pos": "封测工", "proj": "秋水", "a": "到面", "ps": "未通过", "ob": "无", "iv": "2026.10.12", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-10", "p": "柴海良", "cand": "陈元霞", "pos": "检验员", "proj": "达尔", "a": "到面", "ps": "未通过", "ob": "无", "iv": "2026.10.10", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-10", "p": "柴海良", "cand": "王晓", "pos": "巡检", "proj": "达尔", "a": "到面", "ps": "通过", "ob": "入职", "iv": "2026.10.10", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-10", "p": "柴海良", "cand": "彭水秀", "pos": "检验员", "proj": "达尔", "a": "未到面", "ps": "未通过", "ob": "无", "iv": "2026.10.10", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-10", "p": "柴海良", "cand": "刘慧", "pos": "检验员", "proj": "达尔", "a": "未到面", "ps": "未通过", "ob": "无", "iv": "2026.10.10", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-10", "p": "冯佳豪", "cand": "卢锦怡", "pos": "封测工", "proj": "秋水", "a": "到面", "ps": "通过", "ob": "入职", "iv": "2026.10.10", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-10", "p": "吕宁", "cand": "唐梓源", "pos": "封测工", "proj": "秋水", "a": "到面", "ps": "未通过", "ob": "无", "iv": "2026.10.12", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-10", "p": "戴刚烈", "cand": "曹镓骏", "pos": "封测工", "proj": "秋水", "a": "到面", "ps": "未通过", "ob": "无", "iv": "2026.10.12", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-10", "p": "戴刚烈", "cand": "曹连栋", "pos": "封测工", "proj": "秋水", "a": "到面", "ps": "未通过", "ob": "无", "iv": "2026.10.12", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-10", "p": "李建江", "cand": "董芳芳", "pos": "检验员", "proj": "达尔", "a": "到面", "ps": "通过", "ob": "试岗离职", "iv": "2026.10.10", "rv1": "试岗当天放弃", "rv3": "", "rv7": ""}, {"d": "2026-10-10", "p": "李建江", "cand": "姚雯", "pos": "检验员", "proj": "达尔", "a": "未到面", "ps": "待补", "ob": "无", "iv": "2026.10.12", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-12", "p": "李建江", "cand": "连玉娴", "pos": "振测", "proj": "达尔", "a": "到面", "ps": "通过", "ob": "入职", "iv": "2026.10.12", "rv1": "适应", "rv3": "在职", "rv7": "已体检"}, {"d": "2026-10-12", "p": "吕宁", "cand": "刘瑞艳", "pos": "封测工", "proj": "秋水", "a": "到面", "ps": "通过", "ob": "无", "iv": "2026.10.12", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-12", "p": "吕宁", "cand": "生茂棠", "pos": "封测工", "proj": "秋水", "a": "到面", "ps": "未通过", "ob": "无", "iv": "2026.10.12", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-12", "p": "李建江", "cand": "李慧娟", "pos": "检验员", "proj": "福智芯", "a": "未到面", "ps": "待补", "ob": "无", "iv": "2026.10.13", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-12", "p": "李建江", "cand": "胡绍芬", "pos": "检验员", "proj": "福智芯", "a": "未到面", "ps": "待补", "ob": "无", "iv": "2026.10.13", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-12", "p": "柴海良", "cand": "兰萍", "pos": "振测", "proj": "达尔", "a": "到面", "ps": "未通过", "ob": "无", "iv": "2026.10.12", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-12", "p": "柴海良", "cand": "孟伟", "pos": "封测工", "proj": "秋水", "a": "到面", "ps": "待补", "ob": "无", "iv": "2026.10.12", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-12", "p": "吕宁", "cand": "杨月梅", "pos": "封测工", "proj": "秋水", "a": "待补", "ps": "待补", "ob": "无", "iv": "2026.10.13", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-12", "p": "柴海良", "cand": "宋晗钰", "pos": "封测工", "proj": "秋水", "a": "到面", "ps": "待补", "ob": "无", "iv": "", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-12", "p": "柴海良", "cand": "彭易超", "pos": "封测工", "proj": "秋水", "a": "待补", "ps": "待补", "ob": "无", "iv": "", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-12", "p": "柴海良", "cand": "官建根", "pos": "封测工", "proj": "秋水", "a": "待补", "ps": "待补", "ob": "无", "iv": "", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-12", "p": "吕宁", "cand": "沈月娥", "pos": "封测工", "proj": "秋水", "a": "待补", "ps": "待补", "ob": "无", "iv": "2026.10.13", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-12", "p": "冯佳豪", "cand": "李先齐", "pos": "封测工", "proj": "秋水", "a": "到面", "ps": "通过", "ob": "入职", "iv": "2026.10.12", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-12", "p": "冯佳豪", "cand": "金忆梦", "pos": "检验员", "proj": "达尔", "a": "到面", "ps": "通过", "ob": "入职", "iv": "2026.10.13", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-12", "p": "李建江", "cand": "田素素", "pos": "仓管员", "proj": "达尔", "a": "未到面", "ps": "待补", "ob": "无", "iv": "2026.10.13", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-12", "p": "李建江", "cand": "邓书琴", "pos": "振测", "proj": "达尔", "a": "待补", "ps": "待补", "ob": "无", "iv": "2026.10.14", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-13", "p": "李建江", "cand": "肖田华", "pos": "振测", "proj": "达尔", "a": "到面", "ps": "未通过", "ob": "无", "iv": "2026.10.14", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-13", "p": "冯佳豪", "cand": "文佳佳", "pos": "振测", "proj": "达尔", "a": "未到面", "ps": "待补", "ob": "无", "iv": "2026.10.14", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-14", "p": "戴刚烈", "cand": "周茹美", "pos": "仓管员", "proj": "达尔", "a": "待补", "ps": "待补", "ob": "无", "iv": "2026.10.15", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-15", "p": "冯佳豪", "cand": "金沙沙", "pos": "振测", "proj": "达尔", "a": "到面", "ps": "通过", "ob": "无", "iv": "2026.10.15", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-15", "p": "李建江", "cand": "王慧", "pos": "振测", "proj": "达尔", "a": "到面", "ps": "未通过", "ob": "无", "iv": "2026.10.15", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-15", "p": "柴海良", "cand": "王一", "pos": "振测", "proj": "达尔", "a": "待补", "ps": "待补", "ob": "无", "iv": "", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-15", "p": "李建江", "cand": "谭小丽", "pos": "振测", "proj": "达尔", "a": "待补", "ps": "待补", "ob": "无", "iv": "2026.10.16", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-16", "p": "吕宁", "cand": "杨雪莲", "pos": "仓管员", "proj": "达尔", "a": "到面", "ps": "通过", "ob": "无", "iv": "2026.10.16", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-18", "p": "李建江", "cand": "徐月", "pos": "振测", "proj": "达尔", "a": "到面", "ps": "通过", "ob": "无", "iv": "2026.10.19", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-20", "p": "吕宁", "cand": "赵文艳", "pos": "操作工", "proj": "博格华纳", "a": "到面", "ps": "通过", "ob": "入职", "iv": "2026.10.20", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-22", "p": "吕宁", "cand": "朱桓毅", "pos": "操作工", "proj": "博格华纳", "a": "未到面", "ps": "待补", "ob": "无", "iv": "2026.10.22", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-26", "p": "李建江", "cand": "李文威", "pos": "装配工", "proj": "星驱科技", "a": "到面", "ps": "未通过", "ob": "无", "iv": "2026.10.26", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-26", "p": "李建江", "cand": "张晓一", "pos": "装配工", "proj": "星驱科技", "a": "到面", "ps": "未通过", "ob": "无", "iv": "2026.10.27", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-26", "p": "吕宁", "cand": "武龙飞", "pos": "封测工", "proj": "秋水", "a": "到面", "ps": "通过", "ob": "入职", "iv": "2026.10.27", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-26", "p": "柴海良", "cand": "孔迪迪", "pos": "数控", "proj": "慈兴", "a": "到面", "ps": "未通过", "ob": "无", "iv": "2026.10.26", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-26", "p": "柴海良", "cand": "冯茂林", "pos": "封测工", "proj": "秋水", "a": "到面", "ps": "未通过", "ob": "无", "iv": "2026.10.26", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-27", "p": "吕宁", "cand": "郭云洁", "pos": "封测工", "proj": "秋水", "a": "到面", "ps": "通过", "ob": "入职", "iv": "2026.10.27", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-27", "p": "吕宁", "cand": "胡运生", "pos": "封测工", "proj": "秋水", "a": "到面", "ps": "通过", "ob": "无", "iv": "2026.10.27", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-27", "p": "吕宁", "cand": "陈祝青", "pos": "封测工", "proj": "秋水", "a": "到面", "ps": "未通过", "ob": "无", "iv": "2026.10.27", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-27", "p": "吕宁", "cand": "林敏萱", "pos": "封测工", "proj": "秋水", "a": "到面", "ps": "未通过", "ob": "无", "iv": "2026.10.27", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-27", "p": "戴刚烈", "cand": "邱艳", "pos": "会计", "proj": "锐恒保安", "a": "到面", "ps": "待补", "ob": "无", "iv": "2026.10.27", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-27", "p": "戴刚烈", "cand": "朱仪琳", "pos": "会计", "proj": "锐恒保安", "a": "到面", "ps": "待补", "ob": "无", "iv": "2026.10.27", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-27", "p": "戴刚烈", "cand": "付颖", "pos": "会计", "proj": "锐恒保安", "a": "到面", "ps": "待补", "ob": "无", "iv": "2026.10.27", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-27", "p": "戴刚烈", "cand": "王文文", "pos": "会计", "proj": "锐恒保安", "a": "到面", "ps": "待补", "ob": "无", "iv": "2026.10.27", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-27", "p": "吕宁", "cand": "金祎", "pos": "海外销售经理", "proj": "美康", "a": "待补", "ps": "待补", "ob": "无", "iv": "", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-27", "p": "戴刚烈", "cand": "姚建梅", "pos": "海外销售经理", "proj": "美康", "a": "待补", "ps": "待补", "ob": "无", "iv": "", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-27", "p": "戴刚烈", "cand": "赵正明", "pos": "海外销售经理", "proj": "美康", "a": "待补", "ps": "待补", "ob": "无", "iv": "", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-27", "p": "李建江", "cand": "张永豪", "pos": "装配工", "proj": "星驱科技", "a": "到面", "ps": "通过", "ob": "入职", "iv": "2026.10.28", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-27", "p": "吕宁", "cand": "约瑟夫", "pos": "海外销售经理", "proj": "美康", "a": "待补", "ps": "待补", "ob": "无", "iv": "", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-28", "p": "吕宁", "cand": "谭瑞华", "pos": "封测工", "proj": "秋水", "a": "到面", "ps": "通过", "ob": "无", "iv": "2026.10.28", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-28", "p": "戴刚烈", "cand": "谭嘉兴", "pos": "装配工", "proj": "星驱科技", "a": "待补", "ps": "待补", "ob": "无", "iv": "2026.10.29", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-29", "p": "吕宁", "cand": "唐佳银", "pos": "装配工", "proj": "星驱科技", "a": "到面", "ps": "未通过", "ob": "无", "iv": "2026.10.29", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-29", "p": "李建江", "cand": "徐兆福", "pos": "装配工", "proj": "星驱科技", "a": "到面", "ps": "通过", "ob": "无", "iv": "2026.10.30", "rv1": "", "rv3": "", "rv7": ""}, {"d": "2026-10-29", "p": "冯佳豪", "cand": "雷旭峰", "pos": "普工", "proj": "泰昌", "a": "到面", "ps": "通过", "ob": "无", "iv": "2026.10.29", "rv1": "", "rv3": "", "rv7": ""}], "clients_stat": [{"name": "秋水", "邀约": 26, "到面": 22, "通过": 9, "入职": 5, "岗位": ["封测工"]}, {"name": "达尔", "邀约": 20, "到面": 11, "通过": 7, "入职": 3, "岗位": ["仓管员", "巡检", "振测", "检验员"]}, {"name": "星驱科技", "邀约": 6, "到面": 5, "通过": 2, "入职": 1, "岗位": ["装配工"]}, {"name": "博格华纳", "邀约": 2, "到面": 1, "通过": 1, "入职": 1, "岗位": ["操作工"]}, {"name": "泰昌", "邀约": 1, "到面": 1, "通过": 1, "入职": 0, "岗位": ["普工"]}, {"name": "锐恒保安", "邀约": 4, "到面": 4, "通过": 0, "入职": 0, "岗位": ["会计"]}, {"name": "慈兴", "邀约": 1, "到面": 1, "通过": 0, "入职": 0, "岗位": ["数控"]}, {"name": "福智芯", "邀约": 2, "到面": 0, "通过": 0, "入职": 0, "岗位": ["检验员"]}, {"name": "美康", "邀约": 4, "到面": 0, "通过": 0, "入职": 0, "岗位": ["海外销售经理"]}]};
 </script>
-<script data-page-node-id="mFk8Gvhn9WuWY5lVUZeQKU" data-pnid-children="NwTBqX04fPVaFgIkaCzcVs">
+<script data-page-node-id="wBXoD8HgjPZhZull3Q63LB" data-pnid-children="t1xtJ7P4wUI3N2lHrUWKrZ">
 (function(){
   var D = window.__DATA__;
   var PEOPLE = D.meta.people;
@@ -570,7 +595,7 @@ window.__DATA__ = {"meta": {"generated_at": "2026-10-24 16:55", "latest_report":
   }
 
   // ---------- 图表 ----------
-  var trendChart, posChart;
+  var trendChart, clientChart;
   function allDays(){
     return Object.keys(daily).sort();
   }
@@ -588,36 +613,57 @@ window.__DATA__ = {"meta": {"generated_at": "2026-10-24 16:55", "latest_report":
       for(var i=i0;i<=i1;i++) hlSet[i]=true;
     }
     trendChart = trendChart || echarts.init($('trend'));
+    var NAMES = ['到面','通过','核实入职','企微添加数','收到简历数'];
+    var COLORS = {'到面':'#378add','通过':'#1d9e75','核实入职':'#d85a30','企微添加数':'#7b5fc7','收到简历数':'#d1a017'};
+    function trendSeries(name, key, yIdx){
+      return {name:name,type:'line',yAxisIndex:yIdx,data:series(key),smooth:true,symbol:'circle',symbolSize:5,
+        lineStyle:{width:2,color:COLORS[name]},itemStyle:{color:COLORS[name]},
+        endLabel:{show:true,formatter:function(p){return p.seriesName;},fontSize:10,fontWeight:600,color:COLORS[name],distance:6},
+        labelLayout:{moveOverlap:'shiftY'}};
+    }
     trendChart.setOption({
-      grid:{left:36,right:12,top:30,bottom:26},
+      grid:{left:36,right:78,top:30,bottom:44},
       tooltip:{trigger:'axis'},
-      legend:{data:['到面','通过','核实入职'],top:0,itemWidth:14,itemHeight:8,textStyle:{fontSize:11,color:'#5f6672'}},
+      legend:{data:NAMES,top:0,itemWidth:14,itemHeight:8,textStyle:{fontSize:11,color:'#5f6672'}},
       xAxis:{type:'category',data:labels,axisLine:{lineStyle:{color:'#d8dbe0'}},
-        axisLabel:{fontSize:11,interval:0,
+        axisLabel:{fontSize:11,interval:0,hideOverlap:true,
           formatter:function(v,i){ return hlSet[i] ? '{hl|'+v+'}' : v; },
           rich:{hl:{color:'#185fa5',fontWeight:'bold',fontSize:11}}},
         axisTick:{show:false}},
-      yAxis:{type:'value',minInterval:1,splitLine:{lineStyle:{color:'#eef0f3'}},axisLabel:{fontSize:11,color:'#9aa0a8'}},
+      yAxis:[
+        {type:'value',minInterval:1,splitLine:{lineStyle:{color:'#eef0f3'}},axisLabel:{fontSize:11,color:'#9aa0a8'}},
+        {type:'value',minInterval:1,splitLine:{show:false},axisLabel:{fontSize:11,color:'#b08a2e'}}
+      ],
       series:[
-        {name:'到面',type:'line',data:series('实际到面'),smooth:true,symbol:'circle',symbolSize:5,lineStyle:{width:2,color:'#378add'},itemStyle:{color:'#378add'}},
-        {name:'通过',type:'line',data:series('面试通过'),smooth:true,symbol:'circle',symbolSize:5,lineStyle:{width:2,color:'#1d9e75'},itemStyle:{color:'#1d9e75'}},
-        {name:'核实入职',type:'line',data:series('核实入职'),smooth:true,symbol:'circle',symbolSize:5,lineStyle:{width:2,color:'#d85a30'},itemStyle:{color:'#d85a30'}}
+        trendSeries('到面','实际到面',0),
+        trendSeries('通过','面试通过',0),
+        trendSeries('核实入职','核实入职',0),
+        trendSeries('企微添加数','企微添加数',1),
+        trendSeries('收到简历数','收到简历数',1)
       ]
     }, true);
 
-    var pos = D.positions_stat;
-    posChart = posChart || echarts.init($('pos'));
-    posChart.setOption({
+    var cli = D.clients_stat || [];
+    clientChart = clientChart || echarts.init($('cli'));
+    function cliData(k){
+      return cli.map(function(c){ return {value:c[k], jobs:(c['岗位']||[]).join('、')}; }).reverse();  // 与反转后的 Y 轴对齐
+    }
+    clientChart.setOption({
       grid:{left:76,right:30,top:26,bottom:16},
-      tooltip:{trigger:'axis',axisPointer:{type:'shadow'}},
+      tooltip:{trigger:'axis',axisPointer:{type:'shadow'},
+        formatter:function(ps){
+          var lines = ps.map(function(p){return p.marker+p.seriesName+' <b>'+p.value+'</b>';}).join('<br>');
+          var jobs = ps[0].data.jobs ? '<div style="font-size:11px;color:#888;margin-top:2px">岗位：'+ps[0].data.jobs+'</div>' : '';
+          return ps[0].name+'<br>'+lines+jobs;
+        }},
       legend:{data:['邀约','到面','通过','入职'],top:0,itemWidth:14,itemHeight:8,textStyle:{fontSize:11,color:'#5f6672'}},
       xAxis:{type:'value',minInterval:1,splitLine:{lineStyle:{color:'#eef0f3'}},axisLabel:{fontSize:11,color:'#9aa0a8'}},
-      yAxis:{type:'category',data:pos.map(function(p){return p.name;}).reverse(),axisLine:{lineStyle:{color:'#d8dbe0'}},axisLabel:{fontSize:11,color:'#333'},axisTick:{show:false}},
+      yAxis:{type:'category',data:cli.map(function(c){return c.name;}).reverse(),axisLine:{lineStyle:{color:'#d8dbe0'}},axisLabel:{fontSize:11,color:'#333'},axisTick:{show:false}},
       series:[
-        {name:'邀约',type:'bar',data:pos.map(function(p){return p['邀约'];}).reverse(),barWidth:9,itemStyle:{color:'#b5d4f4',borderRadius:[0,3,3,0]}},
-        {name:'到面',type:'bar',data:pos.map(function(p){return p['到面'];}).reverse(),barWidth:9,itemStyle:{color:'#85b7eb',borderRadius:[0,3,3,0]}},
-        {name:'通过',type:'bar',data:pos.map(function(p){return p['通过'];}).reverse(),barWidth:9,itemStyle:{color:'#5dcaa5',borderRadius:[0,3,3,3]}},
-        {name:'入职',type:'bar',data:pos.map(function(p){return p['入职'];}).reverse(),barWidth:9,itemStyle:{color:'#1d9e75',borderRadius:[0,3,3,0]}}
+        {name:'邀约',type:'bar',data:cliData('邀约'),barWidth:9,itemStyle:{color:'#b5d4f4',borderRadius:[0,3,3,0]}},
+        {name:'到面',type:'bar',data:cliData('到面'),barWidth:9,itemStyle:{color:'#85b7eb',borderRadius:[0,3,3,0]}},
+        {name:'通过',type:'bar',data:cliData('通过'),barWidth:9,itemStyle:{color:'#5dcaa5',borderRadius:[0,3,3,3]}},
+        {name:'入职',type:'bar',data:cliData('入职'),barWidth:9,itemStyle:{color:'#1d9e75',borderRadius:[0,3,3,0]}}
       ]
     }, true);
   }
@@ -646,13 +692,83 @@ window.__DATA__ = {"meta": {"generated_at": "2026-10-24 16:55", "latest_report":
   }
 
   // ---------- 事件 ----------
+  // ---------- 部门报表（转置表：行=指标 · 列=日期，随日期选择联动，不足 7 天自动补足 7 天） ----------
+  function addDaysIso(iso, n){
+    var dt = new Date(iso+'T00:00:00');
+    dt.setDate(dt.getDate()+n);
+    var p=function(x){return (x<10?'0':'')+x;};
+    return dt.getFullYear()+'-'+p(dt.getMonth()+1)+'-'+p(dt.getDate());
+  }
+  function deptDays(){
+    var ks = Object.keys(daily).sort();
+    var lo = ks.length ? ks[0] : D.meta.first_day;
+    var end, start;
+    if(S.mode==='day'){ end = S.day; start = addDaysIso(end,-6); }   // 单日：截至选中日，向前补足 7 天
+    else{
+      end = S.to; start = S.from;
+      var span = Math.round((new Date(end+'T00:00:00') - new Date(start+'T00:00:00'))/86400000)+1;
+      if(span<7) start = addDaysIso(end,-6);                          // 区间不足 7 天：截至区间末日向前补足
+    }
+    if(start<lo) start=lo;                                            // 不超出数据起点
+    var out=[];
+    for(var d=start; d<=end; d=addDaysIso(d,1)) out.push(d);
+    return out.reverse();                                             // 新→旧
+  }
+  function renderDept(){
+    var days = deptDays();
+    var lastRep = null;
+    for(var i=0;i<days.length;i++){ if(daily[days[i]] && daily[days[i]].has_report){ lastRep=days[i]; break; } }
+    $('dept-head').innerHTML = '<th>漏斗指标</th><th class="sumc">合计</th>' + days.map(function(d){
+      return '<th>'+parseInt(d.slice(5,7))+'/'+parseInt(d.slice(8,10))+'</th>';
+    }).join('');
+    function dayTotal(k, d){
+      if(!daily[d]) return null;
+      var v = daily[d].metrics[k];
+      return v==null ? null : v.reduce(function(a,b){return a+b;},0);
+    }
+    var html='';
+    ROWS.forEach(function(row){
+      var k=row.k, cells='';
+      if(k==='发布岗位数' || k==='BOSS帐号'){
+        // 各日取当日部门合计；合计取窗口内最新有报日报值（口径：不跨日累加）
+        var latest = lastRep ? dayTotal(k,lastRep) : null;
+        cells = '<td class="sumc">'+(latest==null?'—':num(latest))+'</td>' + days.map(function(d){
+          var v=dayTotal(k,d);
+          return '<td class="'+(v===0?'zero':'')+'">'+(v==null?'—':num(v))+'</td>';
+        }).join('');
+      }else{
+        var sum=0, any=false;
+        var tds = days.map(function(d){
+          var v=dayTotal(k,d);
+          if(v==null) return '<td class="dash">—</td>';
+          any=true; sum+=v;
+          return '<td class="'+(v===0?'zero':'')+'">'+num(v)+'</td>';
+        });
+        cells = '<td class="sumc">'+(any?num(sum):'—')+'</td>'+tds.join('');
+      }
+      html += '<tr class="'+row.grp+'"><td>'+(row.label||row.k)+'</td>'+cells+'</tr>';
+    });
+    $('dept-body').innerHTML = html;
+    $('dept-title').textContent = fmtD(days[days.length-1])+' — '+fmtD(days[0]);
+    $('dept-notes').innerHTML =
+      '<li>随上方日期选择联动：显示截至所选日期（区间末日 / 选中日）的窗口，<b>不足 7 天自动向前补足 7 天</b>，不超出数据起点（'+fmtD(D.meta.first_day)+'）。</li>'+
+      '<li>每格为当日<b>部门合计</b>（'+PEOPLE.length+' 名业务人员求和）；合计列为窗口内汇总：过程指标跨日累加，发布岗位数 / BOSS帐号取窗口内最新有报日报（'+(lastRep?fmtD(lastRep):'—')+'）值，不跨日累加。</li>'+
+      '<li>收到简历自 '+fmtD(D.meta.rcv_start)+' 起统计（邮箱实收），此前计「—」；0 与缺数「—」含义不同。</li>';
+    var wrap = $('dept-wrap');
+    // 吸附坐标按首列实际外宽校准（auto 列宽下 width 提示不生效，写死值会偏移压列；
+    // 注意不能用 c1.offsetLeft 差值——它本身已含 sticky 位移）
+    var dtbl = wrap.querySelector('table');
+    var sumL = dtbl.rows[0].cells[0].offsetWidth;
+    if(sumL>0) dtbl.style.setProperty('--sumL', sumL+'px');
+    $('dept-hint').hidden = !(wrap.scrollWidth > wrap.clientWidth + 1);
+  }
   function checkScrollHint(){
     var wrap = $('tbl-wrap'), hint = $('tbl-hint');
     if(wrap.style.display==='none'){ hint.hidden = true; return; }
     hint.hidden = !(wrap.scrollWidth > wrap.clientWidth + 1);
   }
   function render(){
-    renderDateBar(); renderMain(); checkScrollHint(); renderHourglass(); renderStages(); renderCharts();
+    renderDateBar(); renderMain(); checkScrollHint(); renderDept(); renderHourglass(); renderStages(); renderCharts();
   }
   $('daypick').addEventListener('change', function(){
     if(!this.value) return;
@@ -700,8 +816,9 @@ window.__DATA__ = {"meta": {"generated_at": "2026-10-24 16:55", "latest_report":
   render();
   window.addEventListener('resize', function(){
     if(trendChart) trendChart.resize();
-    if(posChart) posChart.resize();
+    if(clientChart) clientChart.resize();
     checkScrollHint();
+    renderDept();   // 列宽随视口变化，吸附坐标需重新校准
   });
 })();
 </script>

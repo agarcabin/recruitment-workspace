@@ -6,7 +6,7 @@
     "showAll": true,
     "viewMode": "kanban"
   },
-  "capturedAt": "2026-10-27T10:31:28.454074+00:00",
+  "capturedAt": "2026-11-03T06:06:11.494Z",
   "projects": [
     {
       "id": "6ae04e6fe4b03273ad95cbfa",
@@ -16,63 +16,14 @@
       "groupId": "6ae00d8eb096751ca78efeee",
       "tasks": [
         {
-          "id": "6adff760b096751ca78efe35",
-          "title": "打招呼系统 完善",
-          "content": "",
+          "id": "6ae2a5bfb096757e05e65fae",
+          "title": "10 月 29 日更新",
+          "content": "# 重要\n1，普工判断是否有同事打过招呼的图标，有的话先跳过\n2，电子简历先判断右下角是否有同事打过招呼，然后再开始判断简历内容\n3，优化美康打招呼门槛\n# 一般\n1，绿色按钮大一点\n2，弹出的你已经登陆的弹窗看看能不能自动点击确认\n3，默认最多 招呼 150 人，300 次查看，三小时限制取消，时间不限。\n4，运行的时候，控制不要让电脑息屏\n5，运行的时候更改 codex 聊天框的题目 岗位 - 日期\n6，运行的时候最小化聊天列表",
           "priority": 3,
           "status": 0,
-          "sortOrder": -1099511627776,
+          "sortOrder": -8796093022208,
           "isAllDay": false,
-          "columnId": "6adff747b096751ca78efe29"
-        },
-        {
-          "id": "6ae05425b096757fb804c59b",
-          "title": "排查什么原因导致了 boss 无限刷新",
-          "content": "目前只有 Win32 UIA 可行",
-          "priority": 0,
-          "status": 0,
-          "sortOrder": -2199023255552,
-          "parentId": "6adff760b096751ca78efe35",
-          "isAllDay": false
-        },
-        {
-          "id": "6ae061fcb096757fb804c7b0",
-          "title": "排查模拟按键能否在 codex 内置浏览器后台发挥作用",
-          "content": "左右按钮可以直接切换电子简历，ESC可以直接返回到牛人列表",
-          "priority": 0,
-          "status": 0,
-          "sortOrder": -3298534883328,
-          "parentId": "6adff760b096751ca78efe35",
-          "isAllDay": false
-        },
-        {
-          "id": "6ae06228b096757fb804c7e3",
-          "title": "打招呼系统 MVP",
-          "content": "",
-          "priority": 5,
-          "status": 0,
-          "sortOrder": -4398046511104,
-          "isAllDay": false
-        },
-        {
-          "id": "6ae068f0b096757fb804c846",
-          "title": "确认提供 LLM 分析的文本是纯文本简历OCR内容，还是 json",
-          "content": "",
-          "priority": 0,
-          "status": 0,
-          "sortOrder": -5497558138880,
-          "parentId": "6adff760b096751ca78efe35",
-          "isAllDay": false
-        },
-        {
-          "id": "6ae06a31b096757fb804c867",
-          "title": "简历分析任务交给 子agent，保证主 agent 上下文压缩率",
-          "content": "",
-          "priority": 0,
-          "status": 0,
-          "sortOrder": -6597069766656,
-          "parentId": "6adff760b096751ca78efe35",
-          "isAllDay": false
+          "timeZone": "Asia/Shanghai"
         },
         {
           "id": "6ae06b2eb096757fb804c87b",
@@ -82,7 +33,74 @@
           "status": 0,
           "sortOrder": -7696581394432,
           "parentId": "6adff760b096751ca78efe35",
-          "isAllDay": false
+          "isAllDay": false,
+          "timeZone": "Asia/Shanghai"
+        },
+        {
+          "id": "6ae06a31b096757fb804c867",
+          "title": "简历分析任务交给 子agent，保证主 agent 上下文压缩率",
+          "content": "",
+          "priority": 0,
+          "status": 0,
+          "sortOrder": -6597069766656,
+          "parentId": "6adff760b096751ca78efe35",
+          "isAllDay": false,
+          "timeZone": "Asia/Shanghai"
+        },
+        {
+          "id": "6ae068f0b096757fb804c846",
+          "title": "确认提供 LLM 分析的文本是纯文本简历OCR内容，还是 json",
+          "content": "",
+          "priority": 0,
+          "status": 0,
+          "sortOrder": -5497558138880,
+          "parentId": "6adff760b096751ca78efe35",
+          "isAllDay": false,
+          "timeZone": "Asia/Shanghai"
+        },
+        {
+          "id": "6ae061fcb096757fb804c7b0",
+          "title": "排查模拟按键能否在 codex 内置浏览器后台发挥作用",
+          "content": "左右按钮可以直接切换电子简历，ESC可以直接返回到牛人列表",
+          "priority": 0,
+          "status": 0,
+          "sortOrder": -3298534883328,
+          "parentId": "6adff760b096751ca78efe35",
+          "isAllDay": false,
+          "timeZone": "Asia/Shanghai"
+        },
+        {
+          "id": "6ae05425b096757fb804c59b",
+          "title": "排查什么原因导致了 boss 无限刷新",
+          "content": "目前只有 Win32 UIA 可行",
+          "priority": 0,
+          "status": 0,
+          "sortOrder": -2199023255552,
+          "parentId": "6adff760b096751ca78efe35",
+          "isAllDay": false,
+          "timeZone": "Asia/Shanghai"
+        },
+        {
+          "id": "6adff760b096751ca78efe35",
+          "title": "打招呼系统 完善",
+          "content": "",
+          "priority": 3,
+          "status": 0,
+          "sortOrder": -1099511627776,
+          "isAllDay": false,
+          "timeZone": "Asia/Shanghai",
+          "columnId": "6adff747b096751ca78efe29"
+        },
+        {
+          "id": "6ae1836bb096757fb804ca37",
+          "title": "把悬浮窗中的计数，改为当日累加",
+          "content": "",
+          "priority": 3,
+          "status": 0,
+          "sortOrder": 0,
+          "parentId": "6adff760b096751ca78efe35",
+          "isAllDay": true,
+          "timeZone": "Asia/Shanghai"
         }
       ],
       "columns": []
@@ -102,6 +120,7 @@
           "status": 0,
           "sortOrder": -2199023255552,
           "isAllDay": false,
+          "timeZone": "Asia/Shanghai",
           "columnId": "6adff3d2b096751ca78efde1"
         },
         {
@@ -112,6 +131,7 @@
           "status": 0,
           "sortOrder": -1099511627776,
           "isAllDay": false,
+          "timeZone": "Asia/Shanghai",
           "columnId": "6adff3d2b096751ca78efde1"
         }
       ],
@@ -125,24 +145,114 @@
       "groupId": "6ae00d8eb096751ca78efeee",
       "tasks": [
         {
-          "id": "6ae03336b096751ca78f0007",
-          "title": "岗位评估 skill",
-          "content": "（辅助戴刚烈）",
-          "priority": 1,
+          "id": "6ae2a63eb096757e05e6601d",
+          "title": "徐圣洋安装测试",
+          "content": "",
+          "priority": 0,
           "status": 0,
-          "sortOrder": -2199023255552,
+          "sortOrder": -16492674416640,
+          "parentId": "6ae06228b096757fb804c7e3",
           "isAllDay": false,
-          "columnId": "6acb0c10b096754cc8ad670c"
+          "timeZone": "Asia/Shanghai"
         },
         {
-          "id": "6ae033c7b096751ca78f001d",
-          "title": "岗位信息标准化输出 skill",
+          "id": "6ae2a629b096757e05e66014",
+          "title": "李建江安装测试",
+          "content": "",
+          "priority": 0,
+          "status": 0,
+          "sortOrder": -15393162788864,
+          "parentId": "6ae06228b096757fb804c7e3",
+          "isAllDay": false,
+          "timeZone": "Asia/Shanghai"
+        },
+        {
+          "id": "6ae2a624b096757e05e6600d",
+          "title": "柴海良安装测试",
+          "content": "",
+          "priority": 0,
+          "status": 0,
+          "sortOrder": -14293651161088,
+          "parentId": "6ae06228b096757fb804c7e3",
+          "isAllDay": false,
+          "timeZone": "Asia/Shanghai"
+        },
+        {
+          "id": "6ae2a619b096757e05e66004",
+          "title": "佳豪安装测试",
+          "content": "",
+          "priority": 0,
+          "status": 0,
+          "sortOrder": -13194139533312,
+          "parentId": "6ae06228b096757fb804c7e3",
+          "isAllDay": false,
+          "timeZone": "Asia/Shanghai"
+        },
+        {
+          "id": "6ae2a614b096757e05e65ffd",
+          "title": "余梦安装测试",
+          "content": "",
+          "priority": 0,
+          "status": 0,
+          "sortOrder": -12094627905536,
+          "parentId": "6ae06228b096757fb804c7e3",
+          "isAllDay": false,
+          "timeZone": "Asia/Shanghai"
+        },
+        {
+          "id": "6ae2a60ab096757e05e65ff4",
+          "title": "吕宁安装测试",
+          "content": "",
+          "priority": 0,
+          "status": 0,
+          "sortOrder": -10995116277760,
+          "parentId": "6ae06228b096757fb804c7e3",
+          "isAllDay": false,
+          "timeZone": "Asia/Shanghai"
+        },
+        {
+          "id": "6ae2a5edb096757e05e65fd8",
+          "title": "戴刚烈安装测试",
+          "content": "",
+          "priority": 0,
+          "status": 0,
+          "sortOrder": -9895604649984,
+          "parentId": "6ae06228b096757fb804c7e3",
+          "isAllDay": false,
+          "timeZone": "Asia/Shanghai"
+        },
+        {
+          "id": "6ae06228b096757fb804c7e3",
+          "title": "打招呼系统 MVP 安装",
+          "content": "",
+          "desc": "",
+          "priority": 5,
+          "status": 0,
+          "sortOrder": -7696581394432,
+          "startDate": "2026-12-01T00:00:00+0800",
+          "dueDate": "2026-12-19T00:00:00+0800",
+          "isAllDay": true,
+          "timeZone": "Asia/Shanghai"
+        },
+        {
+          "id": "6ae0613cb096757fb804c79c",
+          "title": "岗位智能回复推荐 skill",
+          "content": "",
+          "priority": 0,
+          "status": 0,
+          "sortOrder": -6597069766656,
+          "isAllDay": false,
+          "timeZone": "Asia/Shanghai"
+        },
+        {
+          "id": "6ae06067b096757fb804c720",
+          "title": "岗位招聘常用QA skill",
           "content": "",
           "priority": 1,
           "status": 0,
-          "sortOrder": -3298534883328,
+          "sortOrder": -5497558138880,
           "isAllDay": false,
-          "columnId": "6ae04d7eb096757af0402e3a"
+          "timeZone": "Asia/Shanghai"
         },
         {
           "id": "6ae05aaeb096757fb804c6c3",
@@ -153,6 +263,7 @@
           "status": 0,
           "sortOrder": -4398046511104,
           "isAllDay": false,
+          "timeZone": "Asia/Shanghai",
           "items": [
             {
               "id": "6ae05b30b096757fb804c6d1",
@@ -167,22 +278,38 @@
           ]
         },
         {
-          "id": "6ae06067b096757fb804c720",
-          "title": "岗位招聘常用QA skill",
+          "id": "6ae033c7b096751ca78f001d",
+          "title": "岗位信息标准化输出 skill",
           "content": "",
           "priority": 1,
           "status": 0,
-          "sortOrder": -5497558138880,
-          "isAllDay": false
+          "sortOrder": -3298534883328,
+          "isAllDay": false,
+          "timeZone": "Asia/Shanghai",
+          "columnId": "6ae04d7eb096757af0402e3a"
         },
         {
-          "id": "6ae0613cb096757fb804c79c",
-          "title": "岗位智能回复推荐 skill",
+          "id": "6ae03336b096751ca78f0007",
+          "title": "岗位评估 skill",
+          "content": "（辅助戴刚烈）",
+          "priority": 1,
+          "status": 0,
+          "sortOrder": -2199023255552,
+          "isAllDay": false,
+          "timeZone": "Asia/Shanghai",
+          "columnId": "6acb0c10b096754cc8ad670c"
+        },
+        {
+          "id": "6ae465e4b0967566d29085af",
+          "title": "测试",
           "content": "",
           "priority": 0,
           "status": 0,
-          "sortOrder": -6597069766656,
-          "isAllDay": false
+          "sortOrder": -1099511627776,
+          "startDate": "2026-11-24T00:00:00+0800",
+          "dueDate": "2026-11-29T00:00:00+0800",
+          "isAllDay": true,
+          "timeZone": "Asia/Shanghai"
         }
       ],
       "columns": []
@@ -202,6 +329,7 @@
           "status": 0,
           "sortOrder": -1099511627776,
           "isAllDay": false,
+          "timeZone": "Asia/Shanghai",
           "columnId": "6ab0add9a31a52d9e57be853"
         }
       ],
@@ -215,6 +343,16 @@
       "groupId": "6ae00d8eb096751ca78efeee",
       "tasks": [
         {
+          "id": "6ae060f6b096757fb804c776",
+          "title": "帮俞立纲做海外企业资源站点demo",
+          "content": "",
+          "priority": 0,
+          "status": 0,
+          "sortOrder": -7696581394432,
+          "isAllDay": false,
+          "timeZone": "Asia/Shanghai"
+        },
+        {
           "id": "6ad1a684b096751fde127cc1",
           "title": "待办1：招聘报表里面的BOSS数据，你看看每天定时或者做个智能体，让workbuddy从BOSS后台 ，帮大家读过来",
           "content": "",
@@ -222,6 +360,7 @@
           "status": 0,
           "sortOrder": -5497558138880,
           "isAllDay": false,
+          "timeZone": "Asia/Shanghai",
           "columnId": "6ad19376b096751fde127c34"
         },
         {
@@ -232,16 +371,8 @@
           "status": 0,
           "sortOrder": -4398046511104,
           "isAllDay": false,
+          "timeZone": "Asia/Shanghai",
           "columnId": "6ad19376b096751fde127c34"
-        },
-        {
-          "id": "6ae060f6b096757fb804c776",
-          "title": "帮俞立纲做海外企业资源站点demo",
-          "content": "",
-          "priority": 0,
-          "status": 0,
-          "sortOrder": -7696581394432,
-          "isAllDay": false
         }
       ],
       "columns": []
