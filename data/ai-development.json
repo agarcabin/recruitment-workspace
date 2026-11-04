@@ -6,7 +6,7 @@
     "showAll": true,
     "viewMode": "kanban"
   },
-  "capturedAt": "2026-11-03T06:06:11.494Z",
+  "capturedAt": "2026-11-04T06:48:23.620Z",
   "projects": [
     {
       "id": "6ae04e6fe4b03273ad95cbfa",
@@ -16,13 +16,39 @@
       "groupId": "6ae00d8eb096751ca78efeee",
       "tasks": [
         {
-          "id": "6ae2a5bfb096757e05e65fae",
-          "title": "10 月 29 日更新",
-          "content": "# 重要\n1，普工判断是否有同事打过招呼的图标，有的话先跳过\n2，电子简历先判断右下角是否有同事打过招呼，然后再开始判断简历内容\n3，优化美康打招呼门槛\n# 一般\n1，绿色按钮大一点\n2，弹出的你已经登陆的弹窗看看能不能自动点击确认\n3，默认最多 招呼 150 人，300 次查看，三小时限制取消，时间不限。\n4，运行的时候，控制不要让电脑息屏\n5，运行的时候更改 codex 聊天框的题目 岗位 - 日期\n6，运行的时候最小化聊天列表",
-          "priority": 3,
+          "id": "6aea859ab096753a2f65698b",
+          "title": "新人安装测试",
+          "content": "",
+          "priority": 0,
           "status": 0,
-          "sortOrder": -8796093022208,
-          "isAllDay": false,
+          "sortOrder": -18691697672192,
+          "parentId": "6ae06228b096757fb804c7e3",
+          "isAllDay": true,
+          "timeZone": "Asia/Shanghai"
+        },
+        {
+          "id": "6aea85b3b096753a2f6569ac",
+          "title": "打招呼系统 v1.4 更新需求",
+          "content": "- [ ] 修复悬浮窗不显示 @戴哥\n- [ ] Excel 表头增加统计\n- [ ] 修复三峰企业配置不显示问题 @汪珽 @李哥\n- [ ] 普工还是要打开简历判断同事沟通时长，不然 100 份只有几个没沟通过的。@李哥\n",
+          "priority": 0,
+          "status": 0,
+          "sortOrder": -17592186044416,
+          "startDate": "2026-11-04T00:00:00+0800",
+          "dueDate": "2026-11-04T00:00:00+0800",
+          "isAllDay": true,
+          "timeZone": "Asia/Shanghai"
+        },
+        {
+          "id": "6ae06228b096757fb804c7e3",
+          "title": "打招呼系统mvp 安装",
+          "content": "",
+          "desc": "",
+          "priority": 0,
+          "status": 0,
+          "sortOrder": -9895604649984,
+          "startDate": "2026-10-08T00:00:00+0800",
+          "dueDate": "2026-11-05T00:00:00+0800",
+          "isAllDay": true,
           "timeZone": "Asia/Shanghai"
         },
         {
@@ -59,17 +85,6 @@
           "timeZone": "Asia/Shanghai"
         },
         {
-          "id": "6ae061fcb096757fb804c7b0",
-          "title": "排查模拟按键能否在 codex 内置浏览器后台发挥作用",
-          "content": "左右按钮可以直接切换电子简历，ESC可以直接返回到牛人列表",
-          "priority": 0,
-          "status": 0,
-          "sortOrder": -3298534883328,
-          "parentId": "6adff760b096751ca78efe35",
-          "isAllDay": false,
-          "timeZone": "Asia/Shanghai"
-        },
-        {
           "id": "6ae05425b096757fb804c59b",
           "title": "排查什么原因导致了 boss 无限刷新",
           "content": "目前只有 Win32 UIA 可行",
@@ -82,57 +97,14 @@
         },
         {
           "id": "6adff760b096751ca78efe35",
-          "title": "打招呼系统 完善",
+          "title": "打招呼系统 未来更新计划",
           "content": "",
-          "priority": 3,
+          "priority": 0,
           "status": 0,
           "sortOrder": -1099511627776,
           "isAllDay": false,
           "timeZone": "Asia/Shanghai",
           "columnId": "6adff747b096751ca78efe29"
-        },
-        {
-          "id": "6ae1836bb096757fb804ca37",
-          "title": "把悬浮窗中的计数，改为当日累加",
-          "content": "",
-          "priority": 3,
-          "status": 0,
-          "sortOrder": 0,
-          "parentId": "6adff760b096751ca78efe35",
-          "isAllDay": true,
-          "timeZone": "Asia/Shanghai"
-        }
-      ],
-      "columns": []
-    },
-    {
-      "id": "6ae04e82e4b03273ad95cdc1",
-      "name": "🌐创新招聘组站点",
-      "color": null,
-      "sortOrder": -1073741824000,
-      "groupId": "6ae00d8eb096751ca78efeee",
-      "tasks": [
-        {
-          "id": "6adf0c83b096755a797a2ff2",
-          "title": "看板网站",
-          "content": "",
-          "priority": 1,
-          "status": 0,
-          "sortOrder": -2199023255552,
-          "isAllDay": false,
-          "timeZone": "Asia/Shanghai",
-          "columnId": "6adff3d2b096751ca78efde1"
-        },
-        {
-          "id": "6adff6e9b096751ca78efdfc",
-          "title": "查询对接文丽总日报的方法",
-          "content": "",
-          "priority": 1,
-          "status": 0,
-          "sortOrder": -1099511627776,
-          "isAllDay": false,
-          "timeZone": "Asia/Shanghai",
-          "columnId": "6adff3d2b096751ca78efde1"
         }
       ],
       "columns": []
@@ -141,99 +113,9 @@
       "id": "6ae04e88e4b03273ad95ce34",
       "name": "🟢企业微信机器人",
       "color": null,
-      "sortOrder": -1069446856704,
+      "sortOrder": -1080184274944,
       "groupId": "6ae00d8eb096751ca78efeee",
       "tasks": [
-        {
-          "id": "6ae2a63eb096757e05e6601d",
-          "title": "徐圣洋安装测试",
-          "content": "",
-          "priority": 0,
-          "status": 0,
-          "sortOrder": -16492674416640,
-          "parentId": "6ae06228b096757fb804c7e3",
-          "isAllDay": false,
-          "timeZone": "Asia/Shanghai"
-        },
-        {
-          "id": "6ae2a629b096757e05e66014",
-          "title": "李建江安装测试",
-          "content": "",
-          "priority": 0,
-          "status": 0,
-          "sortOrder": -15393162788864,
-          "parentId": "6ae06228b096757fb804c7e3",
-          "isAllDay": false,
-          "timeZone": "Asia/Shanghai"
-        },
-        {
-          "id": "6ae2a624b096757e05e6600d",
-          "title": "柴海良安装测试",
-          "content": "",
-          "priority": 0,
-          "status": 0,
-          "sortOrder": -14293651161088,
-          "parentId": "6ae06228b096757fb804c7e3",
-          "isAllDay": false,
-          "timeZone": "Asia/Shanghai"
-        },
-        {
-          "id": "6ae2a619b096757e05e66004",
-          "title": "佳豪安装测试",
-          "content": "",
-          "priority": 0,
-          "status": 0,
-          "sortOrder": -13194139533312,
-          "parentId": "6ae06228b096757fb804c7e3",
-          "isAllDay": false,
-          "timeZone": "Asia/Shanghai"
-        },
-        {
-          "id": "6ae2a614b096757e05e65ffd",
-          "title": "余梦安装测试",
-          "content": "",
-          "priority": 0,
-          "status": 0,
-          "sortOrder": -12094627905536,
-          "parentId": "6ae06228b096757fb804c7e3",
-          "isAllDay": false,
-          "timeZone": "Asia/Shanghai"
-        },
-        {
-          "id": "6ae2a60ab096757e05e65ff4",
-          "title": "吕宁安装测试",
-          "content": "",
-          "priority": 0,
-          "status": 0,
-          "sortOrder": -10995116277760,
-          "parentId": "6ae06228b096757fb804c7e3",
-          "isAllDay": false,
-          "timeZone": "Asia/Shanghai"
-        },
-        {
-          "id": "6ae2a5edb096757e05e65fd8",
-          "title": "戴刚烈安装测试",
-          "content": "",
-          "priority": 0,
-          "status": 0,
-          "sortOrder": -9895604649984,
-          "parentId": "6ae06228b096757fb804c7e3",
-          "isAllDay": false,
-          "timeZone": "Asia/Shanghai"
-        },
-        {
-          "id": "6ae06228b096757fb804c7e3",
-          "title": "打招呼系统 MVP 安装",
-          "content": "",
-          "desc": "",
-          "priority": 5,
-          "status": 0,
-          "sortOrder": -7696581394432,
-          "startDate": "2026-12-01T00:00:00+0800",
-          "dueDate": "2026-12-19T00:00:00+0800",
-          "isAllDay": true,
-          "timeZone": "Asia/Shanghai"
-        },
         {
           "id": "6ae0613cb096757fb804c79c",
           "title": "岗位智能回复推荐 skill",
@@ -248,7 +130,7 @@
           "id": "6ae06067b096757fb804c720",
           "title": "岗位招聘常用QA skill",
           "content": "",
-          "priority": 1,
+          "priority": 0,
           "status": 0,
           "sortOrder": -5497558138880,
           "isAllDay": false,
@@ -279,9 +161,9 @@
         },
         {
           "id": "6ae033c7b096751ca78f001d",
-          "title": "岗位信息标准化输出 skill",
+          "title": "岗位信息采集标准化输出 skill",
           "content": "",
-          "priority": 1,
+          "priority": 0,
           "status": 0,
           "sortOrder": -3298534883328,
           "isAllDay": false,
@@ -292,24 +174,79 @@
           "id": "6ae03336b096751ca78f0007",
           "title": "岗位评估 skill",
           "content": "（辅助戴刚烈）",
-          "priority": 1,
+          "priority": 0,
           "status": 0,
           "sortOrder": -2199023255552,
           "isAllDay": false,
           "timeZone": "Asia/Shanghai",
           "columnId": "6acb0c10b096754cc8ad670c"
+        }
+      ],
+      "columns": []
+    },
+    {
+      "id": "6aeac43ae4b0de530b695a54",
+      "name": "🧩其他 skill",
+      "color": null,
+      "sortOrder": -1078036791296,
+      "groupId": "6ae00d8eb096751ca78efeee",
+      "tasks": [
+        {
+          "id": "6aeac06db096753a2f656bd9",
+          "title": "修改美康输出简历格式",
+          "content": "添加学历的分析",
+          "priority": 0,
+          "status": 0,
+          "sortOrder": -2199023255552,
+          "startDate": "2026-11-04T00:00:00+0800",
+          "dueDate": "2026-11-04T00:00:00+0800",
+          "isAllDay": true,
+          "timeZone": "Asia/Shanghai"
         },
         {
-          "id": "6ae465e4b0967566d29085af",
-          "title": "测试",
+          "id": "6aeac09bb096753a2f656c03",
+          "title": "修改普工信息采集表格格式",
           "content": "",
           "priority": 0,
           "status": 0,
           "sortOrder": -1099511627776,
-          "startDate": "2026-11-24T00:00:00+0800",
-          "dueDate": "2026-11-29T00:00:00+0800",
+          "startDate": "2026-11-04T00:00:00+0800",
+          "dueDate": "2026-11-04T00:00:00+0800",
           "isAllDay": true,
           "timeZone": "Asia/Shanghai"
+        }
+      ],
+      "columns": []
+    },
+    {
+      "id": "6ae04e82e4b03273ad95cdc1",
+      "name": "🌐创新招聘组站点",
+      "color": null,
+      "sortOrder": -1073741824000,
+      "groupId": "6ae00d8eb096751ca78efeee",
+      "tasks": [
+        {
+          "id": "6adf0c83b096755a797a2ff2",
+          "title": "看板网站",
+          "content": "网址：https://kanban.agar-cabin.site/#tasks\n- [x] 接入 AI 开发进度\n- [ ] 派发给小八每日定时更新",
+          "desc": "",
+          "priority": 1,
+          "status": 0,
+          "sortOrder": -2199023255552,
+          "isAllDay": false,
+          "timeZone": "Asia/Shanghai",
+          "columnId": "6adff3d2b096751ca78efde1"
+        },
+        {
+          "id": "6adff6e9b096751ca78efdfc",
+          "title": "对接日报",
+          "content": "",
+          "priority": 1,
+          "status": 0,
+          "sortOrder": -1099511627776,
+          "isAllDay": false,
+          "timeZone": "Asia/Shanghai",
+          "columnId": "6adff3d2b096751ca78efde1"
         }
       ],
       "columns": []
@@ -325,12 +262,32 @@
           "id": "6adf0c7bb096755a797a2fe8",
           "title": "协商如何对接",
           "content": "",
-          "priority": 1,
+          "priority": 0,
           "status": 0,
           "sortOrder": -1099511627776,
           "isAllDay": false,
           "timeZone": "Asia/Shanghai",
           "columnId": "6ab0add9a31a52d9e57be853"
+        }
+      ],
+      "columns": []
+    },
+    {
+      "id": "6ae98dcfe4b0694e60498775",
+      "name": "🍃支付宝晓叶",
+      "color": null,
+      "sortOrder": -1066225631232,
+      "groupId": "6ae00d8eb096751ca78efeee",
+      "tasks": [
+        {
+          "id": "6ae98ddeb096756dd175bd28",
+          "title": "协商如何对接",
+          "content": "",
+          "priority": 0,
+          "status": 0,
+          "sortOrder": -1099511627776,
+          "isAllDay": false,
+          "timeZone": "Asia/Shanghai"
         }
       ],
       "columns": []
