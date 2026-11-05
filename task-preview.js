@@ -31,13 +31,15 @@
     return [task,...children(project,task).flatMap(child=>descendants(project,child,seen))];
   }
   function taskControl(project,task,nested=false) {
-    const row=el('div','dev-task-row');
+    const completed=task.status===2;
+    const row=el('div','dev-task-row'+(completed?' is-completed':''));
     const kids=children(project,task);
     const toggle=el('button','dev-tree-toggle',kids.length?(collapsed.has(task.id)?'›':'⌄'):'');toggle.type='button';
     if(kids.length){toggle.setAttribute('aria-label',`${collapsed.has(task.id)?'展开':'收起'}${task.title}的子任务`);toggle.setAttribute('aria-expanded',String(!collapsed.has(task.id)));toggle.addEventListener('click',()=>{collapsed.has(task.id)?collapsed.delete(task.id):collapsed.add(task.id);renderBoard();board.querySelector(`[data-toggle="${task.id}"]`)?.focus();});toggle.dataset.toggle=task.id;row.append(toggle);}
     const button=el('button','dev-task-open');button.type='button';button.setAttribute('aria-label',`查看任务：${task.title}`);
-    const square=el('span',`dev-check ${color(task)}`);square.setAttribute('aria-hidden','true');
+    const square=el('span',`dev-check ${color(task)}`,completed?'✓':'');square.setAttribute('aria-hidden','true');
     const copy=el('span','dev-task-copy');copy.append(el('span','dev-task-title',task.title));
+    if(completed)copy.append(el('span','dev-task-status','已完成'+(dateKey(task.completedTime)?' · '+dateKey(task.completedTime):'')));
     const description=task.content||task.desc||(task.items?.[0]?.title?`· ${task.items[0].title}`:'');
     if(description)copy.append(el('span','dev-task-description',description));
     const dates=schedule(task);if(dates)copy.append(el('span','dev-task-date',`${dayLabel(dates.start)} — ${dayLabel(dates.end)}`));
@@ -72,13 +74,14 @@
         const heading=el('summary','dev-priority-heading',priority.name);heading.append(el('span','',String(sum)));section.append(heading);
         for(const task of tasks)section.append(card(project,task));body.append(section);
       }
-      if(!visible.length)body.append(el('p','dev-column-empty','暂无未完成任务'));
+      if(!visible.length)body.append(el('p','dev-column-empty','暂无任务'));
       column.append(body);board.append(column);
       totalMatches+=project.tasks.filter(t=>[t.title,t.content,t.desc,...(t.items||[]).map(i=>i.title)].filter(Boolean).join(' ').toLocaleLowerCase().includes(query)).length;
     }
     if(!board.children.length)board.append(el('div','dev-empty','没有找到匹配的任务，试试其他关键词。'));
     const all=data.projects.reduce((n,p)=>n+p.tasks.length,0);
-    count.textContent=query?`找到 ${totalMatches} 项匹配任务`:`${data.projects.length} 个项目 · ${all} 项未完成任务`;
+    const completed=data.projects.reduce((n,p)=>n+p.tasks.filter(t=>t.status===2).length,0);
+    count.textContent=query?`找到 ${totalMatches} 项匹配任务`:`${data.projects.length} 个项目 · ${all-completed} 项未完成 · ${completed} 项已完成`;
   }
   function renderView() {
     renderTimeline();renderBoard();
@@ -141,12 +144,13 @@
       for(const segment of segments){
         const {project,task,dates,index}=segment;
         const bar=el('button','dev-calendar-event project-'+index);bar.type='button';
+        if(task.status===2)bar.classList.add('is-completed');
         bar.style.gridColumn=segment.start+' / '+(segment.end+1);bar.style.gridRow=String(segment.lane+1);
         if(segment.continuesBefore)bar.classList.add('continues-before');if(segment.continuesAfter)bar.classList.add('continues-after');
         const datesText=dayLabel(dates.start)+' — '+dayLabel(dates.end);
-        const title=(segment.continuesBefore?'‹ ':'')+task.title+(segment.continuesAfter?' ›':'');
+        const title=(task.status===2?'✓ 已完成 · ':'')+(segment.continuesBefore?'‹ ':'')+task.title+(segment.continuesAfter?' ›':'');
         bar.append(el('span','dev-event-name',title),el('span','dev-event-meta',projectName(project)+' · '+datesText));
-        bar.title=task.title+' · '+project.name+' · '+datesText+' · '+priorityName(task);
+        bar.title=task.title+' · '+(task.status===2?'已完成':'未完成')+' · '+project.name+' · '+datesText+' · '+priorityName(task);
         bar.setAttribute('aria-label','查看任务：'+bar.title);bar.addEventListener('click',()=>openTask(project,task));lanes.append(bar);
       }
       week.append(lanes);calendar.append(week);
@@ -169,7 +173,8 @@
     detail.replaceChildren();detail.append(el('span',`dev-priority-pill ${color(task)}`,priorityName(task)));
     const heading=el('h2','',task.title);heading.id='dev-detail-title';detail.append(heading);
     const meta=el('dl','dev-meta');
-    for(const [name,value]of[['项目',project.name],['状态','未完成'],['开始',dateKey(task.startDate)||'未设置'],['截止',dateKey(task.dueDate)||'未设置']])meta.append(el('dt','',name),el('dd','',value));
+    for(const [name,value]of[['项目',project.name],['状态',task.status===2?'已完成':'未完成'],['开始',dateKey(task.startDate)||'未设置'],['截止',dateKey(task.dueDate)||'未设置']])meta.append(el('dt','',name),el('dd','',value));
+    if(task.status===2)meta.append(el('dt','','完成时间'),el('dd','',task.completedTime?new Intl.DateTimeFormat('zh-CN',{timeZone:'Asia/Shanghai',dateStyle:'medium',timeStyle:'short',hour12:false}).format(new Date(task.completedTime)):'未记录'));
     const parent=project.tasks.find(t=>t.id===task.parentId);if(parent)meta.append(el('dt','','父任务'),el('dd','',parent.title));detail.append(meta);
     if(task.content||task.desc)detail.append(el('h3','','任务说明'),el('p','dev-detail-text',task.content||task.desc));
     if(task.items?.length){detail.append(el('h3','','检查项'));const list=el('ul','dev-detail-list');for(const item of task.items)list.append(el('li','',`${item.status===1||item.status===2?'✓':'□'} ${item.title}`));detail.append(list);}
