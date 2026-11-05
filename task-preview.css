@@ -94,6 +94,10 @@ body[data-page=tasks] #page-description{font-size:13px;color:var(--md-muted);lin
 .dev-check.high{border-color:#c62828}.dev-check.medium{border-color:#ad7800}.dev-check.low{border-color:var(--md-primary)}
 .dev-task-copy{min-width:0;display:block;overflow-wrap:anywhere}
 .dev-task-title{font-size:14px;font-weight:400;color:var(--md-ink);display:block;line-height:1.6}
+.is-completed .dev-check{border-color:#087957;background:#087957;color:white;font-size:12px;line-height:12px;text-align:center}
+.is-completed .dev-task-title{text-decoration:line-through;color:var(--md-muted)}
+.dev-task-status{display:block;color:#087957;font-size:12px;line-height:1.5;margin-top:3px}
+.dev-calendar-event.is-completed .dev-event-name{text-decoration:line-through}
 .dev-task-description{display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden;color:var(--md-muted);font-size:12px;line-height:1.5;margin-top:3px;white-space:pre-line}
 .dev-task-date,.dev-task-items{display:block;margin-top:4px;font-size:12px;color:var(--md-muted)}
 .dev-children{padding:2px 0 0 12px;border-left:1px solid #eee;margin-left:5px}
