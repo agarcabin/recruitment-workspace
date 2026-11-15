@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="theme-color" content="#f4f6f8" />
-  <meta name="description" content="创新招聘组看板：老板汇总视图，支持逐层下钻查看人员与候选人明细。" />
+  <meta name="description" content="创新招聘组看板：汇总视图，支持逐层下钻查看人员与候选人明细。" />
   <meta name="robots" content="noindex, nofollow" />
   <title>创新招聘组看板</title>
   <link rel="stylesheet" href="./styles.css" />
@@ -145,9 +145,9 @@
         <section class="overview-section" aria-label="AI开发概览">
           <div class="section-heading">
             <div>
-              <div class="section-eyebrow"><span class="section-indicator" aria-hidden="true"></span>01 · 老板视角 · 开发概览</div>
-              <h2 class="section-title">AI 开发整体进展如何</h2>
-              <p class="section-subtitle">一屏看清 7 个 AI 项目的任务量与完成度。点击数字卡可下钻查看构成明细。</p>
+              <div class="section-eyebrow"><span class="section-indicator" aria-hidden="true"></span>01 · 开发概览</div>
+              <h2 class="section-title">AI 开发任务总览</h2>
+              <p class="section-subtitle">数据来自滴答清单「AI 开发进度」文件夹快照，任务状态以滴答清单为准。</p>
             </div>
             <span id="ai-snapshot" class="section-helper"></span>
           </div>
@@ -155,12 +155,22 @@
           <div id="ai-process" class="process-strip"></div>
         </section>
 
+        <section class="surface trend-panel" aria-label="月度时间条">
+          <div class="panel-heading">
+            <div>
+              <div class="section-eyebrow"><span class="section-indicator" aria-hidden="true"></span>02 · 月度时间条</div>
+              <h2 class="panel-title">任务排期与完成进度（月度视角）</h2>
+              <p class="section-subtitle">横条为任务排期区间（开始 → 截止 / 完成）；深色为已完成，浅色为进行中，点击横条查看任务详情。</p>
+            </div>
+          </div>
+          <div id="ai-timeline" class="chart-box chart-box--tall"></div>
+        </section>
         <section class="surface trend-panel" aria-label="项目任务分布">
           <div class="panel-heading">
             <div>
-              <div class="section-eyebrow"><span class="section-indicator" aria-hidden="true"></span>02 · 经理视角 · 项目任务分布</div>
+              <div class="section-eyebrow"><span class="section-indicator" aria-hidden="true"></span>03 · 项目任务分布</div>
               <h2 class="panel-title">各项目未完成与已完成任务</h2>
-              <p class="section-subtitle">条形总长为任务数，点击条形可下钻查看该项目全部任务（含优先级与排期）。</p>
+              <p class="section-subtitle">条形总长为任务数，点击条形可查看该项目任务明细。</p>
             </div>
           </div>
           <div id="ai-chart" class="chart-box"></div>
@@ -169,9 +179,9 @@
         <section class="trend-panel surface" aria-label="任务看板">
           <div class="panel-heading ai-board-heading">
             <div>
-              <div class="section-eyebrow"><span class="section-indicator" aria-hidden="true"></span>03 · 组员视角 · 任务看板</div>
+              <div class="section-eyebrow"><span class="section-indicator" aria-hidden="true"></span>04 · 任务看板</div>
               <h2 class="panel-title">任务明细（含子任务与检查项）</h2>
-              <p class="section-subtitle">按项目分组展示任务树，已完成任务带勾选标记与完成时间；点击任务查看执行细节。</p>
+              <p class="section-subtitle">按项目分组展示任务树，已完成任务带勾选标记与完成时间；点击任务查看详情。</p>
             </div>
             <label class="ai-search">
               <span class="field-eyebrow">搜索</span>
@@ -184,9 +194,9 @@
         <section class="overview-section" aria-label="项目总览">
           <div class="section-heading">
             <div>
-              <div class="section-eyebrow"><span class="section-indicator" aria-hidden="true"></span>01 · 老板视角 · 项目总览</div>
+              <div class="section-eyebrow"><span class="section-indicator" aria-hidden="true"></span>01 · 项目总览</div>
               <h2 class="section-title">合作项目经营总览</h2>
-              <p class="section-subtitle">数据来自企微表格《合作项目情况表》快照；点击数字卡可下钻查看构成。</p>
+              <p class="section-subtitle">数据来自企微表格《合作项目情况表》快照；点击数字与项目行可查看明细。</p>
             </div>
             <span id="proj-snapshot" class="section-helper"></span>
           </div>
@@ -194,13 +204,25 @@
           <div id="proj-process" class="process-strip"></div>
         </section>
 
+
+        <section class="surface trend-panel" aria-label="账号项目池">
+          <div class="panel-heading">
+            <div>
+              <div class="section-eyebrow"><span class="section-indicator" aria-hidden="true"></span>02 · 账号项目池</div>
+              <h2 class="panel-title">各项目挂载的招聘账号</h2>
+              <p class="section-subtitle">数据来自《创新招聘组每日数据》合作项目表子表；单元格即一个挂载账号（如「柴海良 2」为柴海良的 2 号账号）。</p>
+            </div>
+            <span id="acct-summary" class="section-helper"></span>
+          </div>
+          <div id="acct-pool"></div>
+        </section>
         <div class="analysis-grid">
           <section class="surface analysis-panel" aria-label="城市分布">
             <div class="panel-heading">
               <div>
-                <div class="section-eyebrow"><span class="section-indicator" aria-hidden="true"></span>02 · 经理视角 · 城市分布</div>
+                <div class="section-eyebrow"><span class="section-indicator" aria-hidden="true"></span>03 · 城市分布</div>
                 <h2 class="panel-title">合作项目所在城市</h2>
-                <p class="section-subtitle">按正式合作项目统计，点击城市下钻项目明细。</p>
+                <p class="section-subtitle">按正式合作项目统计。</p>
               </div>
             </div>
             <div id="proj-chart" class="chart-box chart-box--tall"></div>
@@ -217,24 +239,12 @@
           </section>
         </div>
 
-        <section class="surface trend-panel" aria-label="项目池">
-          <div class="panel-heading">
-            <div>
-              <div class="section-eyebrow"><span class="section-indicator" aria-hidden="true"></span>03 · 经理视角 · 项目池</div>
-              <h2 class="panel-title">每个项目池里有哪些账号在挂</h2>
-              <p class="section-subtitle">项目池 = BOSS 账号挂靠的客户；卡片列出该项目池内的全部账号，点击卡片查看每个账号挂的岗位与最近数据。</p>
-            </div>
-            <span id="pool-snapshot" class="section-helper"></span>
-          </div>
-          <div id="proj-pool" class="proj-pool-grid"></div>
-        </section>
-
         <section class="surface trend-panel" aria-label="项目明细">
           <div class="panel-heading">
             <div>
-              <div class="section-eyebrow"><span class="section-indicator" aria-hidden="true"></span>05 · 组员视角 · 项目清单</div>
+              <div class="section-eyebrow"><span class="section-indicator" aria-hidden="true"></span>05 · 项目清单</div>
               <h2 class="panel-title">正式合作项目明细</h2>
-              <p class="section-subtitle">点击项目行查看亮点、劣势、费用、对接客服与合作细节。</p>
+              <p class="section-subtitle">点击项目行查看亮点、劣势、费用与合作细节。</p>
             </div>
           </div>
           <div id="proj-table"></div>
@@ -250,7 +260,7 @@
         <p id="detail-subtitle" class="detail-subtitle"></p>
       </div>
       <button type="button" id="close-detail" class="icon-button close-detail" aria-label="关闭详情">
-        <svg viewBox="0 0 24 24" aria-hidden="true" fill="none"><path d="m6 6 12 12M18 6 6 18"/></svg>
+        <svg viewBox="0 0 24 24" aria-hidden="true" fill="none"><path d="m6 6 12 12M18 6 6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
       </button>
     </div>
     <div id="detail-body" class="detail-body"></div>
