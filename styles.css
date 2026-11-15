@@ -366,6 +366,10 @@ button.hg-bar:hover { filter: brightness(1.08); }
   padding: 13px 18px 10px; border-bottom: 1px solid var(--line); flex-wrap: wrap;
 }
 .ai-project-head h3 { font-size: 15px; font-weight: 650; }
+.ai-project-head[role="button"] { cursor: pointer; }
+.ai-project-head[role="button"]:hover h3 { color: var(--navy); }
+.ai-head-arrow { font-size: 12px; color: var(--faint); margin-left: 6px; font-weight: 400; }
+.ai-project-head[role="button"]:hover .ai-head-arrow { color: var(--navy); }
 .ai-project-meta { font-size: 12px; color: var(--faint); font-variant-numeric: tabular-nums; }
 .ai-task-row { padding-left: calc(14px + var(--depth, 0) * 26px); }
 .ai-children { border-left: 1px solid var(--line); margin-left: calc(20px + var(--depth, 0) * 26px); }

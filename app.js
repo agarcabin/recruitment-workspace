@@ -744,7 +744,11 @@ function bind() {
   $('open-methodology').addEventListener('click', () => showDetail({ type: 'methodology' }));
   const aiSearch = $('ai-search-input');
   if (aiSearch) aiSearch.addEventListener('input', () => { aiQuery = aiSearch.value.trim().toLowerCase(); renderAiBoard(); });
-  document.addEventListener('click', e => action(e.target));
+  document.addEventListener('click', e => {
+    const a = e.target.closest('[data-action]');
+    if (a && a.tagName === 'A') e.preventDefault();
+    action(e.target);
+  });
   $('close-detail').addEventListener('click', closeDialog);
   $('detail-dialog').addEventListener('click', e => { if (e.target === $('detail-dialog')) closeDialog(); });
   $('detail-dialog').addEventListener('close', () => { document.documentElement.style.overflow = ''; state.opener?.focus?.(); });
@@ -875,13 +879,13 @@ function renderAiTimeline() {
 }
 
 function aiKpiDetail(kind) {
-  if (kind.startsWith('ai-proj-')) { aiProjectDetail(Number(kind.slice(7))); return; }
+  if (kind.startsWith('ai-proj-')) { aiProjectDetail(Number(kind.slice('ai-proj-'.length))); return; }
   const all = aiData.projects.flatMap((p, pi) => p.tasks.map((t, ti) => ({ p, t, pi, ti })));
   const done = all.filter(x => aiDone(x.t));
   let title = '', rows = [];
   if (kind === 'ai-total') {
     title = '全部 AI 开发项目';
-    rows = aiData.projects.map(p => [esc(p.name), String(p.tasks.length), String(p.tasks.filter(aiDone).length), String(p.tasks.filter(t => !aiDone(t)).length)]);
+    rows = aiData.projects.map(p => [`<a href="#" data-action="ai-proj" data-pi="${aiData.projects.indexOf(p)}">${esc(p.name)} ↗</a>`, String(p.tasks.length), String(p.tasks.filter(aiDone).length), String(p.tasks.filter(t => !aiDone(t)).length)]);
     setDetail('AI 开发 · 下钻明细', '项目任务构成', `共 ${aiData.projects.length} 个项目 · ${all.length} 项任务`,
       `<h3>项目任务统计</h3>${simpleTable(['项目', '任务总数', '已完成', '未完成'], rows)}`);
     return;
@@ -946,8 +950,8 @@ function renderAiBoard() {
     const total = p.tasks.length, done = p.tasks.filter(aiDone).length;
     if (aiQuery && !matched.length) return '';
     return `<div class="ai-project-card surface">
-      <div class="ai-project-head">
-        <h3>${esc(p.name)}</h3>
+      <div class="ai-project-head" data-action="ai-kpi" data-detail="ai-proj-${pi}" role="button" tabindex="0" aria-label="查看${esc(p.name)}项目详情">
+        <h3>${esc(p.name)}<span class="ai-head-arrow" aria-hidden="true">↗</span></h3>
         <span class="ai-project-meta">${aiQuery ? `匹配 ${p.tasks.filter(t => aiTaskMatches(p, t)).length} 项 · ` : ''}未完成 ${total - done} · 已完成 ${done} / ${total}</span>
       </div>
       ${matched.length ? matched.map(t => aiTaskRow(p, t)).join('') : '<p class="source-note" style="padding:8px 14px 12px">该项目暂无任务。</p>'}
@@ -963,7 +967,7 @@ function aiTaskDetail(pi, ti) {
     <div class="detail-grid">${kv('状态', aiDone(t) ? '已完成' : '进行中')}${kv('优先级', pri.name)}${kv('子任务', String(kids.length))}${kv('检查项', String(t.items?.length || 0))}${kv('开始日期', dKey(t.startDate) || '—')}${kv('截止日期', dKey(t.dueDate) || '—')}${aiDone(t) ? kv('完成时间', dKey(t.completedTime) || '—') : ''}</div>
     ${(t.content || t.desc) ? `<h3>任务描述</h3><p class="source-note">${esc(t.content || t.desc)}</p>` : ''}
     ${t.items?.length ? `<h3>检查项</h3>${simpleTable(['检查项', '状态'], t.items.map(i => [i.title, i.status === 2 ? '已完成' : i.status === 1 ? '进行中' : '未开始']))}` : ''}
-    ${kids.length ? `<h3>子任务</h3>${simpleTable(['任务', '状态'], kids.map(k => [esc(k.title), aiDone(k) ? '已完成' : '进行中']))}` : ''}
+    ${kids.length ? `<h3>子任务</h3>${simpleTable(['任务', '状态'], kids.map(k => [`<a href="#" data-action="ai-task" data-pi="${pi}" data-ti="${p.tasks.indexOf(k)}">${esc(k.title)} ↗</a>`, aiDone(k) ? '已完成' : '进行中']))}` : ''}
     <p class="source-note" style="margin-top:14px">此页面为滴答清单任务快照，任务状态以滴答清单为准。</p>`);
 }
 function aiProjectDetail(pi) {
@@ -979,7 +983,7 @@ function renderAiProjectTasks(p) {
   return `<h3>任务清单</h3><div class="detail-table-wrap"><table class="detail-table"><thead><tr><th>任务</th><th>优先级</th><th>状态</th><th>排期</th></tr></thead><tbody>${roots.map(t => {
     const pri = aiPri(t);
     const sched = t.startDate || t.dueDate ? dKey(t.startDate || t.dueDate) : '—';
-    return `<tr><th scope="row">${esc(t.title)}${aiChildren(p, t).length ? `（${aiChildren(p, t).length} 子任务）` : ''}</th><td>${pri.name}</td><td>${aiDone(t) ? '已完成' : '进行中'}</td><td>${sched}</td></tr>`;
+    return `<tr><th scope="row"><a href="#" data-action="ai-task" data-pi="${aiData.projects.indexOf(p)}" data-ti="${p.tasks.indexOf(t)}">${esc(t.title)} ↗</a>${aiChildren(p, t).length ? `（${aiChildren(p, t).length} 子任务）` : ''}</th><td>${pri.name}</td><td>${aiDone(t) ? '已完成' : '进行中'}</td><td>${sched}</td></tr>`;
   }).join('')}</tbody></table></div>`;
 }
 
