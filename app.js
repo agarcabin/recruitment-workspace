@@ -691,6 +691,9 @@ function action(target) {
   else if (act === 'methodology') showDetail({ type: 'methodology' });
   else if (act === 'ai-task') aiTaskDetail(+a.dataset.pi, +a.dataset.ti);
   else if (act === 'ai-proj') aiProjectDetail(+a.dataset.pi);
+  else if (act === 'ai-kpi') aiKpiDetail(a.dataset.detail);
+  else if (act === 'proj-kpi') projKpiDetail(a.dataset.detail);
+  else if (act === 'pool') projPoolDetail(+a.dataset.i);
   else if (act === 'proj') projDetail(+a.dataset.i);
 }
 // ---------- 页面切换（招聘 / AI开发 / 项目） ----------
@@ -782,23 +785,47 @@ function renderAI() {
   if (!aiData) return;
   const st = aiStats();
   $('ai-snapshot').textContent = '滴答清单快照 · ' + stamp(aiData.capturedAt);
+  // 老板层：整体完成率 + 平均线
+  const rate = st.total ? (st.done * 100 / st.total).toFixed(1) + '%' : '—';
+  const doneProjects = aiData.projects.filter(p => p.tasks.length && p.tasks.every(aiDone)).length;
   const kpis = [
-    { eyebrow: '存量', label: '开发项目数', value: aiData.projects.length, note: '「AI 开发进度」文件夹', cls: '' },
-    { eyebrow: '过程', label: '未完成任务', value: st.undone, note: '待推进 / 待验收', cls: '' },
-    { eyebrow: '结果', label: '已完成任务', value: st.done, note: '含子任务与检查项', cls: 'metric-card--steel' },
-    { eyebrow: '风险', label: '高优先级待办', value: st.high, note: '高优先级且未完成', cls: 'metric-card--gold' }
+    { eyebrow: '存量', label: '开发项目数', value: aiData.projects.length, note: `其中 ${doneProjects} 个全部完成`, cls: '', detail: 'ai-total' },
+    { eyebrow: '结果', label: '整体完成率', value: rate, note: `${st.done} / ${st.total} 项任务已完成`, cls: 'metric-card--steel', detail: 'ai-rate' },
+    { eyebrow: '过程', label: '进行中任务', value: st.undone, note: '待推进 / 待验收', cls: '', detail: 'ai-undone' },
+    { eyebrow: '风险', label: '高优先级待办', value: st.high, note: '高优先级且未完成', cls: 'metric-card--gold', detail: 'ai-high' }
   ];
-  $('ai-kpi').innerHTML = kpis.map(c => `<div class="metric-card ${c.cls}">
+  $('ai-kpi').innerHTML = kpis.map(c => `<div class="metric-card ${c.cls} metric-card--link" data-action="ai-kpi" data-detail="${c.detail}">
     <div class="metric-eyebrow">${c.eyebrow}</div>
     <div class="metric-label">${esc(c.label)}</div>
-    <span class="metric-value">${num(c.value)}</span>
+    <span class="metric-value">${esc(String(c.value))}</span>
     <div class="metric-sub"><span>${esc(c.note)}</span></div></div>`).join('');
   $('ai-process').innerHTML = aiData.projects.map(p => {
     const total = p.tasks.length, done = p.tasks.filter(aiDone).length;
-    return `<div class="process-item"><span class="process-label">${esc(p.name)}</span><span class="process-value">${total}</span><span class="process-note">未完成 ${total - done} · 已完成 ${done}</span></div>`;
+    return `<div class="process-item" data-action="ai-kpi" data-detail="ai-proj-${aiData.projects.indexOf(p)}" role="button" tabindex="0"><span class="process-label">${esc(p.name)}</span><span class="process-value">${total}</span><span class="process-note">未完成 ${total - done} · 已完成 ${done}</span></div>`;
   }).join('');
   renderAiChart();
   renderAiBoard();
+}
+function aiKpiDetail(kind) {
+  if (kind.startsWith('ai-proj-')) { aiProjectDetail(Number(kind.slice(7))); return; }
+  const all = aiData.projects.flatMap((p, pi) => p.tasks.map((t, ti) => ({ p, t, pi, ti })));
+  const done = all.filter(x => aiDone(x.t));
+  let title = '', rows = [];
+  if (kind === 'ai-total') {
+    title = '全部 AI 开发项目';
+    rows = aiData.projects.map(p => [esc(p.name), String(p.tasks.length), String(p.tasks.filter(aiDone).length), String(p.tasks.filter(t => !aiDone(t)).length)]);
+    setDetail('AI 开发 · 老板视角下钻', '项目任务构成', `共 ${aiData.projects.length} 个项目 · ${all.length} 项任务`,
+      `<h3>项目任务统计</h3>${simpleTable(['项目', '任务总数', '已完成', '未完成'], rows)}`);
+    return;
+  }
+  if (kind === 'ai-rate') { title = `已完成任务（${done.length} 项）`; rows = done; }
+  else if (kind === 'ai-undone') { const u = all.filter(x => !aiDone(x.t)); title = `进行中任务（${u.length} 项）`; rows = u; }
+  else { const h = all.filter(x => x.t.priority === 5 && !aiDone(x.t)); title = `高优先级待办（${h.length} 项）`; rows = h; }
+  setDetail('AI 开发 · 老板视角下钻', title, '点击人名所在行可继续查看任务详情', `
+    <h3>任务清单</h3>${simpleTable(['任务', '所属项目', '优先级', '排期'], rows.slice(0, 60).map(x => {
+      const sched = dKey(x.t.startDate || x.t.dueDate) || '—';
+      return `<tr><th scope="row"><a href="#" data-action="ai-task" data-pi="${x.pi}" data-ti="${x.ti}">${esc(x.t.title)}</a></th><td>${esc(x.p.name.replace(/^[^\p{L}\p{N}]+/u, ''))}</td><td>${aiPri(x.t).name}</td><td>${sched}</td></tr>`;
+    }).join(''))}`);
 }
 function renderAiChart() {
   const el = $('ai-chart');
@@ -897,11 +924,11 @@ function renderProject() {
   const worker = ps.filter(p => p.category.includes('普工')).length;
   const white = ps.filter(p => p.category.includes('白领') || p.category.includes('技工')).length;
   $('proj-kpi').innerHTML = [
-    { eyebrow: '存量', label: '正式合作项目', value: ps.length, note: '已确认合作', cls: '' },
-    { eyebrow: '重点', label: '主招项目', value: main, note: '主招 / 辅招 / 试招分类', cls: 'metric-card--steel' },
-    { eyebrow: '覆盖', label: '覆盖城市', value: cities.length, note: cities.join(' · '), cls: '' },
-    { eyebrow: '储备', label: '跟进中项目', value: projData.following.length, note: '尚未正式确认', cls: 'metric-card--gold' }
-  ].map(c => `<div class="metric-card ${c.cls}">
+    { eyebrow: '存量', label: '正式合作项目', value: ps.length, note: '已确认合作 · 点击查看清单', cls: '', detail: 'proj-all' },
+    { eyebrow: '重点', label: '主招项目', value: main, note: '主招 / 辅招 / 试招分类', cls: 'metric-card--steel', detail: 'proj-main' },
+    { eyebrow: '覆盖', label: '覆盖城市', value: cities.length, note: cities.join(' · '), cls: '', detail: 'proj-cities' },
+    { eyebrow: '储备', label: '跟进中项目', value: projData.following.length, note: '尚未正式确认', cls: 'metric-card--gold', detail: 'proj-follow' }
+  ].map(c => `<div class="metric-card ${c.cls} metric-card--link" data-action="proj-kpi" data-detail="${c.detail}">
     <div class="metric-eyebrow">${c.eyebrow}</div>
     <div class="metric-label">${esc(c.label)}</div>
     <span class="metric-value">${num(c.value)}</span>
@@ -913,8 +940,57 @@ function renderProject() {
     ['跟进项目', projData.following.length, '待确认合作']
   ].map(([l, v, n]) => `<div class="process-item"><span class="process-label">${l}</span><span class="process-value">${v}</span><span class="process-note">${n}</span></div>`).join('');
   renderProjChart();
+  renderProjPool();
   renderProjSpecial();
   renderProjTable();
+}
+function projKpiDetail(kind) {
+  const ps = projData.projects;
+  if (kind === 'proj-all') {
+    setDetail('合作项目 · 老板视角下钻', '全部正式合作项目', `共 ${ps.length} 个`,
+      simpleTable(['项目', '类别', '主招', '城市', '负责业务', '费用'], ps.map(p => [`<a href="#" data-action="proj" data-i="${ps.indexOf(p)}">${esc(p.name)}</a>`, esc(p.category), esc(p.recruit || '—'), esc(p.city || '—'), esc(p.owner || '—'), esc(p.fee || '—')])));
+  } else if (kind === 'proj-main') {
+    const m = ps.filter(p => p.recruit === '主招');
+    setDetail('合作项目 · 老板视角下钻', `主招项目（${m.length} 个）`, '我方为主招聘方的项目',
+      simpleTable(['项目', '城市', '负责业务', '费用'], m.map(p => [`<a href="#" data-action="proj" data-i="${ps.indexOf(p)}">${esc(p.name)}</a>`, esc(p.city || '—'), esc(p.owner || '—'), esc(p.fee || '—')])));
+  } else if (kind === 'proj-cities') {
+    const groups = {};
+    ps.forEach(p => { const c = p.city || '未标注'; (groups[c] = groups[c] || []).push(p); });
+    const sections = Object.entries(groups).sort((a, b) => b[1].length - a[1].length).map(([c, list]) => {
+      const table = simpleTable(['项目', '主招', '负责业务'], list.map(p => [
+        `<a href="#" data-action="proj" data-i="${ps.indexOf(p)}">${esc(p.name)}</a>`,
+        esc(p.recruit || '—'), esc(p.owner || '—')]));
+      return `<h3>${esc(c)}（${list.length}）</h3>${table}`;
+    }).join('');
+    setDetail('合作项目 · 老板视角下钻', `覆盖城市（${Object.keys(groups).length} 个）`, '点击项目名继续下钻', sections);
+  } else if (kind === 'proj-follow') {
+    setDetail('合作项目 · 老板视角下钻', `跟进中项目（${projData.following.length} 个）`, '尚未正式确认的储备项目',
+      simpleTable(['项目', '城市', '负责业务'], projData.following.map(f => [esc(f.name), esc(f.city || '—'), esc(f.owner || '—')])));
+  }
+}
+
+// ---------- 项目池（BOSS 账号 × 客户，谁的账号在哪个池里） ----------
+function renderProjPool() {
+  const pools = projData.project_pools || [];
+  if (projData.pool_meta) $('pool-snapshot').textContent = 'BOSS底表快照 · ' + stamp(projData.pool_meta.generated_at);
+  if (!pools.length) { $('proj-pool').innerHTML = '<p class="source-note">暂无项目池数据。</p>'; return; }
+  $('proj-pool').innerHTML = pools.map((pool, i) => `
+    <div class="pool-card surface" data-action="pool" data-i="${i}" role="button" tabindex="0" aria-label="查看${esc(pool.client)}项目池明细">
+      <div class="pool-head">
+        <h3>${esc(pool.client)}</h3>
+        <span class="pool-count">${pool.account_count} 个账号</span>
+      </div>
+      <div class="pool-chips">${pool.accounts.map(a => `<span class="pool-chip">${esc(a.person)}<i>${a.job_count}岗</i></span>`).join('')}</div>
+    </div>`).join('');
+}
+function projPoolDetail(i) {
+  const pool = projData.project_pools[i];
+  setDetail('项目池 · 组员视角下钻', pool.client + ' 项目池', `共 ${pool.account_count} 个 BOSS 账号挂在该池 · 点击人名查看其账号岗位`, `
+    <h3>账号明细</h3>
+    <div class="detail-table-wrap"><table class="detail-table"><thead><tr><th>账号（招聘人员）</th><th>挂靠岗位数</th><th>岗位</th><th>最近数据日</th><th>活跃天数</th></tr></thead><tbody>
+    ${pool.accounts.map(a => `<tr><th scope="row"><a href="#" data-action="person" data-person="${esc(a.person)}">${esc(a.person)}</a></th><td>${a.job_count}</td><td>${a.jobs.map(esc).join('、') || '—'}</td><td>${a.last_day || '—'}</td><td>${a.active_days}</td></tr>`).join('')}
+    </tbody></table></div>
+    <p class="source-note" style="margin-top:12px">项目池口径：该客户名下有岗位发布记录的账号（含历史）。数据来自 BOSS 底表快照${projData.pool_meta ? ' · ' + stamp(projData.pool_meta.generated_at) : ''}。</p>`);
 }
 function renderProjChart() {
   const el = $('proj-chart');
