@@ -203,7 +203,7 @@ function renderKPI(b) {
   const hireMain = metricRow('核实入职'); // 主表口径（按入职日期）
   const fu = followupCounts();
   const cards = [
-    { cls: 'metric-card--hire', eyebrow: '入职结果 · 主表口径', label: '入职人次', value: hireMain, note: '按入职日期 · 试岗当天离职已排除', sub: `实际入职1天：${num(fu.rv1)}人，7天及以上：${num(fu.rv7)}人`, action: 'metric', metric: '核实入职' },
+    { cls: 'metric-card--hire', eyebrow: '入职结果 · 主表口径', label: '入职人次', value: hireMain, note: '按入职日期 · 试岗当天离职已排除', sub: (data.followup_records || []).length ? `实际入职1天：${num(fu.rv1)}人，7天及以上：${num(fu.rv7)}人` : '', action: 'metric', metric: '核实入职' },
     { cls: 'metric-card--gold', eyebrow: '面试结果 · 批次口径', label: '面试通过', value: b.pass, note: `已反馈通过率 ${pct(b.pass, b.pass + b.nopass)}`, sub: `结果待补 ${b.ppend}`, action: 'stage', stage: 'passed' },
     { cls: '', eyebrow: '面试推进 · 批次口径', label: '实际到面', value: b.arr, note: `登记 ${b.n} 人 · 未到面 ${b.noarr}`, sub: `到面待补 ${b.apend}`, action: 'stage', stage: 'attended' },
     { cls: 'metric-card--steel', eyebrow: '邀约登记 · 批次口径', label: '发出邀约', value: b.n, note: '按登记日期统计', action: 'stage', stage: 'invite' }
@@ -1068,8 +1068,27 @@ function projKpiDetail(kind) {
 }
 
 // ---------- 项目池（BOSS 账号 × 客户，谁的账号在哪个池里） ----------
-function renderProjPool() {
+// 前端时效窗口：以全部账号最新 last_day 为锚点，仅保留近 14 天有岗位发布记录的账号。
+// 在渲染时计算（而非依赖数据文件），这样日常重建覆盖 project-data.json 也不会退回累计口径。
+const POOL_WINDOW_DAYS = 14;
+function applyPoolWindow() {
   const pools = projData.project_pools || [];
+  const days = pools.flatMap(p => (p.accounts || []).map(a => a.last_day)).filter(Boolean).sort();
+  if (!days.length) { projData._pools = pools; projData._poolWindow = null; return; }
+  const anchor = new Date(days[days.length - 1] + 'T00:00:00');
+  const from = new Date(anchor); from.setDate(from.getDate() - (POOL_WINDOW_DAYS - 1));
+  const fromD = from.toISOString().slice(0, 10);
+  projData._poolWindow = { from: fromD, to: days[days.length - 1], days: POOL_WINDOW_DAYS };
+  projData._pools = pools
+    .map(p => {
+      const accounts = (p.accounts || []).filter(a => (a.last_day || '') >= fromD);
+      return { ...p, accounts, account_count: accounts.length };
+    })
+    .filter(p => p.accounts.length);
+}
+function renderProjPool() {
+  applyPoolWindow();
+  const pools = projData._pools;
   if (projData.pool_meta) $('pool-snapshot').textContent = 'BOSS底表快照 · ' + stamp(projData.pool_meta.generated_at);
   if (!pools.length) { $('proj-pool').innerHTML = '<p class="source-note">暂无项目池数据。</p>'; return; }
   $('proj-pool').innerHTML = pools.map((pool, i) => `
@@ -1082,13 +1101,14 @@ function renderProjPool() {
     </div>`).join('');
 }
 function projPoolDetail(i) {
-  const pool = projData.project_pools[i];
+  const pool = (projData._pools || projData.project_pools)[i];
+  const w = projData._poolWindow;
   setDetail('项目池 · 明细', pool.client + ' 项目池', `共 ${pool.account_count} 个 BOSS 账号挂在该池 · 点击人名查看其账号岗位`, `
     <h3>账号明细</h3>
     <div class="detail-table-wrap"><table class="detail-table"><thead><tr><th>账号（招聘人员）</th><th>挂靠岗位数</th><th>岗位</th><th>最近数据日</th><th>活跃天数</th></tr></thead><tbody>
     ${pool.accounts.map(a => `<tr><th scope="row"><a href="#" data-action="person" data-person="${esc(a.person)}">${esc(a.person)}</a></th><td>${a.job_count}</td><td>${a.jobs.map(esc).join('、') || '—'}</td><td>${a.last_day || '—'}</td><td>${a.active_days}</td></tr>`).join('')}
     </tbody></table></div>
-    <p class="source-note" style="margin-top:12px">项目池口径：该客户名下近 ${projData.pool_meta?.window_days || 14} 天（${projData.pool_meta?.window ? projData.pool_meta.window.from + ' — ' + projData.pool_meta.window.to : '快照窗口'}）有岗位发布记录的账号，历史挂靠不显示。数据来自 BOSS 底表快照${projData.pool_meta ? ' · ' + stamp(projData.pool_meta.generated_at) : ''}。</p>`);
+    <p class="source-note" style="margin-top:12px">项目池口径：该客户名下近 ${POOL_WINDOW_DAYS} 天（${w ? w.from + ' — ' + w.to : '快照窗口'}）有岗位发布记录的账号，历史挂靠不显示。数据来自 BOSS 底表快照${projData.pool_meta ? ' · ' + stamp(projData.pool_meta.generated_at) : ''}。</p>`);
 }
 function renderProjChart() {
   const el = $('proj-chart');
@@ -1161,15 +1181,26 @@ function projCityDetail(city) {
 
 async function init() {
   try {
-    const [res, aiRes, projRes] = await Promise.all([
+    const [res, aiRes, projRes, fuRes] = await Promise.all([
       fetch('./data.json', { cache: 'no-store' }),
       fetch('./ai-data.json', { cache: 'no-store' }).catch(() => null),
-      fetch('./project-data.json', { cache: 'no-store' }).catch(() => null)
+      fetch('./project-data.json', { cache: 'no-store' }).catch(() => null),
+      fetch('./followup-data.json', { cache: 'no-store' }).catch(() => null)
     ]);
     if (!res.ok) throw new Error('数据文件暂不可用');
     data = await res.json();
     aiData = aiRes && aiRes.ok ? await aiRes.json() : null;
     projData = projRes && projRes.ok ? await projRes.json() : null;
+    // 回访数据独立文件（data.json 会被日常重建覆盖，独立文件不受影响）
+    if (fuRes && fuRes.ok) {
+      try {
+        const fu = await fuRes.json();
+        if (Array.isArray(fu.followup_records)) {
+          data.followup_records = fu.followup_records;
+          data.followup_meta = fu.followup_meta || null;
+        }
+      } catch (e) { /* 回访文件异常不阻塞主数据 */ }
+    }
     if (!data.meta?.people?.length || !data.daily) throw new Error('数据文件不完整');
     PEOPLE = data.meta.people;
     const query = new URLSearchParams(location.search);
