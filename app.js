@@ -190,12 +190,12 @@ function renderHeader() {
   $('meta-status').innerHTML = `<span>日报截至 <strong>${esc(short(data.meta.latest_report))}</strong></span><span>生成 ${esc(stamp(data.meta.generated_at))}</span>`;
 }
 
-// 回访覆盖（累计口径：入职日期不早于区间起点；回访状态抓取时为最新）
+// 回访覆盖（累计口径：入职日期不早于区间起点；只计回访时仍在职的）
 function followupCounts() {
   const fu = data.followup_records || [];
   const from = state.mode === 'day' ? state.day : state.from;
   const inR = fu.filter(f => f.iv >= from);
-  return { rv1: inR.filter(f => f.rv1).length, rv7: inR.filter(f => f.rv7).length, total: inR.length };
+  return { rv1: inR.filter(f => f.rv1 === '在职').length, rv7: inR.filter(f => f.rv7 === '在职').length, total: inR.length };
 }
 
 // ---------- 渲染：KPI ----------
@@ -487,11 +487,13 @@ function showDetail(d) {
     if (k === '核实入职') {
       const fu = (data.followup_records || []).filter(f => f.iv >= (state.mode === 'day' ? state.day : state.from));
       if (fu.length) {
-        body += `<h3>入职后回访</h3>${simpleTable(['回访节点', '已回访', '其中在职', '已离职/异常'], [
-          ['入职1天', num(fu.filter(f => f.rv1).length), num(fu.filter(f => f.rv1 === '在职').length), num(fu.filter(f => f.rv1 && f.rv1 !== '在职').length)],
-          ['入职7天', num(fu.filter(f => f.rv7).length), num(fu.filter(f => f.rv7 === '在职').length), num(fu.filter(f => f.rv7 && f.rv7 !== '在职').length)]
+        body += `<h3>入职后回访</h3>${simpleTable(['回访节点', '在职人数'], [
+          ['入职1天', num(fu.filter(f => f.rv1 === '在职').length)],
+          ['入职7天', num(fu.filter(f => f.rv7 === '在职').length)]
         ])}`;
-        body += `<div class="info-callout"><strong>口径</strong><p>回访人数 = 企微表格「普工招聘信息」回访列已填写（在职 / 否）的人数，按入职日期不早于所选区间起点累计统计；「否」表示回访时已离职。回访数据更新于 ${esc(((data.followup_meta?.captured_at) || '').replace('T', ' '))}。</p></div>`;
+        const l1 = fu.filter(f => f.rv1 && f.rv1 !== '在职').length;
+        const l7 = fu.filter(f => f.rv7 && f.rv7 !== '在职').length;
+        body += `<div class="info-callout"><strong>口径</strong><p>只统计回访时仍在职的人数；回访状态为「否」（已离职）的${l1 || l7 ? ` 1天 ${l1} 条、7天 ${l7} 条` : '记录'}不计数。按入职日期不早于所选区间起点累计统计。回访数据更新于 ${esc(((data.followup_meta?.captured_at) || '').replace('T', ' '))}。</p></div>`;
       }
     }
     if (!person) {
@@ -1083,7 +1085,7 @@ function projPoolDetail(i) {
     <div class="detail-table-wrap"><table class="detail-table"><thead><tr><th>账号（招聘人员）</th><th>挂靠岗位数</th><th>岗位</th><th>最近数据日</th><th>活跃天数</th></tr></thead><tbody>
     ${pool.accounts.map(a => `<tr><th scope="row"><a href="#" data-action="person" data-person="${esc(a.person)}">${esc(a.person)}</a></th><td>${a.job_count}</td><td>${a.jobs.map(esc).join('、') || '—'}</td><td>${a.last_day || '—'}</td><td>${a.active_days}</td></tr>`).join('')}
     </tbody></table></div>
-    <p class="source-note" style="margin-top:12px">项目池口径：该客户名下有岗位发布记录的账号（含历史）。数据来自 BOSS 底表快照${projData.pool_meta ? ' · ' + stamp(projData.pool_meta.generated_at) : ''}。</p>`);
+    <p class="source-note" style="margin-top:12px">项目池口径：该客户名下近 ${projData.pool_meta?.window_days || 14} 天（${projData.pool_meta?.window ? projData.pool_meta.window.from + ' — ' + projData.pool_meta.window.to : '快照窗口'}）有岗位发布记录的账号，历史挂靠不显示。数据来自 BOSS 底表快照${projData.pool_meta ? ' · ' + stamp(projData.pool_meta.generated_at) : ''}。</p>`);
 }
 function renderProjChart() {
   const el = $('proj-chart');
