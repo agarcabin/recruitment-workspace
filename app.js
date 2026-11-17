@@ -80,13 +80,13 @@ function metricRow(k, person = null) {
 // 批次统计（口径同正式版 batchStats）
 function batchStats(filter = null) {
   const rs = inRangeRecords(filter);
-  const b = { n: rs.length, arr: 0, noarr: 0, apend: 0, pass: 0, nopass: 0, ppend: 0, onb: 0, quit: 0, noonb: 0, obAll: 0, rv1: 0, rv1bad: 0, rv3: 0, rv7: 0, rs };
+  const b = { n: rs.length, arr: 0, noarr: 0, apend: 0, pass: 0, nopass: 0, ppend: 0, onb: 0, onb1: 0, quit: 0, noonb: 0, obAll: 0, rv1: 0, rv1ok: 0, rv1bad: 0, rv3: 0, rv7: 0, rs };
   rs.forEach(r => {
     if (r.a === '到面') b.arr++; else if (r.a === '未到面') b.noarr++; else b.apend++;
     if (r.a === '到面') {
       if (r.ps === '通过') b.pass++; else if (r.ps === '未通过') b.nopass++; else b.ppend++;
     }
-    if (r.ob === '入职') b.onb++;
+    if (r.ob === '入职') { b.onb++; if (r.rv1 === '在职') b.onb1++; }
     else if (r.ob === '试岗离职') b.quit++;
     if (r.ps === '通过' && r.ob === '无') b.noonb++;
     if (r.ob !== '无') {
@@ -103,12 +103,12 @@ function clientsInRange(person = null) {
   const map = new Map();
   for (const r of inRangeRecords(person ? (x => x.p === person) : null)) {
     if (!r.proj) continue;
-    if (!map.has(r.proj)) map.set(r.proj, { name: r.proj, n: 0, arr: 0, noarr: 0, apend: 0, pass: 0, nopass: 0, ppend: 0, onb: 0, quit: 0, jobs: new Set(), people: new Set(), rs: [] });
+    if (!map.has(r.proj)) map.set(r.proj, { name: r.proj, n: 0, arr: 0, noarr: 0, apend: 0, pass: 0, nopass: 0, ppend: 0, onb: 0, onb1: 0, quit: 0, jobs: new Set(), people: new Set(), rs: [] });
     const c = map.get(r.proj);
     c.n++; c.rs.push(r);
     if (r.a === '到面') c.arr++; else if (r.a === '未到面') c.noarr++; else c.apend++;
     if (r.a === '到面' && r.ps === '通过') c.pass++;
-    if (r.ob === '入职') c.onb++;
+    if (r.ob === '入职') { c.onb++; if (r.rv1 === '在职') c.onb1++; }
     else if (r.ob === '试岗离职') c.quit++;
     if (r.pos) c.jobs.add(r.pos);
     c.people.add(r.p);
@@ -203,7 +203,7 @@ function renderKPI(b) {
   const hireMain = metricRow('核实入职'); // 主表口径（按入职日期）
   const fu = followupCounts();
   const cards = [
-    { cls: 'metric-card--hire', eyebrow: '入职结果 · 主表口径', label: '核实入职', value: hireMain, note: '按入职日期 · 试岗当天离职已排除', sub: `入职1天：${num(fu.rv1)}人 · 入职7天：${num(fu.rv7)}人`, action: 'metric', metric: '核实入职' },
+    { cls: 'metric-card--hire', eyebrow: '入职结果 · 主表口径', label: '入职人次', value: hireMain, note: '按入职日期 · 试岗当天离职已排除', sub: `实际入职1天：${num(fu.rv1)}人，7天及以上：${num(fu.rv7)}人`, action: 'metric', metric: '核实入职' },
     { cls: 'metric-card--gold', eyebrow: '面试结果 · 批次口径', label: '面试通过', value: b.pass, note: `已反馈通过率 ${pct(b.pass, b.pass + b.nopass)}`, sub: `结果待补 ${b.ppend}`, action: 'stage', stage: 'passed' },
     { cls: '', eyebrow: '面试推进 · 批次口径', label: '实际到面', value: b.arr, note: `登记 ${b.n} 人 · 未到面 ${b.noarr}`, sub: `到面待补 ${b.apend}`, action: 'stage', stage: 'attended' },
     { cls: 'metric-card--steel', eyebrow: '邀约登记 · 批次口径', label: '发出邀约', value: b.n, note: '按登记日期统计', action: 'stage', stage: 'invite' }
@@ -481,15 +481,16 @@ function showDetail(d) {
     const k = d.metric;
     const person = d.person || null;
     const v = metricRow(k, person);
-    const title = person ? `${person} · ${k}` : k;
+    const label = k === '核实入职' ? '入职人次' : k;
+    const title = person ? `${person} · ${label}` : label;
     const kicker = person ? '人员 · 指标详情' : '指标详情';
-    let body = `<div class="detail-grid">${stat(k, v, METRIC_NOTES[k] || '')}</div>`;
+    let body = `<div class="detail-grid">${stat(label, v, METRIC_NOTES[k] || '')}</div>`;
     if (k === '核实入职') {
       const fu = (data.followup_records || []).filter(f => f.iv >= (state.mode === 'day' ? state.day : state.from));
       if (fu.length) {
         body += `<h3>入职后回访</h3>${simpleTable(['回访节点', '在职人数'], [
-          ['入职1天', num(fu.filter(f => f.rv1 === '在职').length)],
-          ['入职7天', num(fu.filter(f => f.rv7 === '在职').length)]
+          ['实际入职1天', num(fu.filter(f => f.rv1 === '在职').length)],
+          ['7天及以上', num(fu.filter(f => f.rv7 === '在职').length)]
         ])}`;
         const l1 = fu.filter(f => f.rv1 && f.rv1 !== '在职').length;
         const l7 = fu.filter(f => f.rv7 && f.rv7 !== '在职').length;
@@ -581,13 +582,14 @@ function renderStage(stage, subtitle) {
     body += `<div class="info-callout"><strong>口径说明</strong><p>通过按登记批次的最新状态；入职按批次当前记录。通过后尚未登记入职的 ${b.noonb} 条需要跟进确认。</p></div>`;
   } else if (stage === 'hired') {
     const hireMain = metricRow('核实入职');
-    body += `<div class="detail-grid">${stat('批次入职', b.onb, '同批登记已入职')}${stat('试岗离职', b.quit, '不计入核实入职')}${stat('核实入职（主表）', hireMain, '按入职日期统计')}</div>`;
+    body += `<div class="detail-grid">${stat('批次入职', b.onb, '同批登记已入职')}${stat('入职1天（在职）', b.onb1, '回访时仍在职')}${stat('试岗离职', b.quit, '不计入核实入职')}${stat('核实入职（主表）', hireMain, '按入职日期统计')}</div>`;
     body += `<div class="info-callout"><strong>两种口径的区别</strong><p>批次入职：所选区间「登记的人」截至本次更新已入职的人数，后续入职可发生在区间结束之后；主表口径核实入职：按「入职日期」落在所选区间的人数。两者日期含义不同，不能直接相除。</p></div>`;
     body += `<h3>回访覆盖</h3>${simpleTable(['回访节点', '已回访', '待补', '异常'], [['1天', b.rv1, b.obAll - b.rv1, b.rv1bad], ['3天', b.rv3, b.obAll - b.rv3, '—'], ['7天', b.rv7, b.obAll - b.rv7, '—']].map(row => row.map(x => num(x))))}`;
   }
-  body += `<h3>人员构成</h3>${simpleTable(['招聘专员', '人数'], PEOPLE.map(p => {
+  body += `<h3>人员构成</h3>${simpleTable(stage === 'hired' ? ['招聘专员', '入职', '入职1天'] : ['招聘专员', '人数'], PEOPLE.map(p => {
     const pb = personBatches(p);
     const v = { invite: pb.n, attended: pb.arr, passed: pb.pass, hired: pb.onb }[stage];
+    if (stage === 'hired') return [personLink(p), num(v), num(pb.onb1)];
     return [personLink(p), num(v)];
   }).filter(row => row[1] !== '0').concat([]))}`;
   if (stage !== 'invite') body = body.replace('<h3>候选人明细</h3>', '');
@@ -614,7 +616,7 @@ function renderPerson(person, subtitle) {
     { label: '待补', value: pb.apend, color: '#c09a4e' }
   ], pb.n);
   if (pb.apend || pb.ppend) body += `<div class="info-callout"><strong>需要确认</strong><p>${pb.apend ? `到面状态待补 ${pb.apend} 条；` : ''}${pb.ppend ? `面试结果待补 ${pb.ppend} 条。` : ''}</p></div>`;
-  body += `<h3>参与项目</h3>${clients.length ? simpleTable(['项目', '邀约', '到面', '通过', '入职', '岗位'], clients.map(c => [clientLink(c.name), c.n, c.arr, c.pass, c.onb, esc([...c.jobs].slice(0, 3).join('、'))])) : '<p class="source-note">所选区间该人员没有邀约登记记录。</p>'}`;
+  body += `<h3>参与项目</h3>${clients.length ? simpleTable(['项目', '邀约', '到面', '通过', '入职', '入职1天', '岗位'], clients.map(c => [clientLink(c.name), c.n, c.arr, c.pass, c.onb, c.onb1, esc([...c.jobs].slice(0, 3).join('、'))])) : '<p class="source-note">所选区间该人员没有邀约登记记录。</p>'}`;
   body += `<h3>完整日报指标</h3>${simpleTable(['指标', '数量', '说明'], Object.keys(METRIC_NOTES).map(k => [esc(k), num(metricRow(k, person)), esc(METRIC_NOTES[k])]))}`;
   body += `<h3>候选人明细</h3>${recordsTable(inRangeRecords(r => r.p === person), { noClientLink: false })}`;
   setDetail('人员业绩', person, subtitle, body);
@@ -628,16 +630,16 @@ function renderClient(client, subtitle) {
     ${stat('发出邀约', c.n, '登记批次')}
     ${stat('实际到面', c.arr, `到面率 ${pct(c.arr, c.n)}`)}
     ${stat('面试通过', c.pass, fb ? `已反馈通过率 ${pct(c.pass, fb)}` : '')}
-    ${stat('入职', c.onb, c.quit ? `试岗离职 ${c.quit}` : '')}
+    ${stat('入职', c.onb, [c.quit ? `试岗离职 ${c.quit}` : '', `入职1天 ${c.onb1} 人`].filter(Boolean).join(' · '))}
   </div>`;
   body += statusBlock('邀约推进', [
     { label: '已到面', value: c.arr, color: '#6d8ea8' },
     { label: '未到面', value: c.noarr, color: '#dbe1e7' },
     { label: '待补', value: c.apend, color: '#c09a4e' }
   ], c.n);
-  body += `<h3>参与人员</h3>${simpleTable(['招聘专员', '邀约', '到面', '通过', '入职'], [...c.people].map(p => {
-    const pc = clientsInRange(p).find(x => x.name === client) || { n: 0, arr: 0, pass: 0, onb: 0 };
-    return [personLink(p), pc.n, pc.arr, pc.pass, pc.onb];
+  body += `<h3>参与人员</h3>${simpleTable(['招聘专员', '邀约', '到面', '通过', '入职', '入职1天'], [...c.people].map(p => {
+    const pc = clientsInRange(p).find(x => x.name === client) || { n: 0, arr: 0, pass: 0, onb: 0, onb1: 0 };
+    return [personLink(p), pc.n, pc.arr, pc.pass, pc.onb, pc.onb1];
   }))}`;
   body += `<h3>涉及岗位</h3><div class="job-tags">${[...c.jobs].map(j => `<span class="badge badge--blue">${esc(j)}</span>`).join('') || '<span class="muted">无</span>'}</div>`;
   body += `<h3>候选人明细</h3>${recordsTable(c.rs)}`;
@@ -663,11 +665,12 @@ function renderDay(date) {
   if (day.has_report && day.covered < PEOPLE.length) {
     body += `<div class="info-callout"><strong>来源覆盖提示</strong><p>当日 BOSS 明细覆盖 ${day.covered}/${PEOPLE.length} 人，未覆盖人员的平台指标可能偏低。</p></div>`;
   }
-  body += `<h3>人员日报</h3>${simpleTable(['招聘专员', '我沟通', '企微添加', '发出邀约', '实际到面', '面试通过', '核实入职'], PEOPLE.map((p, i) => {
+  body += `<h3>人员日报</h3>${simpleTable(['招聘专员', '我沟通', '企微添加', '发出邀约', '实际到面', '面试通过', '核实入职', '入职1天'], PEOPLE.map((p, i) => {
     const get = k => (day.metrics[k] || zeros())[i];
     const pb = personBatches(p);
     const dayRs = data.invite_records.filter(r => r.d === date && r.p === p);
-    return [personLink(p), num(get('我沟通')), num(get('企微添加数')), dayRs.length, dayRs.filter(r => r.a === '到面').length, dayRs.filter(r => r.ps === '通过').length, num(get('核实入职'))];
+    const dayOnb1 = (data.followup_records || []).filter(f => f.iv === date && f.p === p && f.rv1 === '在职').length;
+    return [personLink(p), num(get('我沟通')), num(get('企微添加数')), dayRs.length, dayRs.filter(r => r.a === '到面').length, dayRs.filter(r => r.ps === '通过').length, num(get('核实入职')), num(dayOnb1)];
   }))}`;
   body += day.positions?.length ? `<h3>当日岗位</h3><div class="job-tags">${day.positions.map(j => `<span class="badge badge--blue">${esc(j)}</span>`).join('')}</div>` : '';
   body += `<h3>当日登记的候选人</h3>${recordsTable(rs)}`;
