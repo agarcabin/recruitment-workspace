@@ -190,11 +190,20 @@ function renderHeader() {
   $('meta-status').innerHTML = `<span>日报截至 <strong>${esc(short(data.meta.latest_report))}</strong></span><span>生成 ${esc(stamp(data.meta.generated_at))}</span>`;
 }
 
+// 回访覆盖（累计口径：入职日期不早于区间起点；回访状态抓取时为最新）
+function followupCounts() {
+  const fu = data.followup_records || [];
+  const from = state.mode === 'day' ? state.day : state.from;
+  const inR = fu.filter(f => f.iv >= from);
+  return { rv1: inR.filter(f => f.rv1).length, rv7: inR.filter(f => f.rv7).length, total: inR.length };
+}
+
 // ---------- 渲染：KPI ----------
 function renderKPI(b) {
   const hireMain = metricRow('核实入职'); // 主表口径（按入职日期）
+  const fu = followupCounts();
   const cards = [
-    { cls: 'metric-card--hire', eyebrow: '入职结果 · 主表口径', label: '核实入职', value: hireMain, note: '按入职日期 · 试岗当天离职已排除', action: 'metric', metric: '核实入职' },
+    { cls: 'metric-card--hire', eyebrow: '入职结果 · 主表口径', label: '核实入职', value: hireMain, note: '按入职日期 · 试岗当天离职已排除', sub: `入职1天：${num(fu.rv1)}人 · 入职7天：${num(fu.rv7)}人`, action: 'metric', metric: '核实入职' },
     { cls: 'metric-card--gold', eyebrow: '面试结果 · 批次口径', label: '面试通过', value: b.pass, note: `已反馈通过率 ${pct(b.pass, b.pass + b.nopass)}`, sub: `结果待补 ${b.ppend}`, action: 'stage', stage: 'passed' },
     { cls: '', eyebrow: '面试推进 · 批次口径', label: '实际到面', value: b.arr, note: `登记 ${b.n} 人 · 未到面 ${b.noarr}`, sub: `到面待补 ${b.apend}`, action: 'stage', stage: 'attended' },
     { cls: 'metric-card--steel', eyebrow: '邀约登记 · 批次口径', label: '发出邀约', value: b.n, note: '按登记日期统计', action: 'stage', stage: 'invite' }
@@ -475,6 +484,16 @@ function showDetail(d) {
     const title = person ? `${person} · ${k}` : k;
     const kicker = person ? '人员 · 指标详情' : '指标详情';
     let body = `<div class="detail-grid">${stat(k, v, METRIC_NOTES[k] || '')}</div>`;
+    if (k === '核实入职') {
+      const fu = (data.followup_records || []).filter(f => f.iv >= (state.mode === 'day' ? state.day : state.from));
+      if (fu.length) {
+        body += `<h3>入职后回访</h3>${simpleTable(['回访节点', '已回访', '其中在职', '已离职/异常'], [
+          ['入职1天', num(fu.filter(f => f.rv1).length), num(fu.filter(f => f.rv1 === '在职').length), num(fu.filter(f => f.rv1 && f.rv1 !== '在职').length)],
+          ['入职7天', num(fu.filter(f => f.rv7).length), num(fu.filter(f => f.rv7 === '在职').length), num(fu.filter(f => f.rv7 && f.rv7 !== '在职').length)]
+        ])}`;
+        body += `<div class="info-callout"><strong>口径</strong><p>回访人数 = 企微表格「普工招聘信息」回访列已填写（在职 / 否）的人数，按入职日期不早于所选区间起点累计统计；「否」表示回访时已离职。回访数据更新于 ${esc(((data.followup_meta?.captured_at) || '').replace('T', ' '))}。</p></div>`;
+      }
+    }
     if (!person) {
       body += `<h3>人员构成</h3>${simpleTable(['招聘专员', '数量'], PEOPLE.map(p => [personLink(p), num(metricRow(k, p))]))}`;
     }
