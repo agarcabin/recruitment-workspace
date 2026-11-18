@@ -13,7 +13,7 @@ const stamp = v => v ? String(v).slice(0, 16).replace('T', ' ').replaceAll('-', 
 let data = null;
 let PEOPLE = [];
 const state = { mode: 'range', day: '', from: '', to: '', preset: 'all' };
-const charts = { client: null, people: null, trend: null, ai: null, proj: null };
+const charts = { client: null, people: null, trend: null, ai: null, proj: null, jwTrend: null, jwPerson: null };
 
 const METRIC_NOTES = {
   '发布岗位数': '按当日后台记录行计；区间显示最近一个有日报日的报表值，不跨日求和。',
@@ -720,9 +720,12 @@ function action(target) {
   else if (act === 'proj-kpi') projKpiDetail(a.dataset.detail);
   else if (act === 'pool') projPoolDetail(+a.dataset.i);
   else if (act === 'proj') projDetail(+a.dataset.i);
+  else if (act === 'jw-day') jwDayDetail(a.dataset.date);
+  else if (act === 'jw-person') jwPersonDetail(a.dataset.person);
+  else if (act === 'jw-scope') jwScopeDetail(a.dataset.scope);
 }
 // ---------- 页面切换（招聘 / AI开发 / 项目） ----------
-const PAGES = ['recruit', 'ai', 'project'];
+const PAGES = ['recruit', 'ai', 'project', 'jiawei'];
 function currentPage() {
   const p = new URLSearchParams(location.search).get('page');
   return PAGES.includes(p) ? p : 'recruit';
@@ -1179,18 +1182,152 @@ function projCityDetail(city) {
     ${simpleTable(['项目名称', '岗位类别', '主招', '负责业务', '费用'], ps.map(p => [esc(p.name), esc(p.category), esc(p.recruit || '—'), esc(p.owner || '—'), esc(p.fee || '—')]))}`);
 }
 
+// ---------- 加微看板（企微「企微添加」流水快照，发布时快照一次） ----------
+let jwData = null;
+const JW_SCOPES = {
+  all: { title: '加微总数', kicker: '加微看板 · 下钻明细' },
+  last7: { title: '近7日加微', kicker: '加微看板 · 下钻明细' },
+  last30: { title: '近30日加微', kicker: '加微看板 · 下钻明细' }
+};
+function jwFrom(n) { return new Date(new Date(jwData.meta.today + 'T00:00:00').getTime() - (n - 1) * 86400000).toISOString().slice(0, 10); }
+function jwRecords(kind) {
+  const rs = jwData.records;
+  if (kind === 'last7') return rs.filter(r => r.d >= jwFrom(7));
+  if (kind === 'last30') return rs.filter(r => r.d >= jwFrom(30));
+  return rs;
+}
+function jwPeak() { const e = Object.entries(jwData.daily).sort((a, b) => b[1] - a[1])[0]; return e ? { d: e[0], n: e[1] } : null; }
+function jwPersonLink(p) { return `<button class="text-link" data-action="jw-person" data-person="${esc(p)}">${esc(p)} ↗</button>`; }
+function jwTable(rs, limit = 100) {
+  if (!rs.length) return '<p class="source-note">该范围内没有加微记录。</p>';
+  const rows = rs.slice(0, limit);
+  return `<div class="detail-table-wrap"><table class="detail-table"><thead><tr><th>添加时间</th><th>添加人</th><th>客户（微信名）</th></tr></thead><tbody>${rows.map(r => `<tr><th scope="row">${short(r.d)} ${r.ts || ''}</th><td>${jwPersonLink(r.p)}</td><td>${esc(r.cand)}</td></tr>`).join('')}</tbody></table></div>${rs.length > limit ? `<p class="source-note">仅显示最近 ${limit} 条（该范围共 ${num(rs.length)} 条）。</p>` : ''}`;
+}
+function jwByPerson(rs) {
+  const m = new Map();
+  rs.forEach(r => m.set(r.p, (m.get(r.p) || 0) + 1));
+  return [...m.entries()].sort((a, b) => b[1] - a[1]);
+}
+
+function renderJiawei() {
+  if (!jwData) {
+    const el = $('jw-kpi');
+    if (el) el.innerHTML = '<p class="source-note">加微数据暂不可用（缺少 jiawei-data.json 快照）。</p>';
+    return;
+  }
+  $('jw-snapshot').textContent = '企微添加流水快照 · ' + stamp(jwData.meta.captured_at) + ' · 数据截至 ' + jwData.meta.range.to;
+  const peak = jwPeak();
+  const cards = [
+    { label: '加微总数', value: jwData.totals.all, note: `${jwData.meta.range.from} — ${jwData.meta.range.to}`, act: 'all' },
+    { label: '近7日加微', value: jwData.totals.last7, note: `${jwFrom(7)} 起`, act: 'last7' },
+    { label: '近30日加微', value: jwData.totals.last30, note: `${jwFrom(30)} 起`, act: 'last30' },
+    { label: '单日最高', value: peak ? peak.n : 0, note: peak ? pretty(peak.d) : '', day: peak ? peak.d : null }
+  ];
+  $('jw-kpi').innerHTML = cards.map(c => `
+    <article class="metric-card" data-action="${c.act ? 'jw-scope' : 'jw-day'}" ${c.act ? `data-scope="${c.act}"` : `data-date="${c.day || ''}"`} role="button" tabindex="0" aria-label="查看${esc(c.label)}明细">
+      <div class="metric-label">${esc(c.label)}</div>
+      <button class="metric-value" data-action="${c.act ? 'jw-scope' : 'jw-day'}" ${c.act ? `data-scope="${c.act}"` : `data-date="${c.day || ''}"`} aria-label="${esc(c.label)} ${num(c.value)}，查看明细">${num(c.value)}<span class="metric-unit">人</span></button>
+      <div class="metric-sub"><span>${esc(c.note)}</span></div>
+    </article>`).join('');
+  renderJwTrend();
+  renderJwPerson();
+  renderJwRecords();
+}
+
+function renderJwTrend() {
+  const el = $('jw-trend');
+  if (!el) return;
+  if (!charts.jwTrend) charts.jwTrend = echarts.init(el);
+  const days = Object.keys(jwData.daily).sort();
+  charts.jwTrend.setOption({
+    grid: { left: 8, right: 20, top: 26, bottom: 0, containLabel: true },
+    tooltip: { trigger: 'axis', axisPointer: { type: 'line' } },
+    xAxis: { type: 'category', data: days.map(short), boundaryGap: false, axisLabel: { fontSize: 11, color: '#99937f' }, axisLine: { lineStyle: { color: '#c9c2ae' } }, axisTick: { show: false } },
+    yAxis: { type: 'value', minInterval: 1, splitLine: { lineStyle: { color: '#eae5d6' } }, axisLabel: { fontSize: 11, color: '#99937f' } },
+    series: [{ name: '加微', type: 'line', data: days.map(d => jwData.daily[d]), smooth: true, symbolSize: 6, lineStyle: { width: 2.5, color: '#33526b' }, itemStyle: { color: '#33526b' }, areaStyle: { color: 'rgba(51,82,107,.08)' }, cursor: 'pointer' }]
+  });
+  charts.jwTrend.off('click');
+  charts.jwTrend.on('click', e => { if (e.componentType === 'series') jwDayDetail(days[e.dataIndex]); });
+}
+
+function renderJwPerson() {
+  const el = $('jw-person');
+  if (!el) return;
+  if (!charts.jwPerson) charts.jwPerson = echarts.init(el);
+  const ps = jwData.by_person;
+  charts.jwPerson.setOption({
+    grid: { left: 8, right: 90, top: 10, bottom: 0, containLabel: true },
+    tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' }, formatter: ps2 => {
+      const p = ps[ps2[0].dataIndex];
+      return `<b>${esc(p.person)}</b><br/>总数 ${p.all} · 近7日 ${p.last7}`;
+    } },
+    xAxis: { type: 'value', minInterval: 1, splitLine: { lineStyle: { color: '#eae5d6' } }, axisLabel: { fontSize: 11, color: '#99937f' } },
+    yAxis: { type: 'category', data: ps.map(p => p.person), inverse: true, axisLabel: { fontSize: 12, color: '#211d15' }, axisTick: { show: false }, axisLine: { lineStyle: { color: '#c9c2ae' } } },
+    series: [
+      { name: '近7日', type: 'bar', stack: 't', data: ps.map(p => p.last7), itemStyle: { color: '#b03a2e' }, barMaxWidth: 16, cursor: 'pointer' },
+      { name: '更早累计', type: 'bar', stack: 't', data: ps.map(p => p.all - p.last7), itemStyle: { color: '#8fa7bb' }, barMaxWidth: 16, cursor: 'pointer', label: { show: true, position: 'right', fontSize: 11, fontWeight: 600, color: '#33526b', formatter: params => `${ps[params.dataIndex].all}` } }
+    ]
+  });
+  charts.jwPerson.off('click');
+  charts.jwPerson.on('click', e => { if (e.componentType === 'series') jwPersonDetail(ps[e.dataIndex].person); });
+}
+
+function renderJwRecords() {
+  const el = $('jw-records');
+  if (!el) return;
+  el.innerHTML = jwTable(jwData.records, 100);
+}
+
+function jwDayDetail(date) {
+  if (!jwData) return;
+  const rs = jwData.records.filter(r => r.d === date).sort((a, b) => (a.ts || '').localeCompare(b.ts || ''));
+  const byP = jwByPerson(rs);
+  let body = `<div class="detail-grid">${stat('加微人数', rs.length, '成功添加好友')}</div>`;
+  body += `<h3>人员构成</h3>${simpleTable(['招聘专员', '加微数'], byP.map(([p, n]) => [jwPersonLink(p), num(n)]))}`;
+  body += `<h3>加微明细</h3>${jwTable(rs, 200)}`;
+  body += `<div class="info-callout"><strong>口径</strong><p>来自企微表格「企微添加」流水，按添加时间（北京时间）统计，一条记录即一次成功好友添加。快照于 ${stamp(jwData.meta.captured_at)}。</p></div>`;
+  setDetail('加微看板 · 当日明细', pretty(date), `当日共 ${num(rs.length)} 次加微`, body);
+}
+
+function jwPersonDetail(person) {
+  if (!jwData) return;
+  const rs = jwData.records.filter(r => r.p === person);
+  const last7 = rs.filter(r => r.d >= jwFrom(7)).length;
+  const byD = {};
+  rs.forEach(r => { byD[r.d] = (byD[r.d] || 0) + 1; });
+  const days = Object.keys(byD).sort().slice(-14).reverse();
+  let body = `<div class="detail-grid">${stat('加微总数', rs.length, `${jwData.meta.range.from} — ${jwData.meta.range.to}`)}${stat('近7日加微', last7, `${jwFrom(7)} 起`)}${stat('活跃天数', Object.keys(byD).length, '有加微记录的天数')}</div>`;
+  body += `<h3>按日分布（最近 ${days.length} 个活跃日）</h3>${simpleTable(['日期', '加微数'], days.map(d => [pretty(d), num(byD[d])]))}`;
+  body += `<h3>加微明细</h3>${jwTable(rs, 100)}`;
+  setDetail('加微看板 · 人员明细', person, `快照于 ${stamp(jwData.meta.captured_at)}`, body);
+}
+
+function jwScopeDetail(kind) {
+  if (!jwData) return;
+  const meta = JW_SCOPES[kind] || { title: kind, kicker: '加微看板 · 下钻明细' };
+  const rs = jwRecords(kind);
+  const byP = jwByPerson(rs);
+  let body = `<div class="detail-grid">${stat(meta.title, rs.length, '成功添加好友')}</div>`;
+  body += `<h3>人员构成</h3>${simpleTable(['招聘专员', '加微数'], byP.map(([p, n]) => [jwPersonLink(p), num(n)]))}`;
+  body += `<h3>加微明细</h3>${jwTable(rs, 100)}`;
+  body += `<div class="info-callout"><strong>口径</strong><p>来自企微表格「企微添加」流水，按添加时间（北京时间）统计。快照于 ${stamp(jwData.meta.captured_at)}，数据截至 ${jwData.meta.range.to}。</p></div>`;
+  setDetail(meta.kicker, meta.title, `共 ${num(rs.length)} 次加微`, body);
+}
+
 async function init() {
   try {
-    const [res, aiRes, projRes, fuRes] = await Promise.all([
+    const [res, aiRes, projRes, fuRes, jwRes] = await Promise.all([
       fetch('./data.json', { cache: 'no-store' }),
       fetch('./ai-data.json', { cache: 'no-store' }).catch(() => null),
       fetch('./project-data.json', { cache: 'no-store' }).catch(() => null),
-      fetch('./followup-data.json', { cache: 'no-store' }).catch(() => null)
+      fetch('./followup-data.json', { cache: 'no-store' }).catch(() => null),
+      fetch('./jiawei-data.json', { cache: 'no-store' }).catch(() => null)
     ]);
     if (!res.ok) throw new Error('数据文件暂不可用');
     data = await res.json();
     aiData = aiRes && aiRes.ok ? await aiRes.json() : null;
     projData = projRes && projRes.ok ? await projRes.json() : null;
+    try { jwData = jwRes && jwRes.ok ? await jwRes.json() : null; } catch (e) { jwData = null; }
     // 回访数据独立文件（data.json 会被日常重建覆盖，独立文件不受影响）
     if (fuRes && fuRes.ok) {
       try {
@@ -1218,6 +1355,7 @@ async function init() {
     bind();
     renderAI();
     renderProject();
+    renderJiawei();
     switchPage(currentPage(), false);
     render();
   } catch (error) {

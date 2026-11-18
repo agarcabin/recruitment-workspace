@@ -37,6 +37,7 @@
           <a class="page-nav-link is-active" href="?page=recruit" data-page="recruit">招聘看板</a>
           <a class="page-nav-link" href="?page=ai" data-page="ai">AI开发看板</a>
           <a class="page-nav-link" href="?page=project" data-page="project">项目看板</a>
+          <a class="page-nav-link" href="?page=jiawei" data-page="jiawei">加微看板</a>
         </div>
       </nav>
     </header>
@@ -250,6 +251,53 @@
             </div>
           </div>
           <div id="proj-table"></div>
+        </section>
+      </div>
+
+      <div id="page-jiawei" class="page" hidden>
+        <section class="overview-section" aria-label="加微概览">
+          <div class="section-heading">
+            <div>
+              <div class="section-eyebrow"><span class="section-indicator" aria-hidden="true"></span>01 · 加微总览</div>
+              <h2 class="section-title">微信上每天加到多少人</h2>
+              <p class="section-subtitle">来自企微「企微添加」流水快照：一次成功好友添加记一条。点击数字卡与图表可下钻。</p>
+            </div>
+            <span id="jw-snapshot" class="section-helper"></span>
+          </div>
+          <div id="jw-kpi" class="kpi-grid"></div>
+        </section>
+
+        <section class="surface trend-panel" aria-label="每日加微趋势">
+          <div class="panel-heading">
+            <div>
+              <div class="section-eyebrow"><span class="section-indicator" aria-hidden="true"></span>02 · 每日加微趋势</div>
+              <h2 class="panel-title">逐日加微数量走势</h2>
+              <p class="section-subtitle">按添加时间统计。点击数据点查看当日加微明细。</p>
+            </div>
+          </div>
+          <div id="jw-trend" class="chart-box"></div>
+        </section>
+
+        <section class="surface trend-panel" aria-label="专员加微排行">
+          <div class="panel-heading">
+            <div>
+              <div class="section-eyebrow"><span class="section-indicator" aria-hidden="true"></span>03 · 专员加微排行</div>
+              <h2 class="panel-title">谁在持续把候选人加到微信</h2>
+              <p class="section-subtitle">深色为近7日，浅色为更早累计。点击条形查看该专员全部加微记录。</p>
+            </div>
+          </div>
+          <div id="jw-person" class="chart-box chart-box--tall"></div>
+        </section>
+
+        <section class="surface trend-panel" aria-label="加微明细">
+          <div class="panel-heading">
+            <div>
+              <div class="section-eyebrow"><span class="section-indicator" aria-hidden="true"></span>04 · 加微明细</div>
+              <h2 class="panel-title">最近添加的候选人</h2>
+              <p class="section-subtitle">按添加时间倒序，点击专员名查看其加微节奏与全部记录。</p>
+            </div>
+          </div>
+          <div id="jw-records"></div>
         </section>
       </div></main>
   </div>
