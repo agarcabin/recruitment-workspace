@@ -120,10 +120,21 @@
         </section>
       </div>
 
+      <section class="surface trend-panel" aria-label="人员数据">
+        <div class="panel-heading">
+          <div>
+            <div class="section-eyebrow"><span class="section-indicator" aria-hidden="true"></span>05 · 人员数据</div>
+            <h2 class="panel-title">招聘专员：全流程数据表</h2>
+            <p class="section-subtitle">所选区间内每人从沟通到入职回访的完整数据。点击人名查看个人明细。</p>
+          </div>
+        </div>
+        <div id="person-table"></div>
+      </section>
+
       <section class="surface trend-panel" aria-label="逐日趋势">
         <div class="panel-heading">
           <div>
-            <div class="section-eyebrow"><span class="section-indicator" aria-hidden="true"></span>05 · 逐日趋势</div>
+            <div class="section-eyebrow"><span class="section-indicator" aria-hidden="true"></span>06 · 逐日趋势</div>
             <h2 class="panel-title">邀约、到面、通过、入职的连续性</h2>
             <p class="section-subtitle">邀约/到面/通过按登记批次，入职按入职日期。点击数据点查看当日明细。</p>
           </div>
@@ -211,7 +222,7 @@
             <div>
               <div class="section-eyebrow"><span class="section-indicator" aria-hidden="true"></span>02 · 项目池</div>
               <h2 class="panel-title">每个项目池里有哪些账号在挂</h2>
-              <p class="section-subtitle">项目池 = BOSS 账号挂靠的客户；卡片列出该项目池内的全部账号，点击卡片查看每个账号挂的岗位与最近数据。</p>
+              <p class="section-subtitle">项目池 = 企微表格《合作项目情况表》合作项目表中「进行中」的项目，暂停项目不计入；卡片列出该项目业务员列在挂的账号（人名后数字为表格登记值），点击卡片查看明细。</p>
             </div>
             <span id="pool-snapshot" class="section-helper"></span>
           </div>
@@ -247,7 +258,7 @@
             <div>
               <div class="section-eyebrow"><span class="section-indicator" aria-hidden="true"></span>05 · 项目清单</div>
               <h2 class="panel-title">正式合作项目明细</h2>
-              <p class="section-subtitle">点击项目行查看亮点、劣势、费用、对接客服与合作细节。</p>
+              <p class="section-subtitle">含项目状态与累计已招到人数；点击项目行查看招到的人（哪天谁招的）、亮点、劣势、费用与合作细节。</p>
             </div>
           </div>
           <div id="proj-table"></div>
@@ -268,11 +279,16 @@
         </section>
 
         <section class="surface trend-panel" aria-label="每日加微趋势">
-          <div class="panel-heading">
+          <div class="panel-heading heading-with-tools">
             <div>
               <div class="section-eyebrow"><span class="section-indicator" aria-hidden="true"></span>02 · 每日加微趋势</div>
               <h2 class="panel-title">逐日加微数量走势</h2>
-              <p class="section-subtitle">按添加时间统计。点击数据点查看当日加微明细。</p>
+              <p class="section-subtitle">按添加时间统计；含每人的莫奈色系曲线，点击图例可单独查看某人，点击数据点查看当日加微明细。</p>
+            </div>
+            <div class="trend-scope" role="group" aria-label="加微趋势时间范围">
+              <button type="button" class="preset-button is-active" data-jw-scope="all" aria-pressed="true">累计</button>
+              <button type="button" class="preset-button" data-jw-scope="month" aria-pressed="false">本月</button>
+              <button type="button" class="preset-button" data-jw-scope="week" aria-pressed="false">本周</button>
             </div>
           </div>
           <div id="jw-trend" class="chart-box"></div>
